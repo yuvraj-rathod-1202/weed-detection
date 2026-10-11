@@ -69,23 +69,11 @@ GFLOPs, size), `training`, `segmentation` (box/mask P, R, mAP50, mAP50-95, per c
 
 ## Running on Kaggle
 
-```bash
-# Kaggle notebook with GPU; add the dataset as input first
-!git clone <this-repo> /kaggle/working/weed-detection
-%cd /kaggle/working/weed-detection
-!pip install -q -r requirements.txt
-!python scripts/verify_setup.py --config configs/experiments/baseline_yolo11n_seg.yaml --override dataset.raw_dir=/kaggle/input/<dataset>
-!python scripts/run_experiment.py --config configs/experiments/baseline_yolo11n_seg.yaml --override dataset.raw_dir=/kaggle/input/<dataset>
-```
-
-- Everything is written under `/kaggle/working/` and persists when you **Save Version**.
-- Sessions are capped at 12 h: set `train.time: 10` so training stops in time for data prep + evaluation.
-- To resume in a new session: attach the previous notebook output as input, copy its
-  `experiments/` and `data/processed/` folders back to the same paths under
-  `/kaggle/working/weed-detection/`, and run the same command.
-- Two T4 GPUs: `--override train.device=[0,1]`.
+Training runs in a Kaggle GPU notebook. Step-by-step guide, including uploading the data and code,
+notebook cells, background runs, and resuming: [docs/kaggle.md](docs/kaggle.md).
 
 ## Docs
 
 - [docs/experiments.md](docs/experiments.md): add or change experiments, targeting methods, datasets
+- [docs/kaggle.md](docs/kaggle.md): run experiments on Kaggle
 - [configs/README.md](configs/README.md): config reference
