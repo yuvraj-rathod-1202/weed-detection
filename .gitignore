@@ -1,0 +1,50 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+
+# --- Datasets ---
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/README.md
+
+# --- Model weights ---
+models/weights/*
+!models/weights/.gitkeep
+!models/README.md
+
+# --- Experiment / result outputs ---
+experiments/*
+!experiments/.gitkeep
+results/*
+!results/.gitkeep
+
+# --- Secrets / local config ---
+.env
+*.env.local
+secrets.yaml
+**/local_settings.yaml
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Logs ---
+*.log

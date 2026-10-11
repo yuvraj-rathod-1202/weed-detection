@@ -1,0 +1,37 @@
+# Baseline: YOLO11n-seg (COCO-pretrained) fine-tuned on CottonWeedDet12 with SAM-derived masks.
+# One file = one experiment. Outputs go to <output_root>/<name>/ and are resumed if they exist.
+
+name: baseline_yolo11n_seg
+description: YOLO11n-seg fine-tuned on CottonWeedDet12; laser target = one point per predicted weed mask.
+seed: 42
+output_root: experiments
+
+dataset: configs/datasets/cottonweeddet12.yaml
+
+model:
+  weights: models/weights/yolo11n-seg.pt   # official ultralytics names are auto-downloaded to this path
+
+# Passed as-is to ultralytics YOLO.train(), so any train argument works here:
+# https://docs.ultralytics.com/modes/train/#train-settings
+train:
+  epochs: 100
+  imgsz: 640
+  batch: 16
+  patience: 20                    # early stopping
+  save_period: 10                 # extra epoch<N>.pt snapshots (last.pt/best.pt are saved every epoch anyway)
+  workers: 4
+  device: null                    # null = auto; 0 = first GPU; [0, 1] = both Kaggle T4s; cpu
+  # time: 10.0                    # hard stop after N hours; leaves time for data prep + eval in a 12 h Kaggle session
+
+eval:
+  split: test
+  imgsz: 640
+  conf: 0.25                      # operating point: only predictions above this are "fired at"
+  iou: 0.7                        # NMS IoU
+  match_iou: 0.5                  # mask IoU needed to pair a prediction with a GT weed (point error)
+  max_images: null                # null = whole split
+  num_visualizations: 20          # annotated images saved to eval/visualizations/
+
+targeting:
+  # Every method is evaluated; the first one is the primary method in summaries.
+  methods: [distance_transform, centroid, skeleton, box_center]

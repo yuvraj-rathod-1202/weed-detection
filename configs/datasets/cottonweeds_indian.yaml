@@ -1,0 +1,15 @@
+# CottonWeeds (Indian): target domain for the cross-region hypothesis.
+# Not used by any experiment yet: data/raw/cottonweeds_indian/ is empty.
+# Needs the same raw layout as cottonweeddet12 (images/, labels/ as YOLO boxes, classes.txt).
+
+name: cottonweeds_indian
+region: indian
+
+raw_dir: data/raw/cottonweeds_indian
+prepared_dir: data/processed/cottonweeds_indian_seg
+
+split: {train: 0.65, val: 0.20, test: 0.15}
+split_seed: 42
+max_images: null
+
+sam_model: models/weights/sam2.1_b.pt

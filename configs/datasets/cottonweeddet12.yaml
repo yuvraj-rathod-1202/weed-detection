@@ -1,0 +1,15 @@
+# CottonWeedDet12 (non-Indian): 12 cotton-field weed classes, bounding-box labels only.
+# GT instance masks are generated from the boxes with box-prompted SAM
+# (scripts/prepare_data.py). See data/README.md for how to get the raw data.
+
+name: cottonweeddet12
+region: non_indian
+
+raw_dir: data/raw/cottonweeddet12                  # images/, labels/ (YOLO boxes), classes.txt
+prepared_dir: data/processed/cottonweeddet12_seg   # YOLO-seg dataset written here
+
+split: {train: 0.65, val: 0.20, test: 0.15}
+split_seed: 42
+max_images: null                  # null = all images; an int = seeded random subset (used by smoke tests)
+
+sam_model: models/weights/sam2.1_b.pt   # any ultralytics SAM checkpoint; auto-downloaded to this path
