@@ -113,7 +113,7 @@ def review(cfg, weights: Path) -> None:
     for name in [k for k in plt.rcParams if k.startswith("keymap.")]:  # free our keys from matplotlib shortcuts
         plt.rcParams[name] = [k for k in plt.rcParams[name] if k not in used]
 
-    prepared_dir = Path(cfg.dataset.prepared_dir)
+    prepared_dir, raw_dir = Path(cfg.dataset.prepared_dir), Path(cfg.dataset.raw_dir)
     class_names = load_json(prepared_dir / "prepare_info.json")["class_names"]
     model = None
     if weights.exists():
@@ -172,11 +172,17 @@ def review(cfg, weights: Path) -> None:
             ax.axis("off")
         conf = f" {float(row['conf']):.2f}" if row["conf"] else ""
         done = sum(bool(r["decision"]) for r in rows)
+        warning = ""
+        if row["kind"] == "extra":
+            overlap = max((box_iou(row_box(row), b[1:]) for b in read_yolo_boxes(raw_dir / "labels" / f"{stem}.txt")), default=0.0)
+            if overlap >= DUPLICATE_IOU:
+                warning = (f"\nWARNING: overlaps an already labelled weed (box IoU {overlap:.2f}). "
+                           "If it is the same plant, this is a duplicate prediction: press [n], not [a].")
         fig.suptitle(
             f"[{done}/{len(rows)} decided]   {row['image']} ({row['split']})   {row['kind']}: {row['label']}{conf}\n"
             "red = GT, green = model, grey = ignore region, yellow = candidate\n"
-            + HELP[row["kind"]].format(label=row["label"]) + "\n[z] undo last    [q] quit (progress is saved)",
-            fontsize=11,
+            + HELP[row["kind"]].format(label=row["label"]) + "\n[z] undo last    [q] quit (progress is saved)" + warning,
+            fontsize=11, color="firebrick" if warning else "black",
         )
         fig.canvas.draw_idle()
 

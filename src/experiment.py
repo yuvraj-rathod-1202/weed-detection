@@ -4,7 +4,7 @@ Everything lives in <output_root>/<name>/ and every stage is resumable, so re-ru
 same command after a crash or a Kaggle timeout continues where it stopped:
 
     config.yaml               config snapshot (a changed training config is refused)
-    label_fixes.json          label-fix hash per split the run was trained/evaluated with
+    label_fixes.json          label-fix hashes the model was trained with and evaluated with
     environment.json          software/hardware of the latest session
     run.log                   log of every session
     train/                    ultralytics output; weights/last.pt is saved every epoch
@@ -61,7 +61,7 @@ def run_experiment(cfg) -> dict:
     logger.info("[1/3] Dataset: %s", cfg.dataset.name)
     data_info = prepare_dataset(cfg.dataset, logger)
     data_yaml = Path(cfg.dataset.prepared_dir) / "data.yaml"
-    check_label_fixes(cfg, run_dir, data_info, logger)
+    labels_used = check_label_fixes(cfg, run_dir, data_info, logger)
 
     logger.info("[2/3] Training: %s", cfg.model.weights)
     train_summary = train_model(cfg, run_dir, data_yaml, logger)
@@ -87,6 +87,7 @@ def run_experiment(cfg) -> dict:
             "mask_source": cfg.dataset.sam_model,
             "sam_fallback_boxes": data_info["sam_fallback_boxes"],
             "label_fixes": data_info.get("label_fixes"),
+            "label_fixes_used": labels_used,  # label-fix hash per split this model was trained / evaluated with
             "splits": data_info["splits"],
         },
         "model": {"init_weights": cfg.model.weights, "best_weights": str(best_weights), **model_info(best_weights, cfg.eval.imgsz)},
@@ -141,31 +142,50 @@ def check_config_snapshot(cfg, run_dir: Path, logger) -> None:
     save_yaml(new, snapshot_path)
 
 
-def check_label_fixes(cfg, run_dir: Path, data_info: dict, logger) -> None:
-    """Label fixes change the GT without changing the config; same rules as check_config_snapshot.
+def check_label_fixes(cfg, run_dir: Path, data_info: dict, logger) -> dict:
+    """Label fixes change the GT without changing the config. Records which labels the run used.
 
-    - train/val labels changed after training started: refuse; use a new `name` instead.
+    - train/val labels changed while training is unfinished: refuse (resuming would mix labels).
+    - train/val labels changed after training finished: the model is evaluated as it is; the
+      labels it was trained with stay recorded. Train a new experiment to use the new labels.
     - eval split labels changed: keep the trained model, recompute the evaluation.
+    Returns {"trained_with": {split: hash}, "evaluated_with": hash} (also in results.json).
     """
     state_path = run_dir / "label_fixes.json"
-    splits = list(data_info["splits"])
-    current = split_hashes(data_info.get("label_fixes"), splits)
-    trained = (run_dir / "train").exists()
-    # A run from before label fixes existed was built without any.
-    saved = load_json(state_path) if state_path.exists() else split_hashes(None, splits) if trained else current
-    changed = [s for s in splits if saved.get(s) != current[s]]
-    if trained and any(s in TRAINING_SPLITS for s in changed):
+    split = cfg.eval.split
+    current = split_hashes(data_info.get("label_fixes"), list(data_info["splits"]))
+    started = (run_dir / "train").exists()
+    finished = (run_dir / "train_summary.json").exists()
+    if state_path.exists():
+        state = load_json(state_path)
+        if "trained_with" not in state:  # first version stored {split: hash}
+            state = {"trained_with": {s: state.get(s) for s in TRAINING_SPLITS}, "evaluated_with": state.get(split)}
+    elif started:  # a run from before label fixes existed was built without any
+        none = split_hashes(None, current)
+        state = {"trained_with": {s: none[s] for s in TRAINING_SPLITS}, "evaluated_with": none[split]}
+    else:
+        state = {"trained_with": {}, "evaluated_with": current[split]}
+
+    if not started:  # training (re)starts from scratch on the current labels
+        state["trained_with"] = {s: current[s] for s in TRAINING_SPLITS}
+    changed = [s for s in TRAINING_SPLITS if state["trained_with"].get(s) != current[s]]
+    if changed and not finished:
         raise ValueError(
-            f"Label fixes for {[s for s in changed if s in TRAINING_SPLITS]} changed after '{cfg.name}' was trained.\n"
+            f"Label fixes for {changed} changed while '{cfg.name}' was training (resuming would mix labels).\n"
             f"Give the experiment a new `name`, or delete {run_dir} to start over."
         )
-    if cfg.eval.split in changed:
-        archive = run_dir / f"results_{cfg.eval.split}-labels-{saved.get(cfg.eval.split)}.json"
-        logger.warning("Label fixes for '%s' changed: re-evaluating (previous results kept as %s).", cfg.eval.split, archive.name)
+    if changed:
+        logger.warning("'%s' was trained before the label fixes for %s changed: evaluating the trained model as it is "
+                       "(train a new experiment to use the new labels).", cfg.name, changed)
+    if state["evaluated_with"] != current[split]:
+        archive = run_dir / f"results_{split}-labels-{state['evaluated_with']}.json"
+        logger.warning("Label fixes for '%s' changed: re-evaluating (previous results kept as %s).", split, archive.name)
         shutil.rmtree(run_dir / "eval", ignore_errors=True)
         if (run_dir / "results.json").exists():
             os.replace(run_dir / "results.json", archive)
-    save_json(current, state_path)
+        state["evaluated_with"] = current[split]
+    save_json(state, state_path)
+    return state
 
 
 def _changed_keys(old: dict, new: dict) -> list[str]:

@@ -90,6 +90,11 @@ def apply_fixes(boxes: list[tuple], changes: list[dict], class_names: list[str])
         elif row["decision"] == "add":
             if row["label"] not in class_names:
                 raise ValueError(f"label fix for {row['image']}: unknown class '{row['label']}' (classes: {class_names})")
+            if any(box_iou(box, b[1:]) >= REMOVE_IOU for b in boxes):
+                raise ValueError(
+                    f"label fix for {row['image']}: 'add' at {box} duplicates an existing GT box. A second prediction "
+                    f"on an already labelled weed is a duplicate detection: set its decision to 'none'."
+                )
             boxes.append((class_names.index(row["label"]), *box))
     return boxes, ignore
 
