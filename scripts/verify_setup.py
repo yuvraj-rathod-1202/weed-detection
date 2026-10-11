@@ -70,6 +70,21 @@ def check_prepared_data(ds_cfg) -> bool:
     return False
 
 
+def check_label_fixes(ds_cfg) -> None:
+    from src.data.label_fixes import load_fixes
+
+    path = ds_cfg.get("label_fixes")
+    try:
+        rows = load_fixes(path)
+    except ValueError as e:
+        report("FAIL", f"label fixes: {e}")
+        return
+    counts = {d: sum(r["decision"] == d for r in rows) for d in ("add", "remove", "ignore", "")}
+    report("OK" if not counts[""] else "INFO",
+           f"label fixes {path}: add={counts['add']} remove={counts['remove']} ignore={counts['ignore']}, "
+           f"{counts['']} not reviewed yet" if rows else f"label fixes: none ({path or 'no label_fixes key'})")
+
+
 def check_weights(weights: str, what: str) -> None:
     from ultralytics.utils.downloads import GITHUB_ASSETS_NAMES
 
@@ -147,6 +162,7 @@ def main() -> None:
 
     prepared = check_prepared_data(cfg.dataset)
     check_raw_data(cfg.dataset, required=not prepared)
+    check_label_fixes(cfg.dataset)
     if not prepared:
         check_weights(cfg.dataset.sam_model, "SAM weights")
     check_weights(cfg.model.weights, "model weights")

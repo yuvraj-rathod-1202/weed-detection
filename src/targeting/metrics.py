@@ -9,6 +9,9 @@ Per method, over all evaluated images:
                      The GT point is the same method applied to the GT mask.
     point_error_rel  point_error_px / GT equivalent radius sqrt(area / pi); < 1 is roughly "within the weed"
 
+Predictions that match no GT weed but lie mostly inside an ignore region (label fixes: "weed,
+species unsure") are left out: they are neither shots nor misses.
+
 shot_precision and weed_hit_rate compare methods fairly (same GT masks for all methods);
 point_error compares each method with its own GT definition.
 """
@@ -20,6 +23,8 @@ import time
 import numpy as np
 
 from src.targeting.points import point_in_mask, target_point
+
+IGNORE_OVERLAP = 0.5  # fraction of a prediction's mask inside ignore regions to leave it out
 
 
 def mask_iou(a: np.ndarray, b: np.ndarray) -> float:
@@ -47,13 +52,29 @@ def match_instances(pred_masks: list[np.ndarray], gt_masks: list[np.ndarray], io
     return matches
 
 
-def evaluate_image(pred_masks: list[np.ndarray], gt_masks: list[np.ndarray], methods: list[str], match_iou: float) -> dict:
+def ignored_predictions(pred_masks: list[np.ndarray], ignore_masks: list[np.ndarray], matched: set[int]) -> list[int]:
+    """Unmatched predictions with at least IGNORE_OVERLAP of their area inside the ignore regions."""
+    if not ignore_masks:
+        return []
+    ignore = np.logical_or.reduce(ignore_masks)
+    return [
+        p for p, mask in enumerate(pred_masks)
+        if p not in matched and mask.any() and np.logical_and(mask, ignore).sum() >= IGNORE_OVERLAP * mask.sum()
+    ]
+
+
+def evaluate_image(
+    pred_masks: list[np.ndarray], gt_masks: list[np.ndarray], methods: list[str], match_iou: float,
+    ignore_masks: list[np.ndarray] | None = None,
+) -> dict:
     """Targeting record for one image (JSON-serializable; one line of predictions.jsonl)."""
     matches = match_instances(pred_masks, gt_masks, match_iou)
+    ignored = ignored_predictions(pred_masks, ignore_masks or [], {p for p, _, _ in matches})
     record = {
         "num_gt": len(gt_masks),
         "num_pred": len(pred_masks),
         "matches": [[p, g, round(iou, 4)] for p, g, iou in matches],
+        "ignored_preds": ignored,
         "methods": {},
     }
     for method in methods:
@@ -61,6 +82,7 @@ def evaluate_image(pred_masks: list[np.ndarray], gt_masks: list[np.ndarray], met
         pred_points = [target_point(m, method) for m in pred_masks]
         extraction_ms = (time.perf_counter() - start) * 1000.0
         gt_points = [target_point(m, method) for m in gt_masks]
+        fired = [pt for p, pt in enumerate(pred_points) if p not in ignored]
 
         errors_px, errors_rel = [], []
         for p, g, _ in matches:
@@ -73,9 +95,9 @@ def evaluate_image(pred_masks: list[np.ndarray], gt_masks: list[np.ndarray], met
         record["methods"][method] = {
             "pred_points": _round_points(pred_points),
             "gt_points": _round_points(gt_points),
-            "shots": sum(p is not None for p in pred_points),
-            "shots_on_weed": sum(any(point_in_mask(p, gt) for gt in gt_masks) for p in pred_points),
-            "weeds_hit": sum(any(point_in_mask(p, gt) for p in pred_points) for gt in gt_masks),
+            "shots": sum(p is not None for p in fired),
+            "shots_on_weed": sum(any(point_in_mask(p, gt) for gt in gt_masks) for p in fired),
+            "weeds_hit": sum(any(point_in_mask(p, gt) for p in fired) for gt in gt_masks),
             "point_errors_px": errors_px,
             "point_errors_rel": errors_rel,
             "extraction_ms": round(extraction_ms, 3),
@@ -90,6 +112,7 @@ def aggregate_targeting(records: list[dict], methods: list[str]) -> dict:
         "num_images": len(records),
         "num_gt_weeds": sum(r["num_gt"] for r in records),
         "num_pred_weeds": sum(r["num_pred"] for r in records),
+        "num_ignored_preds": sum(len(r.get("ignored_preds", [])) for r in records),
         "num_matched": len(matched_ious),
         "mean_matched_mask_iou": _mean(matched_ious),
         "methods": {},

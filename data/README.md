@@ -13,7 +13,9 @@ data/
     ├── labels/{train,val,test}/  YOLO-seg: <cls> <x1> <y1> <x2> <y2> ... (normalized polygon)
     ├── splits.json               which image is in which split
     ├── data.yaml                 ultralytics dataset file
+    ├── ignore/{train,val,test}/  ignore regions from label fixes: <cx> <cy> <w> <h> (normalized)
     ├── sam_fallbacks.txt         boxes where SAM returned no mask (box polygon used)
+    ├── label_fixes_applied.json  which label fixes each image was built with
     └── prepare_info.json         settings + per-split/per-class counts
 ```
 
@@ -28,6 +30,10 @@ official release (Zenodo / the authors' GitHub) and arrange it as above in
 The dataset has boxes only. `prepare_data.py` prompts SAM (`sam_model` in the dataset config)
 with each GT box and stores the resulting polygon as the GT mask. These are **pseudo-labels**:
 check them in `notebooks/01_data_exploration.ipynb` and report this in the paper.
+
+The original boxes are incomplete (small seedlings are often not labelled). Corrections live in
+`data/label_fixes/<dataset>.csv` (version-controlled, raw data untouched); see
+[docs/label_fixes.md](../docs/label_fixes.md).
 
 ## CottonWeeds (Indian)
 

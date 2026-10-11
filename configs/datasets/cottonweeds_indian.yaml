@@ -7,6 +7,7 @@ region: indian
 
 raw_dir: data/raw/cottonweeds_indian
 prepared_dir: data/processed/cottonweeds_indian_seg
+label_fixes: data/label_fixes/cottonweeds_indian.csv
 
 split: {train: 0.65, val: 0.20, test: 0.15}
 split_seed: 42

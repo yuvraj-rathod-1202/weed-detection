@@ -7,6 +7,7 @@ region: non_indian
 
 raw_dir: data/raw/cottonweeddet12                  # images/, labels/ (YOLO boxes), classes.txt
 prepared_dir: data/processed/cottonweeddet12_seg   # YOLO-seg dataset written here
+label_fixes: data/label_fixes/cottonweeddet12.csv  # manual GT corrections (scripts/review_labels.py); missing file = none
 
 split: {train: 0.65, val: 0.20, test: 0.15}
 split_seed: 42

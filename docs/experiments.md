@@ -38,7 +38,9 @@ Typical experiment variations, config-only:
 |---|---|
 | `eval.*` or `targeting.*` | trained model is kept, evaluation is recomputed |
 | `seed`, `dataset.*`, `model.*`, `train.*` | refused (the results would mix two configs). Use a new `name`, or delete `experiments/<name>/` to start over |
-| `output_root`, `dataset.raw_dir`, `dataset.prepared_dir`, `description` | allowed (machine-specific paths) |
+| `output_root`, `dataset.raw_dir`, `dataset.prepared_dir`, `description`, `train.device` | allowed (machine-specific) |
+| label fixes for the `eval.split` ([docs/label_fixes.md](label_fixes.md)) | trained model is kept, evaluation is recomputed |
+| label fixes for train/val after training started | refused, like a training config change |
 
 ## Add a targeting (laser point) method
 

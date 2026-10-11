@@ -27,6 +27,7 @@
 |---|---|
 | `raw_dir` | `images/`, `labels/` (YOLO boxes), `classes.txt` |
 | `prepared_dir` | generated YOLO-seg dataset |
+| `label_fixes` | CSV of manual GT corrections ([docs/label_fixes.md](../docs/label_fixes.md)); missing file = none |
 | `split`, `split_seed` | train/val/test fractions and seed |
 | `max_images` | seeded subset (`null` = all) |
 | `sam_model` | SAM checkpoint used to turn boxes into GT masks |

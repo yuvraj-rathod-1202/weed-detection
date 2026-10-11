@@ -31,6 +31,7 @@ Model and SAM weights are downloaded automatically by ultralytics.
 | 5. Run experiment | `python scripts/run_experiment.py --config configs/experiments/baseline_yolo11n_seg.yaml` |
 | 6. Inspect model input/output | `notebooks/02_model_outputs.ipynb` |
 | 7. Compare experiments | `python scripts/compare_experiments.py` → `results/` |
+| 8. Fix GT label errors (optional) | `python scripts/review_labels.py find\|review --config ...`, see [docs/label_fixes.md](docs/label_fixes.md) |
 
 Any config value can be overridden from the CLI: `--override train.batch=32 eval.conf=0.3`.
 
@@ -76,4 +77,5 @@ notebook cells, background runs, and resuming: [docs/kaggle.md](docs/kaggle.md).
 
 - [docs/experiments.md](docs/experiments.md): add or change experiments, targeting methods, datasets
 - [docs/kaggle.md](docs/kaggle.md): run experiments on Kaggle
+- [docs/label_fixes.md](docs/label_fixes.md): find and correct GT label errors
 - [configs/README.md](configs/README.md): config reference

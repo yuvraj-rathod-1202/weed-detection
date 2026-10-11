@@ -4,6 +4,7 @@ Everything lives in <output_root>/<name>/ and every stage is resumable, so re-ru
 same command after a crash or a Kaggle timeout continues where it stopped:
 
     config.yaml               config snapshot (a changed training config is refused)
+    label_fixes.json          label-fix hash per split the run was trained/evaluated with
     environment.json          software/hardware of the latest session
     run.log                   log of every session
     train/                    ultralytics output; weights/last.pt is saved every epoch
@@ -12,27 +13,35 @@ same command after a crash or a Kaggle timeout continues where it stopped:
     eval/predictions.jsonl    one line per test image, appended as it is evaluated
     eval/visualizations/      [ground truth | prediction] panels with laser points
     results.json              final structured results (input for comparison + plots)
+    results_<split>-labels-<hash>.json   results from before the eval labels were last changed
 """
 from __future__ import annotations
 
+import os
 import shutil
 from datetime import datetime
 from pathlib import Path
 
+from src.data.label_fixes import split_hashes
 from src.data.prepare import prepare_dataset
 from src.evaluation import segmentation_metrics, targeting_metrics
 from src.training import train_model
 from src.utils.config import to_container
-from src.utils.io import load_yaml_dict, save_json, save_yaml
+from src.utils.io import load_json, load_yaml_dict, save_json, save_yaml
 from src.utils.logging_utils import get_logger
 from src.utils.seed import set_seed
 from src.utils.system_info import file_size_mb, get_environment_info
 
 RESULTS_SCHEMA_VERSION = 1
 
-# Config keys that may differ between sessions without invalidating anything (machine-specific paths).
-IGNORED_KEYS = {"output_root", "config_file", "description", "dataset.raw_dir", "dataset.prepared_dir"}
+# Config keys that may differ between sessions without invalidating anything (machine-specific settings).
+# dataset.label_fixes: the file's content is tracked per split instead (check_label_fixes).
+IGNORED_KEYS = {
+    "output_root", "config_file", "description", "dataset.raw_dir", "dataset.prepared_dir",
+    "dataset.label_fixes", "train.device",
+}
 EVAL_SECTIONS = ("eval", "targeting")
+TRAINING_SPLITS = ("train", "val")
 
 
 def run_dir_for(cfg) -> Path:
@@ -52,6 +61,7 @@ def run_experiment(cfg) -> dict:
     logger.info("[1/3] Dataset: %s", cfg.dataset.name)
     data_info = prepare_dataset(cfg.dataset, logger)
     data_yaml = Path(cfg.dataset.prepared_dir) / "data.yaml"
+    check_label_fixes(cfg, run_dir, data_info, logger)
 
     logger.info("[2/3] Training: %s", cfg.model.weights)
     train_summary = train_model(cfg, run_dir, data_yaml, logger)
@@ -76,6 +86,7 @@ def run_experiment(cfg) -> dict:
             "region": cfg.dataset.get("region"),
             "mask_source": cfg.dataset.sam_model,
             "sam_fallback_boxes": data_info["sam_fallback_boxes"],
+            "label_fixes": data_info.get("label_fixes"),
             "splits": data_info["splits"],
         },
         "model": {"init_weights": cfg.model.weights, "best_weights": str(best_weights), **model_info(best_weights, cfg.eval.imgsz)},
@@ -128,6 +139,33 @@ def check_config_snapshot(cfg, run_dir: Path, logger) -> None:
             shutil.rmtree(run_dir / "eval", ignore_errors=True)
             (run_dir / "results.json").unlink(missing_ok=True)
     save_yaml(new, snapshot_path)
+
+
+def check_label_fixes(cfg, run_dir: Path, data_info: dict, logger) -> None:
+    """Label fixes change the GT without changing the config; same rules as check_config_snapshot.
+
+    - train/val labels changed after training started: refuse; use a new `name` instead.
+    - eval split labels changed: keep the trained model, recompute the evaluation.
+    """
+    state_path = run_dir / "label_fixes.json"
+    splits = list(data_info["splits"])
+    current = split_hashes(data_info.get("label_fixes"), splits)
+    trained = (run_dir / "train").exists()
+    # A run from before label fixes existed was built without any.
+    saved = load_json(state_path) if state_path.exists() else split_hashes(None, splits) if trained else current
+    changed = [s for s in splits if saved.get(s) != current[s]]
+    if trained and any(s in TRAINING_SPLITS for s in changed):
+        raise ValueError(
+            f"Label fixes for {[s for s in changed if s in TRAINING_SPLITS]} changed after '{cfg.name}' was trained.\n"
+            f"Give the experiment a new `name`, or delete {run_dir} to start over."
+        )
+    if cfg.eval.split in changed:
+        archive = run_dir / f"results_{cfg.eval.split}-labels-{saved.get(cfg.eval.split)}.json"
+        logger.warning("Label fixes for '%s' changed: re-evaluating (previous results kept as %s).", cfg.eval.split, archive.name)
+        shutil.rmtree(run_dir / "eval", ignore_errors=True)
+        if (run_dir / "results.json").exists():
+            os.replace(run_dir / "results.json", archive)
+    save_json(current, state_path)
 
 
 def _changed_keys(old: dict, new: dict) -> list[str]:

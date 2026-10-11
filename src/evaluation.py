@@ -9,17 +9,18 @@
 from __future__ import annotations
 
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import cv2
 import numpy as np
 from tqdm import tqdm
 
-from src.data.labels import list_images, polygon_to_mask, read_seg_labels
+from src.data.label_fixes import read_ignore_regions
+from src.data.labels import box_to_polygon, list_images, polygon_to_mask, read_seg_labels
 from src.targeting.metrics import aggregate_targeting, evaluate_image
 from src.utils.io import append_jsonl, load_json, read_jsonl, save_json
-from src.visualization import GT_COLOR, PRED_COLOR, draw_instances, save_rgb, side_by_side
+from src.visualization import GT_COLOR, IGNORE_COLOR, PRED_COLOR, draw_instances, save_rgb, side_by_side
 
 
 @dataclass
@@ -28,6 +29,7 @@ class Prediction:
     class_ids: list[int]
     confidences: list[float]
     inference_ms: float        # preprocess + model + NMS/mask postprocess
+    boxes: list[list[float]] = field(default_factory=list)  # xyxy pixels, same order as masks
 
 
 def predict_instances(model, image_bgr: np.ndarray, conf: float, iou: float, imgsz: int) -> Prediction:
@@ -42,18 +44,26 @@ def predict_instances(model, image_bgr: np.ndarray, conf: float, iou: float, img
         return Prediction([], [], [], inference_ms)
     class_ids = result.boxes.cls.cpu().numpy().astype(int)
     masks = [polygon_to_mask(p, h, w, normalized=False) for p in result.masks.xy]
+    boxes = result.boxes.xyxy.cpu().numpy()
     order = np.argsort(-confidences)
     return Prediction(
         masks=[masks[i] for i in order],
         class_ids=[int(class_ids[i]) for i in order],
         confidences=[round(float(confidences[i]), 4) for i in order],
         inference_ms=inference_ms,
+        boxes=[[round(float(v), 1) for v in boxes[i]] for i in order],
     )
 
 
 def load_gt_masks(label_path: Path, height: int, width: int) -> tuple[list[np.ndarray], list[int]]:
     instances = read_seg_labels(label_path)
     return [polygon_to_mask(inst.polygon, height, width) for inst in instances], [inst.class_id for inst in instances]
+
+
+def load_ignore_masks(prepared_dir: Path, split: str, image_id: str, height: int, width: int) -> list[np.ndarray]:
+    """Ignore regions from label fixes as bool masks (none for most images)."""
+    regions = read_ignore_regions(Path(prepared_dir) / "ignore" / split / f"{image_id}.txt")
+    return [polygon_to_mask(box_to_polygon(*box), height, width) for box in regions]
 
 
 def segmentation_metrics(cfg, weights: Path, data_yaml: Path, run_dir: Path, logger) -> dict:
@@ -115,6 +125,7 @@ def targeting_metrics(cfg, weights: Path, run_dir: Path, class_names: list[str],
             image = cv2.imread(str(image_path))
             h, w = image.shape[:2]
             gt_masks, gt_classes = load_gt_masks(prepared_dir / "labels" / split / f"{image_path.stem}.txt", h, w)
+            ignore_masks = load_ignore_masks(prepared_dir, split, image_path.stem, h, w)
             pred = predict_instances(model, image, **predict_args)
 
             record = {
@@ -126,13 +137,13 @@ def targeting_metrics(cfg, weights: Path, run_dir: Path, class_names: list[str],
                 "gt_classes": gt_classes,
                 "pred_classes": pred.class_ids,
                 "pred_confidences": pred.confidences,
-                **evaluate_image(pred.masks, gt_masks, methods, cfg.eval.match_iou),
+                **evaluate_image(pred.masks, gt_masks, methods, cfg.eval.match_iou, ignore_masks),
             }
             append_jsonl(record, jsonl_path)
 
             if image_path.stem in vis_ids:
                 save_visualization(image, gt_masks, pred, record, methods[0], class_names,
-                                   run_dir / "eval" / "visualizations" / f"{image_path.stem}.jpg")
+                                   run_dir / "eval" / "visualizations" / f"{image_path.stem}.jpg", ignore_masks)
 
     wanted = {p.stem for p in image_paths}
     records = [r for r in read_jsonl(jsonl_path) if r["image_id"] in wanted]
@@ -145,11 +156,13 @@ def targeting_metrics(cfg, weights: Path, run_dir: Path, class_names: list[str],
     return {"primary_method": methods[0], "conf": cfg.eval.conf, "match_iou": cfg.eval.match_iou, **summary}
 
 
-def save_visualization(image_bgr, gt_masks, pred: Prediction, record: dict, method: str, class_names, path: Path) -> None:
-    """Save [ground truth | prediction] panels with the laser target points of `method`."""
+def save_visualization(image_bgr, gt_masks, pred: Prediction, record: dict, method: str, class_names, path: Path,
+                       ignore_masks=None) -> None:
+    """Save [ground truth | prediction] panels with the laser target points of `method` (ignore regions grey)."""
     image = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
     points = record["methods"][method]
-    gt_panel = draw_instances(image, gt_masks, points["gt_points"], color=GT_COLOR, fill=False)
+    gt_panel = draw_instances(image, ignore_masks or [], color=IGNORE_COLOR, fill=False)
+    gt_panel = draw_instances(gt_panel, gt_masks, points["gt_points"], color=GT_COLOR, fill=False)
     labels = [f"{class_names[c]} {s:.2f}" for c, s in zip(pred.class_ids, pred.confidences)]
     pred_panel = draw_instances(image, pred.masks, points["pred_points"], labels, color=PRED_COLOR)
     save_rgb(side_by_side(gt_panel, pred_panel), path)

@@ -23,7 +23,7 @@ Compress-Archive -Path data/raw/cottonweeddet12 -DestinationPath cottonweeddet12
 | B. Dataset | zip the code (below) and upload it as dataset `weed-detection-code` | upload a new zip with **New Version** on the dataset page |
 
 ```powershell
-Compress-Archive -Path configs,scripts,src,tests,notebooks,docs,requirements.txt,pyproject.toml,README.md -DestinationPath weed-detection-code.zip
+Compress-Archive -Path configs,scripts,src,tests,notebooks,docs,data/label_fixes,requirements.txt,pyproject.toml,README.md -DestinationPath weed-detection-code.zip
 ```
 
 If you use option A with a private repo, create a GitHub token with read access and add it in the
@@ -149,7 +149,7 @@ folders even when resuming.
 
 | Situation | What to do |
 |---|---|
-| Use both T4s | `OVR = f'dataset.raw_dir={RAW} "train.device=[0,1]"'`. Decide this before the first epoch, because it is a training setting |
+| Use both T4s | `OVR = f'dataset.raw_dir={RAW} "train.device=[0,1]"'`. Only training uses both; a resumed run keeps the GPUs it started with |
 | `CUDA out of memory` | lower the batch size in a new experiment, e.g. add `train.batch=8` to `OVR` and change `name` |
 | `Training config of '...' changed` | `OVR` differs from the first session. Use exactly the same overrides, or a new `name` |
 | `was prepared with different settings` | the copied `data/processed` was made with another split/SAM config. Don't copy it, so it is rebuilt |
