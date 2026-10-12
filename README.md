@@ -2,8 +2,8 @@
 
 A laser weeder needs **one point per weed**, not a box. This repo trains instance-segmentation
 models (YOLO-seg) on weed images and turns every predicted weed mask into a single laser target
-point (distance transform, centroid, skeleton, or box centre), then evaluates both the masks
-and the points. Research context: [problem-statement.md](problem-statement.md).
+point (centre-weighted distance transform, distance transform, centroid, skeleton, or box centre),
+then evaluates both the masks and the points. Research context: [problem-statement.md](problem-statement.md).
 
 ```
 image ─► YOLO-seg ─► weed masks ─► point extraction ─► (x, y) per weed ─► laser
@@ -66,6 +66,8 @@ GFLOPs, size), `training`, `segmentation` (box/mask P, R, mAP50, mAP50-95, per c
 | `weed_hit_rate` | fraction of GT weeds that receive at least one point |
 | `point_error_px` | distance of predicted point from the GT point (same method on the GT mask), for IoU-matched weeds |
 | `point_error_rel` | `point_error_px` / weed radius √(area/π); < 1 ≈ inside the weed |
+| `clearance_px` | distance from the shot to the GT weed's edge (0 = missed): tolerance to aiming error; p10 = badly aimed tail |
+| `center_error_rel`, `off_center_rate` | distance from the shot to the GT weed's centre (where the leaves meet) / radius; rate of shots > 0.5 radius off |
 | `end_to_end_ms_per_image` | inference + point extraction (primary method) |
 
 ## Running on Kaggle

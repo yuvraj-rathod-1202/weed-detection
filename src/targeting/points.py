@@ -3,7 +3,10 @@
 Methods (all take a bool mask of shape (H, W) and return (x, y) or None for an empty mask):
 
     centroid            mask centre of mass; can fall OUTSIDE a non-convex weed
-    distance_transform  pixel farthest from the mask border; always inside, the "safest" point
+    distance_transform  pixel farthest from the mask border; always inside, but on a multi-leaf weed
+                        it picks the widest leaf, not the plant centre
+    center_weighted_dt  clearance from the border weighted towards the centroid: inside, near the
+                        centre, and not on a thin stem
     skeleton            skeleton pixel closest to the centroid; approximates the stem/plant centre
     box_center          centre of the mask's bounding box = what a box-only detector would aim at
 
@@ -33,6 +36,19 @@ def distance_transform(mask: np.ndarray) -> Point | None:
     return float(x), float(y)
 
 
+def center_weighted_dt(mask: np.ndarray) -> Point | None:
+    """argmax of distance-to-border x Gaussian around the centroid (sigma = half the weed radius)."""
+    dist = cv2.distanceTransform(mask.astype(np.uint8), cv2.DIST_L2, 5)
+    center = centroid(mask)
+    if center is None or dist.max() == 0:
+        return None
+    ys, xs = np.mgrid[: mask.shape[0], : mask.shape[1]]
+    sigma = 0.5 * np.sqrt(mask.sum() / np.pi)
+    score = dist * np.exp(-((xs - center[0]) ** 2 + (ys - center[1]) ** 2) / (2 * sigma**2))
+    y, x = np.unravel_index(np.argmax(score), score.shape)
+    return float(x), float(y)
+
+
 def skeleton(mask: np.ndarray) -> Point | None:
     center = centroid(mask)
     if center is None:
@@ -54,6 +70,7 @@ def box_center(mask: np.ndarray) -> Point | None:
 POINT_METHODS = {
     "centroid": centroid,
     "distance_transform": distance_transform,
+    "center_weighted_dt": center_weighted_dt,
     "skeleton": skeleton,
     "box_center": box_center,
 }

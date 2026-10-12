@@ -48,3 +48,11 @@ def test_no_predictions_gives_undefined_precision():
     m = aggregate_targeting([record], ["centroid"])["methods"]["centroid"]
     assert m["shot_precision"] is None
     assert m["weed_hit_rate"] == 0.0
+
+
+def test_clearance_and_center_error():
+    gt = np.zeros((100, 100), bool)
+    gt[20:80, 20:80] = True
+    rec = evaluate_image([gt.copy()], [gt], ["centroid"], 0.5)["methods"]["centroid"]
+    assert rec["clearance_px"][0] >= 29  # centre of a 60 px square: ~30 px from every edge
+    assert rec["center_errors_rel"][0] < 0.05

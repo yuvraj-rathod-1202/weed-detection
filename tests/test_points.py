@@ -48,3 +48,26 @@ def test_point_in_mask_bounds():
     assert not point_in_mask((5, 5), mask)
     assert not point_in_mask((500, 500), mask)
     assert not point_in_mask(None, mask)
+
+
+def rosette_mask():
+    """Small centre with four leaves; the bottom leaf is the widest."""
+    ys, xs = np.mgrid[:100, :100]
+    mask = (xs - 50) ** 2 + (ys - 50) ** 2 <= 10**2
+    for (cx, cy), r in (((50, 20), 12), ((20, 50), 12), ((80, 50), 12), ((50, 82), 16)):
+        mask |= (xs - cx) ** 2 + (ys - cy) ** 2 <= r**2
+    mask[20:82, 47:54] = True  # stems joining the leaves to the centre
+    mask[47:54, 20:80] = True
+    return mask
+
+
+def test_center_weighted_dt_aims_at_plant_centre_not_widest_leaf():
+    mask = rosette_mask()
+    dt, cw = target_point(mask, "distance_transform"), target_point(mask, "center_weighted_dt")
+    assert np.hypot(dt[0] - 50, dt[1] - 50) > 20  # widest leaf
+    assert np.hypot(cw[0] - 50, cw[1] - 50) < 8 and point_in_mask(cw, mask)
+
+
+def test_center_weighted_dt_stays_inside_non_convex_weed():
+    mask = c_shape_mask()
+    assert point_in_mask(target_point(mask, "center_weighted_dt"), mask)

@@ -56,6 +56,9 @@ def flatten_results(r: dict) -> dict:
         row[f"{method}/shot_f1"] = m["shot_f1"]
         row[f"{method}/point_error_px_median"] = m["point_error_px"]["median"]
         row[f"{method}/point_error_rel_median"] = m["point_error_rel"]["median"]
+        row[f"{method}/clearance_px_median"] = m.get("clearance_px", {}).get("median")
+        row[f"{method}/clearance_px_p10"] = m.get("clearance_px", {}).get("p10")
+        row[f"{method}/off_center_rate"] = m.get("off_center_rate")
     return row
 
 

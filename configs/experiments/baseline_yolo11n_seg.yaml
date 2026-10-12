@@ -34,4 +34,4 @@ eval:
 
 targeting:
   # Every method is evaluated; the first one is the primary method in summaries.
-  methods: [distance_transform, centroid, skeleton, box_center]
+  methods: [center_weighted_dt, distance_transform, centroid, skeleton, box_center]

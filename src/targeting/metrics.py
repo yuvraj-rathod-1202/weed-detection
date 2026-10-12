@@ -8,6 +8,13 @@ Per method, over all evaluated images:
     point_error_px   distance between predicted and GT point, for prediction/GT pairs matched by mask IoU.
                      The GT point is the same method applied to the GT mask.
     point_error_rel  point_error_px / GT equivalent radius sqrt(area / pi); < 1 is roughly "within the weed"
+    clearance_px     distance from the predicted point to the GT weed's border (0 = outside), for matched
+                     weeds: how much aiming error the shot tolerates
+    center_error_rel distance from the predicted point to the GT weed's centre (skeleton point of the GT
+                     mask, where the leaves meet) / GT radius, for matched weeds
+
+point_error compares a method with itself on the GT mask (consistency). clearance and center_error
+use the same reference for every method, so they show which method aims where the laser should.
 
 Predictions that match no GT weed but lie mostly inside an ignore region (label fixes: "weed,
 species unsure") are left out: they are neither shots nor misses.
@@ -20,6 +27,7 @@ from __future__ import annotations
 import math
 import time
 
+import cv2
 import numpy as np
 
 from src.targeting.points import point_in_mask, target_point
@@ -77,6 +85,9 @@ def evaluate_image(
         "ignored_preds": ignored,
         "methods": {},
     }
+    matched_gt = sorted({g for _, g, _ in matches})
+    gt_dist = {g: cv2.distanceTransform(gt_masks[g].astype(np.uint8), cv2.DIST_L2, 5) for g in matched_gt}
+    gt_center = {g: target_point(gt_masks[g], "skeleton") for g in matched_gt}
     for method in methods:
         start = time.perf_counter()
         pred_points = [target_point(m, method) for m in pred_masks]
@@ -84,13 +95,18 @@ def evaluate_image(
         gt_points = [target_point(m, method) for m in gt_masks]
         fired = [pt for p, pt in enumerate(pred_points) if p not in ignored]
 
-        errors_px, errors_rel = [], []
+        errors_px, errors_rel, clearance, center_rel = [], [], [], []
         for p, g, _ in matches:
             if pred_points[p] is None or gt_points[g] is None:
                 continue
+            radius = math.sqrt(gt_masks[g].sum() / math.pi)
             error = math.dist(pred_points[p], gt_points[g])
             errors_px.append(round(error, 2))
-            errors_rel.append(round(error / math.sqrt(gt_masks[g].sum() / math.pi), 4))
+            errors_rel.append(round(error / radius, 4))
+            inside = point_in_mask(pred_points[p], gt_masks[g])
+            x, y = (int(round(v)) for v in pred_points[p])
+            clearance.append(round(float(gt_dist[g][y, x]), 1) if inside else 0.0)
+            center_rel.append(round(math.dist(pred_points[p], gt_center[g]) / radius, 4))
 
         record["methods"][method] = {
             "pred_points": _round_points(pred_points),
@@ -100,6 +116,8 @@ def evaluate_image(
             "weeds_hit": sum(any(point_in_mask(p, gt) for p in fired) for gt in gt_masks),
             "point_errors_px": errors_px,
             "point_errors_rel": errors_rel,
+            "clearance_px": clearance,
+            "center_errors_rel": center_rel,
             "extraction_ms": round(extraction_ms, 3),
         }
     return record
@@ -124,12 +142,17 @@ def aggregate_targeting(records: list[dict], methods: list[str]) -> dict:
         recall = _ratio(sum(m["weeds_hit"] for m in per_image), summary["num_gt_weeds"])
         errors_px = [e for m in per_image for e in m["point_errors_px"]]
         errors_rel = [e for m in per_image for e in m["point_errors_rel"]]
+        clearance = [e for m in per_image for e in m.get("clearance_px", [])]
+        center_rel = [e for m in per_image for e in m.get("center_errors_rel", [])]
         summary["methods"][method] = {
             "shot_precision": precision,
             "weed_hit_rate": recall,
             "shot_f1": _ratio(2 * precision * recall, precision + recall) if precision is not None and recall is not None else None,
             "point_error_px": _describe(errors_px),
             "point_error_rel": _describe(errors_rel),
+            "clearance_px": _describe(clearance),  # p10 = the badly aimed tail
+            "center_error_rel": _describe(center_rel),
+            "off_center_rate": _ratio(sum(e > 0.5 for e in center_rel), len(center_rel)),  # > half a radius off
             "extraction_ms_per_image": _mean([m["extraction_ms"] for m in per_image]),
         }
     return summary
@@ -149,10 +172,11 @@ def _mean(values: list) -> float | None:
 
 def _describe(values: list) -> dict:
     if not values:
-        return {"mean": None, "median": None, "p90": None, "n": 0}
+        return {"mean": None, "median": None, "p10": None, "p90": None, "n": 0}
     return {
         "mean": float(np.mean(values)),
         "median": float(np.median(values)),
+        "p10": float(np.percentile(values, 10)),
         "p90": float(np.percentile(values, 90)),
         "n": len(values),
     }
