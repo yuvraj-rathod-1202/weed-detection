@@ -316,6 +316,9 @@ def prepare_dataset(ds_cfg, logger=None) -> dict:
                 save_json(applied, applied_path)
                 for cache in (out_dir / "labels").glob("*.cache"):  # ultralytics label cache would be stale
                     cache.unlink()
+    if sam is not None:
+        sam = None
+        release_gpu_memory()
 
     write_data_yaml(out_dir, class_names)
     num_fallbacks = len(set(fallback_log.read_text(encoding="utf-8").splitlines())) if fallback_log.exists() else 0
@@ -335,6 +338,18 @@ def prepare_dataset(ds_cfg, logger=None) -> dict:
         ds_cfg.name, {s: v["num_images"] for s, v in info["splits"].items()}, num_fallbacks,
     )
     return info
+
+
+def release_gpu_memory() -> None:
+    """Hand cached CUDA memory back to the driver. Multi-GPU training runs in new processes, which
+    can't use what this process keeps reserved (SAM left ~10 GB of a 15 GB T4 reserved)."""
+    import gc
+
+    import torch
+
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
 
 
 def _check_settings(saved: dict, current: dict, out_dir: Path) -> None:

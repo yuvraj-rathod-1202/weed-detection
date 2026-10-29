@@ -126,3 +126,41 @@ def test_gt_instances_uses_sam_only_for_ambiguous_boxes_and_cuts_it_to_class_pix
     for inst in instances[1:]:  # SAM gave the whole box; only weed pixels may remain
         mask = polygon_to_mask(inst.polygon, 100, 100)
         assert mask.any() and not mask[:50, :].any() and not mask[:, :50].any()
+
+
+def test_prepare_frees_sam_gpu_memory_before_training(tmp_path, monkeypatch):
+    """Multi-GPU training runs in new processes: GPU memory this process keeps after SAM is lost to them."""
+    import weakref
+
+    import cv2
+    import torch
+    import ultralytics
+    from omegaconf import OmegaConf
+
+    from src.data.prepare import prepare_dataset
+
+    raw = tmp_path / "raw"
+    (raw / "images").mkdir(parents=True)
+    (raw / "labels").mkdir()
+    (raw / "classes.txt").write_text("weed\n")
+    for i in range(3):
+        cv2.imwrite(str(raw / "images" / f"img{i}.jpg"), np.zeros((64, 64, 3), np.uint8))
+        (raw / "labels" / f"img{i}.txt").write_text("0 0.5 0.5 0.3 0.3\n")
+    sam_refs = []  # weak: the test itself must not keep SAM alive
+
+    def make_sam(path):
+        sam = _FakeSam()
+        sam_refs.append(weakref.ref(sam))
+        return sam
+
+    sam_alive_at_empty_cache = []
+    monkeypatch.setattr(ultralytics, "SAM", make_sam)
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(torch.cuda, "empty_cache", lambda: sam_alive_at_empty_cache.append(sam_refs[0]() is not None))
+    cfg = OmegaConf.create({"name": "t", "raw_dir": str(raw), "prepared_dir": str(tmp_path / "out"),
+                            "split": {"train": 0.34, "val": 0.33, "test": 0.33}, "split_seed": 0, "sam_model": "sam.pt"})
+
+    prepare_dataset(cfg)
+
+    assert len(sam_refs) == 1
+    assert sam_alive_at_empty_cache == [False]  # SAM dropped first, then the CUDA cache emptied

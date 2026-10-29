@@ -88,16 +88,22 @@ OVR = 'dataset.raw_dir=/tmp/cropandweed dataset.prepared_dir=/tmp/cropandweed_se
 !python scripts/smoke_test.py --config {CFG} --override {OVR}
 ```
 
-**Cell 6: the experiment** (prepare masks → train → evaluate)
+**Cell 6: GT masks** (in its own process, so SAM's GPU memory is fully freed before training)
+
+```python
+!python scripts/prepare_data.py --dataset configs/datasets/cropandweed.yaml --override raw_dir=/tmp/cropandweed prepared_dir=/tmp/cropandweed_seg
+```
+
+This takes about 45–60 min on the full dataset. It is rebuilt in each new session because
+`/tmp` is wiped, with the same split every time.
+
+**Cell 7: the experiment** (train → evaluate; it finds the masks from cell 6 and skips preparation)
 
 ```python
 !python scripts/run_experiment.py --config {CFG} --override {OVR}
 ```
 
-Mask preparation takes roughly 10–20 min (SAM runs only on overlapping boxes). It is rebuilt in
-each new session because `/tmp` is wiped, with the same split every time.
-
-**Cell 7: compare and pack the results**
+**Cell 8: compare and pack the results**
 
 ```python
 !python scripts/compare_experiments.py
@@ -106,10 +112,10 @@ each new session because `/tmp` is wiped, with the same split every time.
 
 ## 4. The long run
 
-1. Run cells 1–5 interactively once. Then run cell 6 for 2–3 epochs and read the epoch time in
+1. Run cells 1–6 interactively once. Then run cell 7 for 2–3 epochs and read the epoch time in
    `experiments/yolo11s_seg_cropandweed/run.log`, then stop it.
 2. Check that the run fits in 12 h:
-   `download (~15 min) + masks (~15 min) + 80 epochs × epoch time + evaluation (~15 min)`.
+   `download (~15 min) + masks (~1 h) + 80 epochs × epoch time + evaluation (~15 min)`.
    If it does not fit, it still resumes in a second session (step 5). With 30 GPU h/week there is
    room for two sessions.
 3. **Save Version → Save & Run All (Commit)**, then close the browser.
@@ -133,7 +139,8 @@ If the 12 h ran out before training finished:
    !cp -rn {PREV}/experiments/. experiments/
    ```
 
-3. Run all cells again with the **same `OVR`**. Training continues from `last.pt`.
+3. Run all cells again with the **same `OVR`**. Training continues from `last.pt`. The resumed
+   session also spends ~1.25 h on download + masks before training continues.
 
 ## 6. Choosing the crop safety margin (after training)
 
@@ -166,7 +173,8 @@ reaches about 0.
 |---|---|
 | Download fails or is very slow | Internet is off, or the server is busy. Re-run cell 2; finished archives are skipped |
 | `No space left on device` | check `!df -h /tmp`. The data needs ~12 GB in `/tmp` (converted images are links, not copies). Delete leftovers from earlier tries (`!rm -rf /tmp/cropandweed_seg`) and re-run |
-| `CUDA out of memory` | lower the batch: `train.batch=8` with both GPUs. This is a training change, so also add a new name (`name=yolo11s_seg_cropandweed_b8`) |
+| `CUDA out of memory` and the message says another process holds ~10 GiB (`Process N has 10.66 GiB memory in use`) | GT masks were made in the same process as training and SAM kept the GPU memory. `git pull` the fix and keep cell 6 as a separate cell |
+| `CUDA out of memory` with nothing else on the GPU | lower the batch: `train.batch=8` with both GPUs. This is a training change, so also add a new name (`name=yolo11s_seg_cropandweed_b8`) |
 | `Training config of '...' changed` | `OVR` differs from the first session. Use exactly the same one |
 | `was prepared with different settings` | `/tmp/cropandweed_seg` came from another config. `!rm -rf /tmp/cropandweed_seg` and re-run |
 | `crop classes ... not in` from verify_setup | `targeting.crop_classes` doesn't match `classes.txt` (`Crop`, `Weed`) |
