@@ -4,6 +4,8 @@ The local machine has no GPU, so experiments run in a Kaggle GPU notebook. One n
 does the whole pipeline (SAM masks → training → evaluation) inside `/kaggle/working/`, and Kaggle
 keeps that folder as the notebook's output.
 
+For **CropAndWeed** (downloaded in the notebook, not uploaded) follow [kaggle_cropandweed.md](kaggle_cropandweed.md).
+
 ## 1. Upload the data and the code (once)
 
 Kaggle can't see your PC, so both go up as private Kaggle **Datasets**

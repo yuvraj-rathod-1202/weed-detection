@@ -54,6 +54,10 @@ def check_raw_data(ds_cfg, required: bool) -> None:
     except ValueError as e:
         report(status, f"raw labels: {e}")
         return
+    if ds_cfg.get("mask_source") == "semantic":
+        missing = [p.name for p in images if not (raw_dir / "semantic" / f"{p.stem}.png").exists()]
+        if missing:
+            report("WARN", f"mask_source=semantic but {len(missing)} images have no semantic/<stem>.png (SAM is used for them)")
     report("OK", f"raw dataset {raw_dir}: {len(images)} images, {len(label_files)} box label files, {len(class_names)} classes")
 
 
@@ -83,6 +87,27 @@ def check_label_fixes(ds_cfg) -> None:
     report("OK" if not counts[""] else "INFO",
            f"label fixes {path}: add={counts['add']} remove={counts['remove']} ignore={counts['ignore']}, "
            f"{counts['']} not reviewed yet" if rows else f"label fixes: none ({path or 'no label_fixes key'})")
+
+
+def check_crop_classes(cfg) -> None:
+    """targeting.crop_classes must name dataset classes (else evaluation fails after training)."""
+    from src.data.labels import read_class_names
+
+    crop_classes = list(cfg.targeting.get("crop_classes") or [])
+    if not crop_classes:
+        return
+    for classes_file in (Path(cfg.dataset.prepared_dir) / "data.yaml", Path(cfg.dataset.raw_dir) / "classes.txt"):
+        if classes_file.exists():
+            if classes_file.suffix == ".yaml":
+                import yaml
+
+                class_names = list(yaml.safe_load(classes_file.read_text(encoding="utf-8"))["names"].values())
+            else:
+                class_names = read_class_names(classes_file)
+            unknown = [c for c in crop_classes if c not in class_names]
+            report("FAIL" if unknown else "OK", f"crop classes {crop_classes}" + (f": {unknown} not in {class_names}" if unknown else ""))
+            return
+    report("WARN", "crop classes: no classes.txt / data.yaml found to check them against")
 
 
 def check_weights(weights: str, what: str) -> None:
@@ -163,6 +188,7 @@ def main() -> None:
     prepared = check_prepared_data(cfg.dataset)
     check_raw_data(cfg.dataset, required=not prepared)
     check_label_fixes(cfg.dataset)
+    check_crop_classes(cfg)
     if not prepared:
         check_weights(cfg.dataset.sam_model, "SAM weights")
     check_weights(cfg.model.weights, "model weights")

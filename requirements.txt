@@ -18,6 +18,7 @@ matplotlib>=3.7
 # System / utility
 psutil>=5.9
 tqdm>=4.66
+requests>=2.31            # CropAndWeed download (scripts/convert_cropandweed.py)
 
 # Notebooks
 ipykernel>=6.0

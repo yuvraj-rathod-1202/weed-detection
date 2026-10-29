@@ -25,6 +25,21 @@ data/
 official release (Zenodo / the authors' GitHub) and arrange it as above in
 `data/raw/cottonweeddet12/`. The local copy currently has 2,391 images.
 
+## CropAndWeed
+
+Crop **and** weed plants labelled, top-down, 1920x1088 (Steininger et al., WACV 2023). Non-commercial
+licence, no redistribution: download it from the official source with
+
+```bash
+python scripts/convert_cropandweed.py --download --parts 1 --src data/raw/cropandweed_src --out data/raw/cropandweed
+```
+
+(`--parts 1` = a quarter of the images, ~3 GB; omit it for all 8,034). The converter maps species to
+the official CropOrWeed2 classes (`Crop`, `Weed`) and also writes `ignore/` (plants outside those
+classes), `semantic/` (human-drawn masks, used instead of SAM where possible) and `stems/` (stem
+point per box). The local copy has part 1 (2,000 images, 191 sessions). On Kaggle see
+[docs/kaggle_cropandweed.md](../docs/kaggle_cropandweed.md).
+
 ## GT masks
 
 The dataset has boxes only. `prepare_data.py` prompts SAM (`sam_model` in the dataset config)

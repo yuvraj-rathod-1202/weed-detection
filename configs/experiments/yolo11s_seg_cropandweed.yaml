@@ -1,0 +1,38 @@
+# Exp 3: YOLO11s-seg on CropAndWeed (Crop + Weed classes) with the crop safety gate.
+# Same model as yolo11s_seg; differences: dataset, image size (1920x1088 images with small seedlings),
+# and the crop-aware targeting settings.
+# One file = one experiment. Outputs go to <output_root>/<name>/ and are resumed if they exist.
+
+name: yolo11s_seg_cropandweed
+description: YOLO11s-seg fine-tuned on CropAndWeed (CropOrWeed2); laser target = one point per predicted weed mask, vetoed near predicted crops.
+seed: 42
+output_root: experiments
+
+dataset: configs/datasets/cropandweed.yaml
+
+model:
+  weights: models/weights/yolo11s-seg.pt   # official ultralytics names are auto-downloaded to this path
+
+# Passed as-is to ultralytics YOLO.train(): https://docs.ultralytics.com/modes/train/#train-settings
+train:
+  epochs: 80
+  imgsz: 1024                     # 640 would shrink 1920 px images 3x: seedlings become a few pixels
+  batch: 8                        # fits a 16 GB T4 at 1024 px; use 16 with both T4s
+  patience: 20                    # early stopping
+  save_period: 10
+  workers: 4
+  device: null                    # null = auto; 0 = first GPU; [0, 1] = both Kaggle T4s; cpu
+
+eval:
+  split: test
+  imgsz: 1024
+  conf: 0.25
+  iou: 0.7
+  match_iou: 0.5
+  max_images: null
+  num_visualizations: 20
+
+targeting:
+  methods: [center_weighted_dt, distance_transform, centroid, skeleton, box_center]
+  crop_classes: [Crop]            # never shot at; feed the safety gate and crop_hit_rate
+  crop_margin_px: 20              # ~8 mm at ~0.4 mm/px (1.1 m height, 50 mm lens): laser spot radius + aiming error
