@@ -42,6 +42,29 @@ Typical experiment variations, config-only:
 | label fixes for the `eval.split` ([docs/label_fixes.md](label_fixes.md)) | trained model is kept, evaluation is recomputed |
 | label fixes for train/val after training started | refused, like a training config change |
 
+## Protect the crop (needs a dataset with a crop class)
+
+The laser must never fire at the crop. With a dataset that labels the crop as its own class
+(e.g. `Cotton` in `classes.txt`), add to the experiment config:
+
+```yaml
+targeting:
+  crop_classes: [Cotton]   # class names that are crops: never shot at
+  crop_margin_px: 15       # veto a shot within this many px of a predicted crop (laser spot radius + aiming error)
+```
+
+- **Safety gate** ([src/targeting/safety.py](../src/targeting/safety.py)): each weed shot whose point lies
+  within `crop_margin_px` of a *predicted* crop mask is not fired. `0` vetoes only shots on a crop.
+- **Metrics** per method in `results.json`: `crop_hit_rate` (fired shots inside a GT crop mask, the
+  costly error), `crop_hit_rate_ungated` (the same without the gate) and `veto_rate` (shots the
+  gate refused). `shot_precision` / `weed_hit_rate` count fired shots only, so the gate's cost in
+  missed weeds shows up there. Crop metrics are `null` when the test images have no crop labels.
+- Visualizations: crops blue, vetoed shots grey crosshairs.
+
+Both keys are optional (default: no crop classes, results unchanged). Like any `targeting.*` change,
+editing them recomputes the evaluation only. To pick a margin, evaluate a few values and compare
+`crop_hit_rate` against `weed_hit_rate`.
+
 ## Add a targeting (laser point) method
 
 1. In `src/targeting/points.py` write `def my_method(mask) -> (x, y) | None` (mask = bool array).

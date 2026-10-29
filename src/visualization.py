@@ -1,7 +1,7 @@
 """Drawing helpers for qualitative inspection (used by evaluation and the notebooks).
 
 Convention: images are RGB uint8 arrays. Ground truth = red, prediction = green,
-ignore region = grey, laser target point = crosshair.
+ignore region = grey, crop = blue, laser target point = crosshair.
 """
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ import numpy as np
 GT_COLOR = (230, 50, 50)
 PRED_COLOR = (40, 210, 40)
 IGNORE_COLOR = (160, 160, 160)
+CROP_COLOR = (40, 120, 255)
 METHOD_COLORS = {  # target points when several methods are drawn on one image
     "distance_transform": (255, 215, 0),
     "centroid": (0, 150, 255),

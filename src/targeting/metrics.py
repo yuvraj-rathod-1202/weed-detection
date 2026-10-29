@@ -12,12 +12,19 @@ Per method, over all evaluated images:
                      weeds: how much aiming error the shot tolerates
     center_error_rel distance from the predicted point to the GT weed's centre (skeleton point of the GT
                      mask, where the leaves meet) / GT radius, for matched weeds
+    crop_hit_rate    fraction of fired points that land inside a GT crop mask: the costly error.
+                     None when the evaluated images have no crop labels
+    crop_hit_rate_ungated  the same without the crop safety gate (src/targeting/safety.py)
+    veto_rate        fraction of would-be shots the gate refused (each is a weed left alive)
 
 point_error compares a method with itself on the GT mask (consistency). clearance and center_error
 use the same reference for every method, so they show which method aims where the laser should.
 
 Predictions that match no GT weed but lie mostly inside an ignore region (label fixes: "weed,
 species unsure") are left out: they are neither shots nor misses.
+
+Weed masks and crop masks are passed separately; only weed predictions are shots. Fired points are
+the ones that pass the crop safety gate, so shot_precision / weed_hit_rate already include its cost.
 
 shot_precision and weed_hit_rate compare methods fairly (same GT masks for all methods);
 point_error compares each method with its own GT definition.
@@ -31,6 +38,7 @@ import cv2
 import numpy as np
 
 from src.targeting.points import point_in_mask, target_point
+from src.targeting.safety import vetoed_shots
 
 IGNORE_OVERLAP = 0.5  # fraction of a prediction's mask inside ignore regions to leave it out
 
@@ -73,14 +81,21 @@ def ignored_predictions(pred_masks: list[np.ndarray], ignore_masks: list[np.ndar
 
 def evaluate_image(
     pred_masks: list[np.ndarray], gt_masks: list[np.ndarray], methods: list[str], match_iou: float,
-    ignore_masks: list[np.ndarray] | None = None,
+    ignore_masks: list[np.ndarray] | None = None, pred_crop_masks: list[np.ndarray] | None = None,
+    gt_crop_masks: list[np.ndarray] | None = None, crop_margin_px: float = 0.0,
 ) -> dict:
-    """Targeting record for one image (JSON-serializable; one line of predictions.jsonl)."""
+    """Targeting record for one image (JSON-serializable; one line of predictions.jsonl).
+
+    `pred_masks` / `gt_masks` are weeds only; crops come in `pred_crop_masks` / `gt_crop_masks`.
+    """
+    pred_crop_masks, gt_crop_masks = pred_crop_masks or [], gt_crop_masks or []
     matches = match_instances(pred_masks, gt_masks, match_iou)
     ignored = ignored_predictions(pred_masks, ignore_masks or [], {p for p, _, _ in matches})
     record = {
         "num_gt": len(gt_masks),
         "num_pred": len(pred_masks),
+        "num_gt_crops": len(gt_crop_masks),
+        "num_pred_crops": len(pred_crop_masks),
         "matches": [[p, g, round(iou, 4)] for p, g, iou in matches],
         "ignored_preds": ignored,
         "methods": {},
@@ -93,7 +108,10 @@ def evaluate_image(
         pred_points = [target_point(m, method) for m in pred_masks]
         extraction_ms = (time.perf_counter() - start) * 1000.0
         gt_points = [target_point(m, method) for m in gt_masks]
-        fired = [pt for p, pt in enumerate(pred_points) if p not in ignored]
+        candidates = [p for p in range(len(pred_points)) if p not in ignored]
+        candidate_points = [pred_points[p] for p in candidates]
+        vetoed = [candidates[i] for i in vetoed_shots(candidate_points, pred_crop_masks, crop_margin_px)]
+        fired = [pred_points[p] for p in candidates if p not in vetoed]
 
         errors_px, errors_rel, clearance, center_rel = [], [], [], []
         for p, g, _ in matches:
@@ -114,6 +132,9 @@ def evaluate_image(
             "shots": sum(p is not None for p in fired),
             "shots_on_weed": sum(any(point_in_mask(p, gt) for gt in gt_masks) for p in fired),
             "weeds_hit": sum(any(point_in_mask(p, gt) for p in fired) for gt in gt_masks),
+            "vetoed_preds": vetoed,
+            "crop_hits": sum(any(point_in_mask(p, crop) for crop in gt_crop_masks) for p in fired),
+            "crop_hits_ungated": sum(any(point_in_mask(p, crop) for crop in gt_crop_masks) for p in candidate_points),
             "point_errors_px": errors_px,
             "point_errors_rel": errors_rel,
             "clearance_px": clearance,
@@ -131,6 +152,8 @@ def aggregate_targeting(records: list[dict], methods: list[str]) -> dict:
         "num_gt_weeds": sum(r["num_gt"] for r in records),
         "num_pred_weeds": sum(r["num_pred"] for r in records),
         "num_ignored_preds": sum(len(r.get("ignored_preds", [])) for r in records),
+        "num_gt_crops": sum(r.get("num_gt_crops", 0) for r in records),
+        "num_pred_crops": sum(r.get("num_pred_crops", 0) for r in records),
         "num_matched": len(matched_ious),
         "mean_matched_mask_iou": _mean(matched_ious),
         "methods": {},
@@ -144,6 +167,8 @@ def aggregate_targeting(records: list[dict], methods: list[str]) -> dict:
         errors_rel = [e for m in per_image for e in m["point_errors_rel"]]
         clearance = [e for m in per_image for e in m.get("clearance_px", [])]
         center_rel = [e for m in per_image for e in m.get("center_errors_rel", [])]
+        vetoed = sum(len(m.get("vetoed_preds", [])) for m in per_image)
+        has_crops = summary["num_gt_crops"] > 0
         summary["methods"][method] = {
             "shot_precision": precision,
             "weed_hit_rate": recall,
@@ -153,6 +178,10 @@ def aggregate_targeting(records: list[dict], methods: list[str]) -> dict:
             "clearance_px": _describe(clearance),  # p10 = the badly aimed tail
             "center_error_rel": _describe(center_rel),
             "off_center_rate": _ratio(sum(e > 0.5 for e in center_rel), len(center_rel)),  # > half a radius off
+            "crop_hit_rate": _ratio(sum(m.get("crop_hits", 0) for m in per_image), shots) if has_crops else None,
+            "crop_hit_rate_ungated": _ratio(sum(m.get("crop_hits_ungated", 0) for m in per_image), shots + vetoed)
+            if has_crops else None,
+            "veto_rate": _ratio(vetoed, shots + vetoed),
             "extraction_ms_per_image": _mean([m["extraction_ms"] for m in per_image]),
         }
     return summary

@@ -100,9 +100,10 @@ def run_experiment(cfg) -> dict:
 
     primary = targeting["methods"][targeting["primary_method"]]
     logger.info(
-        "Done. mask mAP50-95=%.3f | %s: shot_precision=%s weed_hit_rate=%s | %.1f ms/img",
+        "Done. mask mAP50-95=%.3f | %s: shot_precision=%s weed_hit_rate=%s crop_hit_rate=%s | %.1f ms/img",
         segmentation["mask"]["map50_95"], targeting["primary_method"],
-        _fmt(primary["shot_precision"]), _fmt(primary["weed_hit_rate"]), targeting["end_to_end_ms_per_image"] or 0,
+        _fmt(primary["shot_precision"]), _fmt(primary["weed_hit_rate"]), _fmt(primary.get("crop_hit_rate")),
+        targeting["end_to_end_ms_per_image"] or 0,
     )
     return results
 

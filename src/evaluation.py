@@ -5,6 +5,9 @@
 2. Targeting metrics (laser points, see src/targeting/metrics.py). One JSON line per image is
    appended to eval/predictions.jsonl as soon as it is computed; a restarted run skips
    images already in that file.
+
+Crop classes (targeting.crop_classes, empty by default) are not targets: they only feed the crop
+safety gate (predicted crops, targeting.crop_margin_px) and the crop_hit_rate metric (GT crops).
 """
 from __future__ import annotations
 
@@ -20,7 +23,8 @@ from src.data.label_fixes import read_ignore_regions
 from src.data.labels import box_to_polygon, list_images, polygon_to_mask, read_seg_labels
 from src.targeting.metrics import aggregate_targeting, evaluate_image
 from src.utils.io import append_jsonl, load_json, read_jsonl, save_json
-from src.visualization import GT_COLOR, IGNORE_COLOR, PRED_COLOR, draw_instances, save_rgb, side_by_side
+from src.visualization import (CROP_COLOR, GT_COLOR, IGNORE_COLOR, PRED_COLOR, draw_instances, draw_target, save_rgb,
+                                side_by_side)
 
 
 @dataclass
@@ -53,6 +57,28 @@ def predict_instances(model, image_bgr: np.ndarray, conf: float, iou: float, img
         inference_ms=inference_ms,
         boxes=[[round(float(v), 1) for v in boxes[i]] for i in order],
     )
+
+
+def subset(pred: Prediction, indices: list[int]) -> Prediction:
+    return Prediction(
+        masks=[pred.masks[i] for i in indices],
+        class_ids=[pred.class_ids[i] for i in indices],
+        confidences=[pred.confidences[i] for i in indices],
+        inference_ms=pred.inference_ms,
+        boxes=[pred.boxes[i] for i in indices] if pred.boxes else [],
+    )
+
+
+def crop_class_ids(class_names: list[str], crop_classes: list[str]) -> set[int]:
+    unknown = [c for c in crop_classes if c not in class_names]
+    if unknown:
+        raise ValueError(f"targeting.crop_classes {unknown} not in the dataset classes {class_names}")
+    return {class_names.index(c) for c in crop_classes}
+
+
+def split_crops(class_ids: list[int], crop_ids: set[int]) -> tuple[list[int], list[int]]:
+    """(weed indices, crop indices) of `class_ids`, each in the original order."""
+    return [i for i, c in enumerate(class_ids) if c not in crop_ids], [i for i, c in enumerate(class_ids) if c in crop_ids]
 
 
 def load_gt_masks(label_path: Path, height: int, width: int) -> tuple[list[np.ndarray], list[int]]:
@@ -103,6 +129,8 @@ def targeting_metrics(cfg, weights: Path, run_dir: Path, class_names: list[str],
     split = cfg.eval.split
     prepared_dir = Path(cfg.dataset.prepared_dir)
     methods = list(cfg.targeting.methods)
+    crop_ids = crop_class_ids(class_names, list(cfg.targeting.get("crop_classes") or []))
+    crop_margin_px = float(cfg.targeting.get("crop_margin_px") or 0.0)
     jsonl_path = run_dir / "eval" / "predictions.jsonl"
 
     image_paths = list_images(prepared_dir / "images" / split)
@@ -124,26 +152,33 @@ def targeting_metrics(cfg, weights: Path, run_dir: Path, class_names: list[str],
         for image_path in tqdm(todo, desc="Targeting eval", unit="img"):
             image = cv2.imread(str(image_path))
             h, w = image.shape[:2]
-            gt_masks, gt_classes = load_gt_masks(prepared_dir / "labels" / split / f"{image_path.stem}.txt", h, w)
+            all_gt_masks, all_gt_classes = load_gt_masks(prepared_dir / "labels" / split / f"{image_path.stem}.txt", h, w)
+            gt_weeds, gt_crops = split_crops(all_gt_classes, crop_ids)
+            gt_masks, gt_classes = [all_gt_masks[i] for i in gt_weeds], [all_gt_classes[i] for i in gt_weeds]
+            gt_crop_masks = [all_gt_masks[i] for i in gt_crops]
             ignore_masks = load_ignore_masks(prepared_dir, split, image_path.stem, h, w)
-            pred = predict_instances(model, image, **predict_args)
+            all_pred = predict_instances(model, image, **predict_args)
+            pred_weeds, pred_crops = split_crops(all_pred.class_ids, crop_ids)
+            pred, pred_crop = subset(all_pred, pred_weeds), subset(all_pred, pred_crops)
 
             record = {
                 "image_id": image_path.stem,
                 "image_path": str(image_path),
                 "height": h,
                 "width": w,
-                "inference_ms": round(pred.inference_ms, 2),
+                "inference_ms": round(all_pred.inference_ms, 2),
                 "gt_classes": gt_classes,
                 "pred_classes": pred.class_ids,
                 "pred_confidences": pred.confidences,
-                **evaluate_image(pred.masks, gt_masks, methods, cfg.eval.match_iou, ignore_masks),
+                **evaluate_image(pred.masks, gt_masks, methods, cfg.eval.match_iou, ignore_masks,
+                                 pred_crop.masks, gt_crop_masks, crop_margin_px),
             }
             append_jsonl(record, jsonl_path)
 
             if image_path.stem in vis_ids:
                 save_visualization(image, gt_masks, pred, record, methods[0], class_names,
-                                   run_dir / "eval" / "visualizations" / f"{image_path.stem}.jpg", ignore_masks)
+                                   run_dir / "eval" / "visualizations" / f"{image_path.stem}.jpg", ignore_masks,
+                                   gt_crop_masks, pred_crop)
 
     wanted = {p.stem for p in image_paths}
     records = [r for r in read_jsonl(jsonl_path) if r["image_id"] in wanted]
@@ -153,18 +188,32 @@ def targeting_metrics(cfg, weights: Path, run_dir: Path, class_names: list[str],
     summary["inference_ms_per_image"] = float(np.mean(inference_ms)) if inference_ms else None
     summary["fps"] = 1000.0 / summary["inference_ms_per_image"] if inference_ms else None
     summary["end_to_end_ms_per_image"] = summary["inference_ms_per_image"] + primary_extraction if inference_ms else None
-    return {"primary_method": methods[0], "conf": cfg.eval.conf, "match_iou": cfg.eval.match_iou, **summary}
+    return {"primary_method": methods[0], "conf": cfg.eval.conf, "match_iou": cfg.eval.match_iou,
+            "crop_classes": [class_names[c] for c in sorted(crop_ids)], "crop_margin_px": crop_margin_px, **summary}
 
 
 def save_visualization(image_bgr, gt_masks, pred: Prediction, record: dict, method: str, class_names, path: Path,
-                       ignore_masks=None) -> None:
-    """Save [ground truth | prediction] panels with the laser target points of `method` (ignore regions grey)."""
+                       ignore_masks=None, gt_crop_masks=None, pred_crop: Prediction | None = None) -> None:
+    """Save [ground truth | prediction] panels with the laser target points of `method`.
+
+    Weeds: GT red / prediction green; crops blue; ignore regions grey; vetoed shots grey crosshairs.
+    """
     image = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
     points = record["methods"][method]
     gt_panel = draw_instances(image, ignore_masks or [], color=IGNORE_COLOR, fill=False)
+    gt_panel = draw_instances(gt_panel, gt_crop_masks or [], color=CROP_COLOR, fill=False)
     gt_panel = draw_instances(gt_panel, gt_masks, points["gt_points"], color=GT_COLOR, fill=False)
+    pred_panel = image
+    if pred_crop is not None and pred_crop.masks:
+        crop_labels = [f"{class_names[c]} {s:.2f}" for c, s in zip(pred_crop.class_ids, pred_crop.confidences)]
+        pred_panel = draw_instances(pred_panel, pred_crop.masks, labels=crop_labels, color=CROP_COLOR)
+    vetoed = set(points.get("vetoed_preds", []))
+    fired = [None if i in vetoed else pt for i, pt in enumerate(points["pred_points"])]
     labels = [f"{class_names[c]} {s:.2f}" for c, s in zip(pred.class_ids, pred.confidences)]
-    pred_panel = draw_instances(image, pred.masks, points["pred_points"], labels, color=PRED_COLOR)
+    pred_panel = draw_instances(pred_panel, pred.masks, fired, labels, color=PRED_COLOR)
+    thickness = max(2, round(max(image.shape[:2]) / 400))
+    for i in vetoed:
+        draw_target(pred_panel, points["pred_points"][i], IGNORE_COLOR, thickness)
     save_rgb(side_by_side(gt_panel, pred_panel), path)
 
 

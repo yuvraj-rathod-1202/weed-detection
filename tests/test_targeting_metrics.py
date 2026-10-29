@@ -56,3 +56,42 @@ def test_clearance_and_center_error():
     rec = evaluate_image([gt.copy()], [gt], ["centroid"], 0.5)["methods"]["centroid"]
     assert rec["clearance_px"][0] >= 29  # centre of a 60 px square: ~30 px from every edge
     assert rec["center_errors_rel"][0] < 0.05
+
+
+def test_without_crop_labels_crop_metrics_are_undefined():
+    gt = [rect(10, 10, 40, 40)]
+    m = aggregate_targeting([evaluate_image(list(gt), gt, ["centroid"], 0.5)], ["centroid"])["methods"]["centroid"]
+    assert m["crop_hit_rate"] is None
+    assert m["veto_rate"] == 0.0
+
+
+def test_shot_on_crop_counts_as_crop_hit():
+    weed, crop = rect(10, 10, 40, 40), rect(60, 60, 90, 90)
+    preds = [weed, crop]  # the model mistakes the crop for a weed and finds no crop
+    record = evaluate_image(preds, [weed], ["centroid"], 0.5, gt_crop_masks=[crop])
+    m = aggregate_targeting([record], ["centroid"])["methods"]["centroid"]
+    assert m["crop_hit_rate"] == 0.5
+    assert m["crop_hit_rate_ungated"] == 0.5
+    assert m["shot_precision"] == 0.5
+
+
+def test_gate_vetoes_shot_near_predicted_crop():
+    weed, crop = rect(10, 10, 40, 40), rect(60, 60, 90, 90)
+    preds = [weed, crop]
+    record = evaluate_image(preds, [weed], ["centroid"], 0.5, pred_crop_masks=[crop], gt_crop_masks=[crop],
+                            crop_margin_px=5)
+    m = aggregate_targeting([record], ["centroid"])["methods"]["centroid"]
+    assert m["crop_hit_rate"] == 0.0         # the bad shot was not fired
+    assert m["crop_hit_rate_ungated"] == 0.5  # ...but would have hit the crop without the gate
+    assert m["veto_rate"] == 0.5
+    assert m["shot_precision"] == 1.0
+    assert m["weed_hit_rate"] == 1.0
+
+
+def test_gate_costs_recall_when_weed_touches_crop():
+    weed, crop = rect(10, 10, 40, 40), rect(40, 10, 70, 40)  # weed grows right against the crop
+    record = evaluate_image([weed], [weed], ["centroid"], 0.5, pred_crop_masks=[crop], gt_crop_masks=[crop],
+                            crop_margin_px=20)
+    m = aggregate_targeting([record], ["centroid"])["methods"]["centroid"]
+    assert m["weed_hit_rate"] == 0.0  # centroid is ~15 px from the crop: too close, not fired
+    assert m["veto_rate"] == 1.0

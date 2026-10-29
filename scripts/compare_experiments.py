@@ -59,6 +59,9 @@ def flatten_results(r: dict) -> dict:
         row[f"{method}/clearance_px_median"] = m.get("clearance_px", {}).get("median")
         row[f"{method}/clearance_px_p10"] = m.get("clearance_px", {}).get("p10")
         row[f"{method}/off_center_rate"] = m.get("off_center_rate")
+        row[f"{method}/crop_hit_rate"] = m.get("crop_hit_rate")
+        row[f"{method}/crop_hit_rate_ungated"] = m.get("crop_hit_rate_ungated")
+        row[f"{method}/veto_rate"] = m.get("veto_rate")
     return row
 
 
