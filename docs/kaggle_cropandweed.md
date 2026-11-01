@@ -142,7 +142,33 @@ If the 12 h ran out before training finished:
 3. Run all cells again with the **same `OVR`**. Training continues from `last.pt`. The resumed
    session also spends ~1.25 h on download + masks before training continues.
 
-## 6. Choosing the crop safety margin (after training)
+## 6. Other CropAndWeed experiments (e.g. imgsz 1280)
+
+Same notebook, only cell 3 changes. Example for `yolo11s_seg_cropandweed_1280` (exp 4):
+
+```python
+CFG = "configs/experiments/yolo11s_seg_cropandweed_1280.yaml"
+OVR = 'dataset.raw_dir=/tmp/cropandweed dataset.prepared_dir=/tmp/cropandweed_seg "train.device=[0,1]" train.batch=12'
+```
+
+- `train.batch=12` = 6 images per T4 at 1280 px (1.56x the pixels of exp 3's 8 per GPU at 1024).
+  Run the smoke test (cell 5): if it hits `CUDA out of memory`, use `train.batch=8`.
+- Expected time: ~5 min/epoch, so ~6-7 h of training + ~1.25 h download and masks: one session.
+- To keep the previous results, add the earlier run as input and copy its folder, as in step 5
+  (`!cp -rn {PREV}/experiments/. experiments/`). `compare_experiments.py` then lists both runs.
+  Or simply unzip both `results.zip` files into the repo on your PC.
+
+**Exp 5 (`yolo11s_seg_cropandweed_1280_aug`)**: exp 4 + vertical flips and rotations, evaluated at
+`conf: 0.15`. Cell 3:
+
+```python
+CFG = "configs/experiments/yolo11s_seg_cropandweed_1280_aug.yaml"
+OVR = 'dataset.raw_dir=/tmp/cropandweed dataset.prepared_dir=/tmp/cropandweed_seg "train.device=[0,1]" train.batch=12'
+```
+
+Time: ~1.25 h download and masks + ~6 h training and evaluation: one session.
+
+## 7. Choosing the crop safety margin (after training)
 
 `crop_margin_px: 20` ≈ 8 mm on the ground (about 0.4 mm/px at the 1.1 m camera height). To compare
 margins, re-run only the evaluation. A `targeting.*` change keeps the trained model, but it
@@ -158,7 +184,7 @@ Compare `crop_hit_rate` (crop shots, want ≈ 0) and `weed_hit_rate` (weeds dest
 `targeting.methods.<method>` across the files. Choose the smallest margin where `crop_hit_rate`
 reaches about 0.
 
-## 7. What to look at in the results
+## 8. What to look at in the results
 
 | Where | What |
 |---|---|
@@ -167,7 +193,7 @@ reaches about 0.
 | `eval/visualizations/` | GT panel (weeds red, crops blue, ignored plants grey) vs prediction panel (weeds green, crops blue, vetoed shots grey crosshairs) |
 | `/tmp/cropandweed_seg/prepare_info.json` (gone after the session; `!cat` it in the notebook) | images per split, `sam_boxes` (boxes that needed SAM) |
 
-## 8. Problems
+## 9. Problems
 
 | Problem | Fix |
 |---|---|

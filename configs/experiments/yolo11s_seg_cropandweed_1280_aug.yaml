@@ -5,8 +5,8 @@
 # - 20 % of real-field weeds are found with conf < 0.25 (median 0.12): no shot. On the local real-field test
 #   images, conf 0.15 hits ~83 % of weeds instead of ~75 % (small weeds 68 % vs 54 %) for ~11 % more crop
 #   shots (a smaller share of all shots) and ~70 % more soil shots (laser time only).
-# Compare with exp 4 re-evaluated at eval.conf=0.15 (docs/kaggle_cropandweed.md, section 6): then only the
-# augmentation differs.
+# Comparing with exp 4 (conf 0.25): segmentation mAP ignores eval.conf, so it shows the augmentation alone;
+# the targeting rates (weed_hit_rate, shot_precision, crop_hit_rate) include both changes.
 # One file = one experiment. Outputs go to <output_root>/<name>/ and are resumed if they exist.
 
 name: yolo11s_seg_cropandweed_1280_aug
