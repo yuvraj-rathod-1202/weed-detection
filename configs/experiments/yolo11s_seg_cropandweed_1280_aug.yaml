@@ -1,0 +1,46 @@
+# Exp 5: exp 4 (yolo11s_seg_cropandweed_1280) + augmentation for top-down images, evaluated at conf 0.15.
+# Why (exp 4 analysis):
+# - val mAP stalls at epoch ~50-57 while train loss keeps falling -> generalization, not training length, limits it.
+#   Top-down field images are equally valid flipped or rotated, but exp 3/4 used flipud 0 and degrees 0.
+# - 20 % of real-field weeds are found with conf < 0.25 (median 0.12): no shot. On the local real-field test
+#   images, conf 0.15 hits ~83 % of weeds instead of ~75 % (small weeds 68 % vs 54 %) for ~11 % more crop
+#   shots (a smaller share of all shots) and ~70 % more soil shots (laser time only).
+# Compare with exp 4 re-evaluated at eval.conf=0.15 (docs/kaggle_cropandweed.md, section 6): then only the
+# augmentation differs.
+# One file = one experiment. Outputs go to <output_root>/<name>/ and are resumed if they exist.
+
+name: yolo11s_seg_cropandweed_1280_aug
+description: YOLO11s-seg on CropAndWeed (CropOrWeed2) at imgsz 1280 with vertical flips and rotations (top-down images); conf 0.15; laser target = one point per predicted weed mask, vetoed near predicted crops.
+seed: 42
+output_root: experiments
+
+dataset: configs/datasets/cropandweed.yaml   # same prepared data (and split) as exp 3 and 4
+
+model:
+  weights: models/weights/yolo11s-seg.pt   # official ultralytics names are auto-downloaded to this path
+
+# Passed as-is to ultralytics YOLO.train(): https://docs.ultralytics.com/modes/train/#train-settings
+train:
+  epochs: 80
+  imgsz: 1280
+  batch: 6                        # use 12 with both T4s (6 per GPU), as in exp 4
+  patience: 20                    # early stopping
+  save_period: 10
+  workers: 4
+  device: null                    # null = auto; 0 = first GPU; [0, 1] = both Kaggle T4s; cpu
+  flipud: 0.5                     # new: with the default fliplr 0.5 -> all 4 mirror / 180 deg orientations
+  degrees: 15                     # new: random rotation +-15 deg (crop rows at varying angles)
+
+eval:
+  split: test
+  imgsz: 1280
+  conf: 0.15                      # was 0.25: more low-confidence (mostly small) weeds get a shot; also more crops feed the gate
+  iou: 0.7
+  match_iou: 0.5
+  max_images: null
+  num_visualizations: 20
+
+targeting:
+  methods: [center_weighted_dt, distance_transform, centroid, skeleton, box_center]
+  crop_classes: [Crop]            # never shot at; feed the safety gate and crop_hit_rate
+  crop_margin_px: 20              # ~8 mm at ~0.4 mm/px (1.1 m height, 50 mm lens): laser spot radius + aiming error
