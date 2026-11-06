@@ -1,0 +1,46 @@
+# Exp 6: exp 5 (yolo11s_seg_cropandweed_1280_aug) at native resolution: imgsz 1280 -> 1920. Everything else unchanged.
+# Why (exp 5 analysis, same model scored on training vs test images):
+# - small plants are not fitted even on the training images: weeds <= 24 px found 71 % (train) vs 66 % (test),
+#   crops <= 24 px 68 % on both. That is a limit, not overfitting: at 1280 a 24 px weed is ~16 px at the
+#   network input and its mask ~4 px on the 1/4-resolution mask grid. At 1920 the image is not shrunk.
+# - large plants overfit (weeds > 64 px: 95 % train vs 82 % test): keep exp 5's augmentation.
+# Check after the run: small-weed hit rate on training images. If it stays ~71 %, resolution is not the
+# limit (then label noise on tiny plants is the prime suspect), and model size comes after that.
+# Cost: ~2.25x the compute of 1280 (~10 min/epoch on 2 T4s, ~12-14 h): 2 Kaggle sessions (docs/kaggle_cropandweed.md).
+# One file = one experiment. Outputs go to <output_root>/<name>/ and are resumed if they exist.
+
+name: yolo11s_seg_cropandweed_1920_aug
+description: YOLO11s-seg on CropAndWeed (CropOrWeed2) at native imgsz 1920 with vertical flips and rotations; conf 0.15; laser target = one point per predicted weed mask, vetoed near predicted crops.
+seed: 42
+output_root: experiments
+
+dataset: configs/datasets/cropandweed.yaml   # same prepared data (and split) as exp 3-5
+
+model:
+  weights: models/weights/yolo11s-seg.pt   # official ultralytics names are auto-downloaded to this path
+
+# Passed as-is to ultralytics YOLO.train(): https://docs.ultralytics.com/modes/train/#train-settings
+train:
+  epochs: 80
+  imgsz: 1920                     # the only change vs exp 5 (1280): native image width, no downscaling
+  batch: 4                        # 2.25x the pixels of 1280; use 8 with both T4s (4 per GPU), 6 if that runs out of memory
+  patience: 20                    # early stopping
+  save_period: 10
+  workers: 4
+  device: null                    # null = auto; 0 = first GPU; [0, 1] = both Kaggle T4s; cpu
+  flipud: 0.5                     # with the default fliplr 0.5 -> all 4 mirror / 180 deg orientations
+  degrees: 15                     # random rotation +-15 deg (crop rows at varying angles)
+
+eval:
+  split: test
+  imgsz: 1920                     # same as training
+  conf: 0.15
+  iou: 0.7
+  match_iou: 0.5
+  max_images: null
+  num_visualizations: 20
+
+targeting:
+  methods: [center_weighted_dt, distance_transform, centroid, skeleton, box_center]
+  crop_classes: [Crop]            # never shot at; feed the safety gate and crop_hit_rate
+  crop_margin_px: 20              # ~8 mm at ~0.4 mm/px (1.1 m height, 50 mm lens): laser spot radius + aiming error
