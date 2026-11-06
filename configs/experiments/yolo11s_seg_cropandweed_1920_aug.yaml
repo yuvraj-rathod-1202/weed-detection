@@ -23,7 +23,8 @@ model:
 train:
   epochs: 80
   imgsz: 1920                     # the only change vs exp 5 (1280): native image width, no downscaling
-  batch: 4                        # 2.25x the pixels of 1280; use 8 with both T4s (4 per GPU), 6 if that runs out of memory
+  batch: 2                        # use 4 with both T4s (2 per GPU). 4 per GPU ran out of memory on a 15 GB T4: the mask
+                                  # loss at 1920 (480x480 masks per candidate) peaks on crowded images (14.2 GB, 1st batch)
   patience: 20                    # early stopping
   save_period: 10
   workers: 4
