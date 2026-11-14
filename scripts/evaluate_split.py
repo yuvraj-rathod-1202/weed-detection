@@ -8,8 +8,8 @@ Usage:
         --prepared-dir /tmp/cropandweed_seg
     python scripts/evaluate_split.py --run models/released/yolo11s_seg_cropandweed_1280_aug --split val \
         --prepared-dir /tmp/cropandweed_seg --out experiments/yolo11s_seg_cropandweed_1280_aug
-    python scripts/evaluate_split.py  \
-        
+    python scripts/evaluate_split.py --baseline --run experiments/baseline_exg --split val \
+        --prepared-dir /tmp/cropandweed_seg
 """
 from __future__ import annotations
 
