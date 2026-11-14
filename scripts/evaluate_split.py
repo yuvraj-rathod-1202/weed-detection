@@ -8,6 +8,8 @@ Usage:
         --prepared-dir /tmp/cropandweed_seg
     python scripts/evaluate_split.py --run models/released/yolo11s_seg_cropandweed_1280_aug --split val \
         --prepared-dir /tmp/cropandweed_seg --out experiments/yolo11s_seg_cropandweed_1280_aug
+    python scripts/evaluate_split.py  \
+        
 """
 from __future__ import annotations
 
@@ -17,8 +19,16 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from src.baseline import baseline_prediction
 from src.split_eval import evaluate_split
-from src.utils.io import load_json
+from src.utils.io import load_json, save_yaml
+
+BASELINE_CONFIG = {
+    "name": "baseline_exg",
+    "description": "ExG - ExR vegetation filter; every green blob is a weed (src/baseline.py)",
+    "eval": {"imgsz": None, "iou": None, "match_iou": 0.5},
+    "targeting": {"crop_classes": ["Crop"], "crop_margin_px": 20},
+}
 
 
 def main() -> None:
@@ -29,10 +39,16 @@ def main() -> None:
     parser.add_argument("--conf-floor", type=float, default=0.05, help="Lowest confidence saved (default 0.05)")
     parser.add_argument("--max-images", type=int, default=None)
     parser.add_argument("--out", default=None, help="Output folder (default: --run)")
+    parser.add_argument("--baseline", action="store_true", help="Evaluate the excess-green baseline; --run is its output folder")
     args = parser.parse_args()
 
+    predictor = None
+    if args.baseline:
+        Path(args.run).mkdir(parents=True, exist_ok=True)
+        save_yaml(BASELINE_CONFIG, Path(args.run) / "config.yaml")
+        predictor = baseline_prediction
     eval_dir = evaluate_split(Path(args.run), args.split, Path(args.prepared_dir), args.conf_floor, args.max_images,
-                              out_dir=Path(args.out) if args.out else None)
+                              predictor=predictor, out_dir=Path(args.out) if args.out else None)
     summary = load_json(eval_dir / "summary.json")
     best = summary["optimal"]
     print(f"{summary['run']} on {args.split}: {summary['num_images']} images -> {eval_dir}")
