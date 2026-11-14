@@ -168,6 +168,42 @@ OVR = 'dataset.raw_dir=/tmp/cropandweed dataset.prepared_dir=/tmp/cropandweed_se
 
 Time: ~1.25 h download and masks + ~6 h training and evaluation: one session.
 
+**Exp 6 (`yolo11s_seg_cropandweed_1920_aug`)**: exp 5 at native resolution (`imgsz 1920`). About
+11-12 min/epoch, so ~14-16 h of training: **two sessions**. Cell 3:
+
+```python
+CFG = "configs/experiments/yolo11s_seg_cropandweed_1920_aug.yaml"
+OVR = 'dataset.raw_dir=/tmp/cropandweed dataset.prepared_dir=/tmp/cropandweed_seg "train.device=[0,1]" train.batch=2'
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"   # less memory lost to fragmentation
+```
+
+- `train.batch=2` = 1 image per T4. 4 per GPU ran out of memory in the first batch, and 2 per GPU
+  in epoch 4. Memory peaks in the mask loss, which keeps a 480×480 mask for every positive anchor
+  of every image in the batch. A crowded mosaic has thousands, and the crash needed 1.97 GB for a
+  single one of those tensors. With 1 image per GPU only one image's masks are held at a time.
+- Neither the smoke test nor the `GPU_mem` column predicts this: the run showed a steady 11.4G
+  until the crowded batch arrived. Keep `train.batch=2` in session 2 as well.
+- If it still runs out of memory, use 1600 px instead of 1920: add `train.imgsz=1600 eval.imgsz=1600
+  name=yolo11s_seg_cropandweed_1600_aug` to `OVR` (masks ~30 % smaller, still 1.25x the pixels of exp 5).
+- **Cell 7 gets a time limit.** A commit that hits Kaggle's 12 h limit is killed, and its output
+  may not be saved. `timeout` stops training after 9.5 h instead. `last.pt` is saved every epoch,
+  so at most one epoch is lost. Cell 8 then packs the results and the notebook ends normally, so
+  the output is kept:
+
+  ```python
+  !timeout 9.5h python scripts/run_experiment.py --config {CFG} --override {OVR}
+  ```
+
+  The cell ends with `returned non-zero exit status 124` (or a traceback) when the limit is hit.
+  That is expected, and the notebook carries on.
+- **Session 1:** Save & Run All (Commit). Download, masks and smoke test take ~1.5 h, then training
+  runs for 9.5 h, about 45-55 epochs.
+- **Session 2:** follow step 5 (add session 1's output as input, copy `experiments/` back), keep
+  the same `CFG` and `OVR`, and commit again. Training resumes from `last.pt`, finishes the
+  remaining ~30-35 epochs (fewer if early stopping triggers) in ~6-7 h, then runs the evaluation
+  (~25 min at 1920). Keep the `timeout` in cell 7: it doesn't trigger when the run finishes in time.
+- GPU time for both sessions: ~19-20 h.
+
 ## 7. Choosing the crop safety margin (after training)
 
 `crop_margin_px: 20` ≈ 8 mm on the ground (about 0.4 mm/px at the 1.1 m camera height). To compare
