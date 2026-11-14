@@ -5,6 +5,7 @@ does the whole pipeline (SAM masks → training → evaluation) inside `/kaggle/
 keeps that folder as the notebook's output.
 
 For **CropAndWeed** (downloaded in the notebook, not uploaded) follow [kaggle_cropandweed.md](kaggle_cropandweed.md).
+For the **validation re-evaluation, model selection and final test** (no training) follow [kaggle_validation.md](kaggle_validation.md).
 
 ## 1. Upload the data and the code (once)
 
