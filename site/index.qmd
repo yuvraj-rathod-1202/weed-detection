@@ -1,5 +1,5 @@
 ---
-title: "Can a model hit weeds and spare crops?"
+title: "AI-Based Weed Localization for Precision Weed Removal"
 subtitle: "Instance segmentation of field photos → one laser point per weed, with a crop safety gate"
 author: "Yuvraj Rathod · ES 335"
 date: 2026-11-16
