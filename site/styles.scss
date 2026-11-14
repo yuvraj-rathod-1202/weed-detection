@@ -1,0 +1,49 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap');
+
+$font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+$headings-font-family: "Source Serif 4", Georgia, serif;
+$headings-font-weight: 600;
+$body-color: #1f2421;
+$body-bg: #ffffff;
+$link-color: #1f2421;
+$primary: #3a3f3c;
+$navbar-bg: #ffffff;
+$navbar-fg: #1f2421;
+$border-color: #e3e6e4;
+
+/*-- scss:rules --*/
+:root {
+  --hit: #2e7d32;     /* shot hit a weed */
+  --crop: #c62828;    /* shot hit a crop */
+  --soil: #9e9e9e;    /* shot on soil / neutral */
+  --ink: #1f2421;
+  --muted: #5f6662;
+  --rule: #e3e6e4;
+}
+
+body { line-height: 1.65; }
+a { text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 2px; }
+a:hover { text-decoration-color: var(--ink); }
+main h1:not(.title) { margin-top: 3rem; padding-top: .75rem; border-top: 1px solid var(--rule); font-size: 1.9rem; }
+main h2 { font-size: 1.35rem; margin-top: 2rem; }
+figure h2, figure h3, .observablehq h2 { font-family: $font-family-sans-serif; font-size: .95rem; font-weight: 600; border: 0; margin: .5rem 0; padding: 0; }
+table.data { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+table.data th, table.data td { padding: .35rem .5rem; border-bottom: 1px solid var(--rule); text-align: right; }
+table.data th:first-child, table.data td:first-child { text-align: left; }
+.lead-question { font-family: "Source Serif 4", Georgia, serif; font-size: 1.35rem; line-height: 1.45; margin: 1rem 0 1.5rem; }
+.muted { color: var(--muted); }
+.hit { color: var(--hit); font-weight: 600; }
+.crop { color: var(--crop); font-weight: 600; }
+
+/* headline numbers */
+.stats { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0 2rem; }
+.stat { border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .9rem; min-width: 9rem; }
+.stat b { display: block; font-size: 1.5rem; font-family: "Source Serif 4", Georgia, serif; }
+.stat span { color: var(--muted); font-size: .85rem; }
+
+table { font-size: .92rem; }
+figure figcaption, .figure-caption { color: var(--muted); font-size: .88rem; }
+.callout { border-left-width: 3px !important; }
+.table-scroll { overflow-x: auto; }
+main svg { max-width: 100%; height: auto; }

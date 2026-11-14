@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - data/*.json
+    - gallery/*.jpg
+
+website:
+  title: "Weed laser targeting"
+  site-url: https://yuvraj-rathod-1202.github.io/weed-detection/
+  repo-url: https://github.com/yuvraj-rathod-1202/weed-detection
+  navbar:
+    right:
+      - icon: github
+        href: https://github.com/yuvraj-rathod-1202/weed-detection
+        aria-label: Source code on GitHub
+  page-footer:
+    center: >
+      ES 335 project · Yuvraj Rathod · Code: AGPL-3.0 (ultralytics) /
+      own code in the repository · Gallery photos: Sugar Beets 2016 (CC BY-SA 4.0),
+      CottonWeedDet12 (CC BY-NC 4.0) · No CropAndWeed images are shown (licence).
+
+format:
+  html:
+    from: markdown-tex_math_dollars
+    shift-heading-level-by: -1
+    theme: [cosmo, styles.scss]
+    toc: true
+    toc-location: left
+    toc-depth: 1
+    toc-title: Contents
+    smooth-scroll: true
+    anchor-sections: true
+    link-external-newwindow: true
+    bibliography: references.bib
+    citations-hover: true
+    fig-cap-location: bottom

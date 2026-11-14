@@ -1,0 +1,216 @@
+---
+title: "Can a model hit weeds and spare crops?"
+subtitle: "Instance segmentation of field photos → one laser point per weed, with a crop safety gate"
+author: "Yuvraj Rathod · ES 335"
+date: 2026-11-16
+---
+
+```{ojs}
+//| echo: false
+dataset = FileAttachment("data/dataset.json").json()
+splits = ["train", "val", "test"]
+total = (key) => splits.reduce((s, k) => s + dataset.splits[k][key], 0)
+pct = (x, d = 1) => (100 * x).toFixed(d) + "%"
+fmt = (x) => x.toLocaleString("en-US")
+greys = ["#3a3f3c", "#9aa19d"]
+```
+
+::: {.lead-question}
+Given one top-down RGB photo of a crop field, can a model place **one laser point on each weed**, so that
+most weeds are hit and almost no crop plants are?
+:::
+
+## Question
+
+**Why it matters.** A laser weeder destroys weeds without herbicide by heating the plant's growing point.
+It needs a single aim point per weed — a bounding box is not enough, because the centre of a box around an
+irregular weed can fall on bare soil or on the crop next to it. Every shot that lands on a crop damages
+the harvest, so avoiding crops matters more than hitting every last weed.
+
+**What is predicted, and when.** The prediction is made on the machine, frame by frame, as the camera passes
+over the field. At that moment the only information is the **RGB image itself** — no species list, no stem
+positions, no earlier frames.
+
+| | |
+|---|---|
+| **Unit (one row)** | one plant instance (a weed or a crop) in one image; for the laser metrics, one shot |
+| **Model output** | for every predicted weed: a pixel mask and one aim point (x, y) |
+| **Target** | a shot is correct when its point lands inside a real weed and outside every crop |
+| **Decision rule** | the laser fires only when the model is at least *X* sure a plant is a weed, and not within 20 px of a plant it thinks is a crop |
+| **Main metrics** | share of weeds hit; share of shots that land on a crop; share of shots wasted on soil |
+
+**Limits of the claim.** All evidence comes from offline photos: one main dataset recorded in European
+fields with one camera, evaluated image by image. Nothing here is a field trial, says how much laser energy
+kills a plant, or shows that the model works on other farms, crops or cameras. A small gallery of photos
+from a different farm (Results) shows how quickly that can break.
+
+## Data
+
+**Main dataset: CropAndWeed** [@steininger2023cropandweed]. ${fmt(total("images"))} top-down RGB photos
+(1920 × 1088 px, about 0.4 mm per pixel) of crop rows with weeds, recorded in
+${fmt(total("sessions"))} recording sessions. It is one of the few public datasets that label **both crops and
+weeds**, which this question needs: a weeds-only dataset cannot tell us whether the laser would hit a crop.
+
+- **Annotations:** a box and stem position for every plant, plus a pixel mask that gives each pixel its
+  species. We use the authors' own two-class variant *CropOrWeed2*: **Crop** (maize, sugar beet, soybean,
+  sunflower, potato, pea, bean, pumpkin) and **Weed** (57 weed species).
+- **Two recording sets:** *ave* = the Application set (real farm fields) and *vwg* = the Experimental set
+  (test plots). Real fields are the harder, more realistic case.
+- **Access limits:** non-commercial use only, and **no redistribution** of images or annotations. The data
+  is downloaded from the official source in each run, and **no CropAndWeed photo appears on this site** —
+  only statistics and model outputs.
+
+```{ojs}
+//| echo: false
+html`<div class="table-scroll"><table class="data">
+  <thead><tr><th>Split</th><th>Images</th><th>Sessions</th><th>Crop plants</th><th>Weed plants</th>
+  <th>Ignored plants</th><th>Real-field / test-plot images</th></tr></thead>
+  <tbody>${splits.map(s => { const d = dataset.splits[s]; return html`<tr><td>${s}</td><td>${fmt(d.images)}</td>
+    <td>${fmt(d.sessions)}</td><td>${fmt(d.crop)}</td><td>${fmt(d.weed)}</td><td>${fmt(d.ignored)}</td>
+    <td>${fmt(d.ave)} / ${fmt(d.vwg)}</td></tr>` })}</tbody></table></div>`
+```
+
+**Quality issues that shape the method.**
+
+1. **Plants outside the two classes.** ${fmt(total("ignored"))} annotated plants
+   (${pct(total("ignored") / (total("ignored") + total("crop") + total("weed")))} of all) are species
+   outside CropOrWeed2 or are labelled only "Vegetation" because the annotators could not identify them.
+   They are kept as **ignore regions**: a prediction on them counts neither as right nor wrong.
+2. **Masks are per class, not per plant.** Two touching weeds share one blob of "weed" pixels, but the laser
+   needs one point per plant. *Preprocessing* explains how the plants are separated.
+3. **Many plants are tiny.** Weeds outnumber crops about ${(total("weed") / total("crop")).toFixed(1)} to 1, and
+   ${pct((dataset.sizes.Weed["0–16"] + dataset.sizes.Weed["16–24"]) / Object.values(dataset.sizes.Weed).reduce((a, b) => a + b))}
+   of weeds are at most 24 px across (about 1 cm) — a few pixels once the image is shrunk for the network.
+4. **Near-duplicate frames.** Consecutive photos in a session overlap heavily, so a random split would put
+   almost the same image in training and test.
+5. **Imbalanced crops.** A few crop species dominate (chart below); rare ones are harder to learn.
+
+```{ojs}
+//| echo: false
+sizeRows = Object.entries(dataset.sizes).flatMap(([cls, bins]) => {
+  const n = Object.values(bins).reduce((a, b) => a + b)
+  return Object.entries(bins).map(([bin, count]) => ({cls, bin, share: count / n}))
+})
+Plot.plot({
+  title: "Plant size (sqrt of box area, px): weeds are much smaller than crops",
+  width: Math.min(width, 760), height: 260, marginLeft: 50, x: {label: "plant size (px)", domain: Object.keys(dataset.sizes.Weed)},
+  y: {label: "share of plants", tickFormat: "%"}, fx: {label: null}, color: {domain: ["Weed", "Crop"], range: greys, legend: true},
+  marks: [Plot.barY(sizeRows, {fx: "cls", x: "bin", y: "share", fill: "cls", tip: true}), Plot.ruleY([0])]
+})
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  title: "Crop plants per species (all splits)",
+  width: Math.min(width, 760), height: 240, marginLeft: 80, x: {label: "plants"}, y: {label: null},
+  marks: [Plot.barX(Object.entries(dataset.crop_species).map(([species, n]) => ({species, n})),
+                    {y: "species", x: "n", fill: greys[0], sort: {y: "-x"}, tip: true}), Plot.ruleX([0])]
+})
+```
+
+**Earlier dataset: CottonWeedDet12** [@lu2023cottonweeddet12; @dang2023yoloweeds]. 5,648 photos from US
+cotton fields with boxes for 12 weed species. The first experiments used it, but it labels **no crops**, so
+it can show weed finding but not crop safety. That gap is why the project moved to CropAndWeed; five of its
+photos still appear in the gallery.
+
+## Preprocessing
+
+All steps are deterministic rules or come from the dataset itself; **no statistic is fitted on the data**, so
+nothing can leak from validation or test into training.
+
+1. **Labels → two classes.** Each species id is mapped to Crop or Weed with the official CropOrWeed2 table;
+   unmapped species and "Vegetation" become ignore regions.
+2. **Per-plant masks.** For each plant box, the mask is the class's pixels inside that box. Where that is
+   ambiguous — two overlapping boxes of the same class, or a box with no class pixels — the image is passed to
+   SAM 2.1 [@ravi2024sam2] with the box as a prompt, and SAM's mask is cut back to the class's pixels, so
+   SAM can only split plants, never invent leaves. Each mask is stored as its largest outline (polygon).
+3. **Split by recording session, before any model is trained.** Whole sessions go to train / validation /
+   test (65 / 20 / 15 % of images, seed 42), so near-duplicate frames never cross splits. The split is
+   fixed in `configs/datasets/cropandweed.yaml` and rebuilt identically on every machine.
+4. **Model input.** Images are resized to the model's input size (1024 or 1280 px wide, aspect kept) and
+   scaled to 0–1 by dividing by 255 — a fixed rule, not a learned normalisation.
+5. **Augmentation (training only).** Random mosaics, scale and colour jitter and horizontal flips;
+   experiment 5 adds vertical flips and ±15° rotations, since a top-down photo is equally valid upside down.
+
+**Who sees which split.** Training uses *train* only. *Validation* picks the best training epoch, the model
+and the laser's confidence threshold. *Test* is used once, at the very end (Evaluation).
+
+## Baseline and methods
+
+### Baseline: "every green blob is a weed"
+
+Without machine learning, a weeder could aim at anything green. The baseline computes the vegetation index
+ExG − ExR [@meyer2008exgr] on brightness-normalised colours and keeps pixels where it is positive (its
+published threshold, no tuning), cleans specks with a 3 × 3 opening, and treats **every connected blob of at
+least 64 px** (8 × 8, smaller than the smallest labelled plants) as a weed, aimed at with the same point
+method as the model. It cannot tell crops from weeds, so it has no crop safety gate. If a trained model is
+worth having, it must beat this on crop safety without losing too many weeds.
+
+The textbook ExG index with an Otsu threshold [@woebbecke1995exg] was tried first, on two validation images
+only: the greenish tint of the soil in these photos turned it into hundreds of soil fragments per image, so
+the published ExG − ExR rule replaced it.
+
+### Model: YOLO11s-seg instance segmentation
+
+YOLO11s-seg [@jocher2024yolo11] is a one-stage instance-segmentation network (10 M parameters). For every
+detected plant it predicts a box, a class score (Crop / Weed) and 32 mask coefficients that are combined with
+shared prototype masks into a pixel mask. It starts from weights pretrained on everyday photos (COCO) and is
+fine-tuned on CropAndWeed.
+
+- **Objective:** a sum of box-regression loss, class loss (binary cross-entropy) and per-pixel mask loss,
+  minimised with AdamW for up to 80 epochs; training stops early when validation accuracy has not improved
+  for 20 epochs, and the best validation epoch is kept.
+- **Why this method:** the laser needs one point *per plant*, so plain semantic segmentation (one class per
+  pixel) is not enough, and a box alone puts the aim point off the plant. A one-stage model runs in real time
+  on a modest GPU, unlike two-stage models such as Mask R-CNN [@he2017maskrcnn].
+- **Assumptions:** a top-down view at a fixed height, plants visible (not hidden under leaves), labels that are
+  right on average, and test fields that look like training fields. The gallery tests the last one.
+- **Three trained candidates:** exp 3 at 1024 px input, exp 4 at 1280 px (small weeds get more pixels),
+  exp 5 at 1280 px with vertical flips and rotations. A fourth run at full 1920 px did not finish in time.
+
+### From mask to laser point
+
+The aim point is the mask pixel that maximises *(distance to the mask's edge) × (a Gaussian around the mask's
+centre, width = half the plant's radius)*: it always lies inside the plant, near its centre, and not on a
+thin leaf tip. Simpler rules fail in predictable ways — the centre of mass can fall between the leaves of a
+star-shaped weed, and the box centre can fall on soil.
+
+### Crop safety gate
+
+A shot is vetoed when its point lies within **20 px (about 8 mm)** of a plant the model predicts as a crop —
+roughly the laser spot radius plus aiming error. The gate can only protect crops the model actually
+recognises; the Errors section shows what that means in practice.
+
+## Evaluation
+
+<!-- Task 9: protocol, metrics, the 2 % rule, interaction A -->
+
+## Results
+
+<!-- Task 10: experiment comparison (interaction D), test results, gallery -->
+
+## Errors
+
+<!-- Task 10 -->
+
+## Limitations
+
+<!-- Task 10 -->
+
+## Conclusion
+
+<!-- Task 10 -->
+
+## Reproduce
+
+<!-- Task 11 -->
+
+## My contribution and AI use
+
+<!-- Task 11 -->
+
+## References
+
+::: {#refs}
+:::

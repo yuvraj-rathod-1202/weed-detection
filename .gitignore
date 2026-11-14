@@ -51,3 +51,7 @@ Thumbs.db
 
 # --- Brainstorm mockups (visual companion) ---
 .superpowers/
+
+# --- Quarto site build output ---
+site/_site/
+site/.quarto/
