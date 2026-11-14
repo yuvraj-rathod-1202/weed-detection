@@ -50,10 +50,15 @@ def main() -> None:
     eval_dir = evaluate_split(Path(args.run), args.split, Path(args.prepared_dir), args.conf_floor, args.max_images,
                               predictor=predictor, out_dir=Path(args.out) if args.out else None)
     summary = load_json(eval_dir / "summary.json")
-    best = summary["optimal"]
     print(f"{summary['run']} on {args.split}: {summary['num_images']} images -> {eval_dir}")
-    print("optimal (<= 2 % crop shots):", "none" if best is None else
-          f"threshold {best['threshold']:.2f}, weed hit rate {best['weed_hit_rate']:.3f}, crop shots {best['crop_shot_share']:.3f}")
+    if args.split == "test":
+        print("test: report it only at the threshold chosen on validation (results/final_selection.json)")
+    elif args.baseline:
+        print("baseline: one operating point (every blob fires), see curve[0]:", summary["curve"][0])
+    else:
+        best = summary["optimal"]
+        print("optimal (<= 2 % crop shots):", "none" if best is None else
+              f"threshold {best['threshold']:.2f}, weed hit rate {best['weed_hit_rate']:.3f}, crop shots {best['crop_shot_share']:.3f}")
 
 
 if __name__ == "__main__":

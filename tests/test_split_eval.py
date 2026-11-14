@@ -37,6 +37,17 @@ def _run_dir(tmp_path, prepared):
     return run
 
 
+def test_test_split_summary_has_no_test_chosen_threshold(tmp_path):
+    """The threshold is chosen on validation only; a test summary must not offer its own optimum."""
+    prepared = _prepared(tmp_path)
+    (prepared / "images" / "val").rename(prepared / "images" / "test")
+    (prepared / "labels" / "val").rename(prepared / "labels" / "test")
+    run = _run_dir(tmp_path, prepared)
+    out = evaluate_split(run, "test", prepared, predictor=lambda image: Prediction([_square(8, 8, 24, 24)], [1], [0.9], 5.0))
+    summary = load_json(out / "summary.json")
+    assert summary["optimal"] is None and len(summary["curve"]) == 91
+
+
 def test_evaluate_split_writes_records_and_resumes(tmp_path):
     prepared = _prepared(tmp_path)
     run = _run_dir(tmp_path, prepared)

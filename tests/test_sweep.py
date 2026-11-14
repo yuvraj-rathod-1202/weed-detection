@@ -25,6 +25,22 @@ def test_shot_hits_weed_and_records_nearby_crop_conf():
     assert far[0]["max_nearby_crop_conf"] == 0.0
 
 
+def test_shot_inside_two_overlapping_weeds_hits_both():
+    """Same hit definition as src/targeting/metrics.py: every GT weed containing a fired point is hit."""
+    weed_a, weed_b = square(30, 30, 60, 60), square(40, 40, 70, 70)
+    crop = square(5, 5, 15, 15)
+    records = shot_records([square(42, 42, 58, 58)], [0.9], [], [], [weed_a, weed_b], [crop], ignored=set(), margin_px=20)
+    assert records[0]["gt_weeds"] == [0, 1] and records[0]["gt_crop"] == -1
+    row = sweep([{"image_id": "ave-0001-0001", "gt_weeds": [{"size_px": 30}, {"size_px": 30}], "shots": records}], [0.5])[0]
+    assert row["weed_hit_rate"] == 1.0 and row["shot_precision"] == 1.0
+
+
+def test_shot_on_crop_records_which_crop():
+    crop_a, crop_b = square(0, 0, 20, 20), square(40, 40, 60, 60)
+    records = shot_records([square(42, 42, 58, 58)], [0.9], [], [], [], [crop_a, crop_b], ignored=set(), margin_px=20)
+    assert records[0]["gt_crop"] == 1 and records[0]["on_crop"] is True
+
+
 def test_fired_applies_threshold_ignore_and_gate():
     shots = [shot(0.4), shot(0.4, crop=0.5), shot(0.2), shot(0.9, ignored=True)]
     assert fired(shots, 0.3) == [shots[0]]

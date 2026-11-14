@@ -2,8 +2,8 @@
 
     <out_dir>/eval_<split>/shots.jsonl   one line per image: GT weed sizes, number of GT crops, and every
                                          predicted weed above the confidence floor (src/targeting/sweep.py)
-    <out_dir>/eval_<split>/summary.json  sweep curve (0.05..0.95), optimal threshold (2 % crop rule),
-                                         inference ms/image
+    <out_dir>/eval_<split>/summary.json  sweep curve (0.05..0.95), optimal threshold (2 % crop rule; not for
+                                         test, where results/final_selection.json's threshold is used), ms/image
 
 Re-running skips images already in shots.jsonl, so an interrupted Kaggle session resumes.
 """
@@ -83,7 +83,8 @@ def evaluate_split(run_dir: Path, split: str, prepared_dir: Path, conf_floor: fl
         "conf_floor": conf_floor,
         "num_images": len(records),
         "curve": curve,
-        "optimal": optimal_threshold(curve, MAX_CROP_SHARE),
+        # the threshold is chosen on validation only: a test summary offers no optimum of its own
+        "optimal": None if split == "test" else optimal_threshold(curve, MAX_CROP_SHARE),
         "inference_ms_per_image": float(np.mean([r["inference_ms"] for r in records])) if records else None,
     }, eval_dir / "summary.json")
     return eval_dir

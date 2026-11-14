@@ -51,11 +51,15 @@ Ends with `8034 images in /tmp/cropandweed`.
 P = "--prepared-dir /tmp/cropandweed_seg"
 RUNS = ["yolo11s_seg_cropandweed", "yolo11s_seg_cropandweed_1280", "yolo11s_seg_cropandweed_1280_aug"]
 for run in RUNS:
-    !timeout 3h python scripts/evaluate_split.py --run models/released/{run} --split val {P} --out experiments/{run}
-!timeout 2h python scripts/evaluate_split.py --baseline --run experiments/baseline_exg --split val {P}
+    !timeout 2h python scripts/evaluate_split.py --run models/released/{run} --split val {P} --out experiments/{run}
+!timeout 1h python scripts/evaluate_split.py --baseline --run experiments/baseline_exg --split val {P}
 ```
 
-Each call prints its optimal threshold. If a call stops (timeout, crash), re-running it resumes.
+Each call prints its optimal threshold. Expected ~20–30 min per model (1,609 images); the time limits
+(2 h per model, 1 h baseline) keep the whole commit under Kaggle's 12 h even if one call hangs.
+A call that stops can be resumed within the **same interactive session** by re-running it. In a new
+commit `/kaggle/working` starts empty: add the stopped version's output as input and copy
+`experiments/` back first, as in step 5 of [kaggle_cropandweed.md](kaggle_cropandweed.md).
 
 **Cell 5: select the final model (validation only)**
 
@@ -70,12 +74,12 @@ print(FINAL_RUN)
 **Cell 6: test, selected model + baseline only (~30 min)**
 
 ```python
-!python scripts/evaluate_split.py --run models/released/{FINAL_RUN} --split test {P} --out experiments/{FINAL_RUN}
-!python scripts/evaluate_split.py --baseline --run experiments/baseline_exg --split test {P}
+!timeout 2h python scripts/evaluate_split.py --run models/released/{FINAL_RUN} --split test {P} --out experiments/{FINAL_RUN}
+!timeout 1h python scripts/evaluate_split.py --baseline --run experiments/baseline_exg --split test {P}
 ```
 
-The test summary also contains a sweep curve; the website reports test results **only at the threshold
-chosen on validation** (`results/final_selection.json`).
+The test summary has a sweep curve but deliberately no "optimal" threshold: the website reports test
+results **only at the threshold chosen on validation** (`results/final_selection.json`).
 
 **Cell 7: pack the results**
 
