@@ -23,8 +23,9 @@ model:
 train:
   epochs: 80
   imgsz: 1920                     # the only change vs exp 5 (1280): native image width, no downscaling
-  batch: 2                        # use 4 with both T4s (2 per GPU). 4 per GPU ran out of memory on a 15 GB T4: the mask
-                                  # loss at 1920 (480x480 masks per candidate) peaks on crowded images (14.2 GB, 1st batch)
+  batch: 1                        # use 2 with both T4s (1 per GPU). On a 15 GB T4, 4 per GPU ran out of memory in the 1st
+                                  # batch and 2 per GPU in epoch 4: the mask loss keeps a 480x480 mask for every positive
+                                  # anchor of every image in the batch (~0.9 MB each, thousands on crowded mosaics)
   patience: 20                    # early stopping
   save_period: 10
   workers: 4
