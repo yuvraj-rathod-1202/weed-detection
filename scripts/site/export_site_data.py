@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.data.cropandweed import map_label
 from src.data.prepare import split_images
-from src.site_data import CROP_NAME, SIZE_BINS, dataset_stats, hit_rate_by, paired_bootstrap_diff
+from src.site_data import CROP_NAME, dataset_stats, hit_rate_by, paired_bootstrap_diff, size_bin
 from src.targeting.sweep import bootstrap_ci, fired, sweep
 from src.utils.io import load_json, load_yaml_dict, read_jsonl, save_json
 
@@ -63,7 +63,8 @@ def crop_species_of_shots(records: list[dict], threshold: float, bbox_dir: Path)
         with open(bbox_dir / f"{r['image_id']}.csv", newline="", encoding="utf-8") as f:
             species = [int(row[4]) for row in csv.reader(f) if row and map_label(int(row[4])) == 0]
         if len(species) != r["num_gt_crops"]:
-            continue  # label order unknown for this image (should not happen)
+            print(f"warning: {r['image_id']}: {len(species)} crops in annotations vs {r['num_gt_crops']} in results, skipped")
+            continue
         for sid in species:
             plants[CROP_NAME.get(sid, "Other crop")] = plants.get(CROP_NAME.get(sid, "Other crop"), 0) + 1
         for s in fired(r["shots"], threshold):
@@ -78,12 +79,18 @@ def main() -> None:
     parser.add_argument("--source", default="data/raw/cropandweed_src", help="Official CropAndWeed folder (bboxes/)")
     parser.add_argument("--dataset-config", default="configs/datasets/cropandweed.yaml")
     parser.add_argument("--out", default="site/data")
+    parser.add_argument("--skip-annotations", action="store_true",
+                        help="Without the official CropAndWeed annotations: keep the existing dataset.json and the "
+                             "crop-species counts in errors.json, recompute everything else from results/")
     args = parser.parse_args()
     out, bbox_dir = Path(args.out), Path(args.source) / "bboxes"
 
-    stats = dataset_stats(bbox_dir, cropandweed_splits(bbox_dir, Path(args.dataset_config)))
-    save_json(stats, out / "dataset.json")
-    print("dataset.json:", {s: v["images"] for s, v in stats["splits"].items()})
+    if args.skip_annotations:
+        print("dataset.json: kept (needs the official annotations to rebuild)")
+    else:
+        stats = dataset_stats(bbox_dir, cropandweed_splits(bbox_dir, Path(args.dataset_config)))
+        save_json(stats, out / "dataset.json")
+        print("dataset.json:", {s: v["images"] for s, v in stats["splits"].items()})
 
     selection = load_json("results/final_selection.json")
     final, threshold = selection["run"], selection["threshold"]
@@ -122,8 +129,13 @@ def main() -> None:
         "num_gt_weeds": sum(len(r["gt_weeds"]) for r in test), "num_gt_crops": sum(r["num_gt_crops"] for r in test),
     }, out / "test.json")
 
-    size_label = lambda record, weed: next(label for label, lo, hi in SIZE_BINS if lo <= weed["size_px"] < hi)  # noqa: E731
-    shot_species, plant_species = crop_species_of_shots(test, threshold, bbox_dir)
+    size_label = lambda record, weed: weed["size_bin"] if "size_bin" in weed else size_bin(weed["size_px"])  # noqa: E731
+    if args.skip_annotations:
+        kept = load_json(out / "errors.json")["crop_shots_by_species"]
+        shot_species = {k: v["shots"] for k, v in kept.items()}
+        plant_species = {k: v["plants"] for k, v in kept.items()}
+    else:
+        shot_species, plant_species = crop_species_of_shots(test, threshold, bbox_dir)
     sessions = sorted(((r["image_id"][:8], sum(s["on_crop"] for s in fired(r["shots"], threshold))) for r in test),
                       key=lambda x: x[0])
     per_session: dict[str, int] = {}

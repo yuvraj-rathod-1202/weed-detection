@@ -23,10 +23,14 @@ CROP_NAME = {sid: name for name, ids in CROP_GROUPS.items() for sid in ids}
 CLASS_NAMES = ["Crop", "Weed"]
 
 
+def size_bin(size: float) -> str:
+    return next(label for label, lo, hi in SIZE_BINS if lo <= size < hi)
+
+
 def size_bins(sizes: list[float]) -> dict[str, int]:
     counts = {label: 0 for label, _, _ in SIZE_BINS}
     for s in sizes:
-        counts[next(label for label, lo, hi in SIZE_BINS if lo <= s < hi)] += 1
+        counts[size_bin(s)] += 1
     return counts
 
 
@@ -85,3 +89,22 @@ def paired_bootstrap_diff(records_a: list[dict], records_b: list[dict], threshol
     lo, hi = np.percentile(samples, [(1 - level) / 2 * 100, (1 + level) / 2 * 100])
     diff = a[:, 0].sum() / a[:, 1].sum() - b[:, 0].sum() / b[:, 1].sum()
     return {"diff": float(diff), "ci": [float(lo), float(hi)]}
+
+
+PUBLIC_SHOT_KEYS = ("conf", "ignored", "gt_weed", "gt_weeds", "gt_crop", "on_crop", "max_nearby_crop_conf")
+
+
+def public_record(record: dict) -> dict:
+    """A shots.jsonl record reduced to what the website needs, for the public repository.
+
+    Drops the aim points (x, y) and replaces each labelled weed's exact size by its size bin, so the files
+    cannot be turned back into point-and-size annotations of CropAndWeed (its licence forbids that).
+    """
+    return {
+        "image_id": record["image_id"],
+        "inference_ms": record["inference_ms"],
+        "num_gt_crops": record["num_gt_crops"],
+        "gt_weeds": [{"size_bin": weed["size_bin"] if "size_bin" in weed else size_bin(weed["size_px"])}
+                     for weed in record["gt_weeds"]],
+        "shots": [{k: shot[k] for k in PUBLIC_SHOT_KEYS if k in shot} for shot in record["shots"]],
+    }

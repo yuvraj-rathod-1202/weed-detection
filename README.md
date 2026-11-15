@@ -5,9 +5,10 @@ so that most weeds are hit and almost no crop plants are?
 
 **Website (full reasoning, figures and interactions):** https://yuvraj-rathod-1202.github.io/weed-detection/
 
-**Answer on held-out test fields** (CropAndWeed, 1,201 images, never used for any choice): YOLO11s-seg
-instance segmentation at 1280 px with a crop safety gate hits **85.2 %** of weeds (95 % CI 82.8–87.4 %) and
-puts **1.0 %** of its shots on crops (CI 0.4–2.1 %); 28.7 % of shots land on bare soil. A non-learned
+**Answer on held-out test fields** (CropAndWeed, 1,201 images; model and threshold chosen on validation, test
+used once afterwards — earlier development did look at test, see the website): YOLO11s-seg instance segmentation
+at 1280 px with a crop safety gate hits **85.2 %** of weeds (95 % CI 82.8–87.4 %) and puts **1.0 %** of its
+shots on crops (CI 0.4–2.1 %; at most 3.4 % of crop plants are hit); 28.7 % of shots land on bare soil. A non-learned
 baseline that aims at every green blob hits 66.8 % of weeds and puts 23 % of its shots on crops.
 
 ```
@@ -53,7 +54,9 @@ gallery, website) runs on a CPU. YOLO11 and SAM 2.1 base weights download automa
 | **Sugar Beets 2016** (Chebrolu et al., IJRR 2017) | 5 gallery photos from a new farm | CC BY-SA 4.0 | `python scripts/site/fetch_sugarbeets_sample.py` (≈6 MB: label zip + 5 photos read by HTTP range) |
 
 Because of its licence, **no CropAndWeed image or annotation is in this repository or on the website** —
-only statistics and model outputs (aim points, confidences, which labelled plant was hit). Trained models
+only statistics and model outputs. The committed shot files (`results/runs/*/eval_*/shots.jsonl`) keep each
+prediction's confidence and which labelled plant (by index) it hit, but drop the aim points and keep only a
+size bin per labelled weed, so no annotation can be rebuilt from them. Trained models
 are allowed as derivative works for non-commercial use.
 
 ## Exact preprocessing and split
@@ -82,7 +85,11 @@ are allowed as derivative works for non-commercial use.
 | 8 | Website | `cd site && quarto render` (Quarto ≥ 1.9); publish with `quarto publish gh-pages` | local |
 
 Steps 1–4 can be skipped: the trained weights are in `models/released/` and all evaluation outputs are in
-`results/runs/`, so steps 6–8 reproduce every number and figure on the website from this repository alone.
+`results/runs/`. From this repository alone, `python scripts/site/export_site_data.py --skip-annotations`
+rebuilds every result number (curves, comparison, test results with intervals, error analysis, training curves)
+and keeps two annotation-derived files as committed: the dataset statistics (`site/data/dataset.json`) and the
+crop-species counts in `errors.json`, which need the official CropAndWeed annotations (step 1). The gallery
+(step 7) needs the CottonWeedDet12 download and the Sugar Beets fetch; `quarto render` then builds the site.
 
 **Selection rule (fixed before looking at validation numbers):** for each candidate, the confidence
 threshold with the most weeds hit while at most 2 % of shots land on crops; the final model is the
@@ -94,7 +101,7 @@ candidate whose best threshold hits the most weeds. Result: exp 4 (1280 px) at t
 | Where | What |
 |---|---|
 | `results/runs/<run>/eval_val/summary.json` | validation sweep (thresholds 0.05–0.95) and optimal threshold per candidate |
-| `results/runs/<run>/eval_{val,test}/shots.jsonl` | every predicted weed: confidence, aim point, ignored/vetoed, which labelled weed or crop it hit |
+| `results/runs/<run>/eval_{val,test}/shots.jsonl` | every predicted weed: confidence, ignored, nearest crop prediction (for the gate), which labelled weed or crop it hit; labelled weeds as size bins (aim points dropped, see Data access) |
 | `results/runs/<run>/train_results.csv` | per-epoch training and validation losses and metrics |
 | `results/runs/<run>/results.json` | development-time evaluation on test (all aim-point methods, segmentation mAP); see the website's note on test use |
 | `results/runs/baseline_yolo11n_seg`, `yolo11s_seg` | earlier CottonWeedDet12 experiments (exp 1, 2) |

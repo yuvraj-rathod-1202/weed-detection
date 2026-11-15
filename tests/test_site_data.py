@@ -17,6 +17,20 @@ def test_hit_rate_by_groups_weeds_and_counts_hits_at_threshold():
     assert by_size["small"]["rate"] == 0.0 and by_size["large"]["rate"] == 1.0
 
 
+def test_public_record_drops_points_and_exact_sizes_but_keeps_what_the_site_needs():
+    from src.site_data import public_record
+
+    record = {"image_id": "ave-0001-0001", "session": "ave-0001", "inference_ms": 40.0, "num_gt_crops": 1,
+              "gt_weeds": [{"size_px": 20.3}, {"size_px": 100.0}],
+              "shots": [{**_shot(0.9, [1]), "x": 512.0, "y": 300.0}]}
+    pub = public_record(record)
+    assert pub["gt_weeds"] == [{"size_bin": "16–24"}, {"size_bin": "64–128"}]
+    assert "x" not in pub["shots"][0] and "y" not in pub["shots"][0]
+    assert pub["shots"][0]["gt_weeds"] == [1] and pub["num_gt_crops"] == 1
+    by_size = hit_rate_by([pub], 0.5, lambda r, w: w["size_bin"])
+    assert by_size["64–128"]["rate"] == 1.0 and by_size["16–24"]["rate"] == 0.0
+
+
 def test_paired_bootstrap_diff_is_zero_for_identical_runs_and_positive_for_better():
     records = [{"image_id": f"vwg-{i:04d}-0001", "gt_weeds": [{"size_px": 30}], "shots": [_shot(0.9, [0])] if i % 2 else []}
                for i in range(20)]
