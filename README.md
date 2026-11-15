@@ -51,7 +51,7 @@ gallery, website) runs on a CPU. YOLO11 and SAM 2.1 base weights download automa
 |---|---|---|---|
 | **CropAndWeed** (Steininger et al., WACV 2023) | main dataset: train / validation / test | non-commercial, **no redistribution** | `python scripts/convert_cropandweed.py --download --src data/raw/cropandweed_src --out data/raw/cropandweed` downloads the official archives (~11.5 GB) and converts them; add `--parts 1` for a quarter |
 | **CottonWeedDet12** (Lu et al., Zenodo 7535814) | earlier weeds-only experiments, gallery | CC BY-NC 4.0 | download from Zenodo into `data/raw/cottonweeddet12/` (layout in [data/README.md](data/README.md)) |
-| **Sugar Beets 2016** (Chebrolu et al., IJRR 2017) | 5 gallery photos from a new farm | CC BY-SA 4.0 | `python scripts/site/fetch_sugarbeets_sample.py` (≈6 MB: label zip + 5 photos read by HTTP range) |
+| **Sugar Beets 2016** (Chebrolu et al., IJRR 2017) | gallery photos from a new farm (5 hand-picked + 5 random as a check) | CC BY-SA 4.0 | `python scripts/site/fetch_sugarbeets_sample.py` (label zip + 10 photos read by HTTP range) |
 
 Because of its licence, **no CropAndWeed image or annotation is in this repository or on the website** —
 only statistics and model outputs. The committed shot files (`results/runs/*/eval_*/shots.jsonl`) keep each
@@ -81,7 +81,7 @@ are allowed as derivative works for non-commercial use.
 | 4 | Evaluate every candidate + baseline on **validation**, select by the pre-set rule, evaluate the selected model + baseline on **test** | cells in [docs/kaggle_validation.md](docs/kaggle_validation.md): `scripts/evaluate_split.py`, `scripts/select_model.py` | Kaggle, ~3 GPU-hours |
 | 5 | Copy results into the repository | `python scripts/collect_results.py` | local |
 | 6 | Website data (tables, curves, CIs, errors) | `python scripts/site/export_site_data.py` | local, ~4 min |
-| 7 | Gallery | `python scripts/site/fetch_sugarbeets_sample.py` then `python scripts/site/make_gallery.py` | local CPU |
+| 7 | Gallery (10 photos × 5 models: baseline, exp 2–5) | `python scripts/site/fetch_sugarbeets_sample.py` then `python scripts/site/make_gallery.py` | local CPU, ~5 min |
 | 8 | Website | `cd site && quarto render` (Quarto ≥ 1.9); publish with `quarto publish gh-pages` | local |
 
 Steps 1–4 can be skipped: the trained weights are in `models/released/` and all evaluation outputs are in

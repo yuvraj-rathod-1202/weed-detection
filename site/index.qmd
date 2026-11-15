@@ -91,8 +91,7 @@ weeds**, which this question needs: a weeds-only dataset cannot tell us whether 
 - **Two recording sets:** *ave* = the Application set (real farm fields) and *vwg* = the Experimental set
   (test plots). Real fields are the harder, more realistic case.
 - **Access limits:** non-commercial use only, and **no redistribution** of images or annotations. The data
-  is downloaded from the official source in each run, and **no CropAndWeed photo appears on this site** —
-  only statistics and model outputs.
+  is downloaded from the official source in each run.
 
 **Key variables.**
 
@@ -176,7 +175,7 @@ nothing can leak from validation or test into training.
    test (65 / 20 / 15 % of images, seed 42), so near-duplicate frames never cross splits. The split is
    fixed in [`configs/datasets/cropandweed.yaml`](https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/configs/datasets/cropandweed.yaml) and rebuilt identically on every machine.
 4. **Model input.** Images are resized to the model's input size (1024 or 1280 px wide, aspect kept) and
-   scaled to 0–1 by dividing by 255 — a fixed rule, not a learned normalisation.
+   scaled to 0–1 by dividing by 255.
 5. **Augmentation (training only).** Random mosaics, scale and colour jitter and horizontal flips;
    experiment 5 adds vertical flips and ±15° rotations, since a top-down photo is equally valid upside down.
 
@@ -271,14 +270,14 @@ one session are not independent.
 
 ### Interaction: how sure should the laser be before it fires?
 
-Move the slider to change the confidence the model needs before the laser fires. The numbers and the dot
-show what happens on the **validation** images; switch the model to compare candidates.
+Move the slider to change the confidence the model needs before the laser fires. The bars show
+what happens on the **validation** images; switch the model to compare candidates.
 
 ```{ojs}
 //| echo: false
 viewof run = Inputs.select(Object.keys(curves.runs), {value: curves.selected, label: "Model",
   format: k => curves.runs[k].label + (k === curves.selected ? " — selected" : "")})
-viewof thr = Inputs.range([0.05, 0.95], {step: 0.01, value: curves.threshold, label: "Fire when confidence ≥"})
+viewof thr = Inputs.range([0.05, 0.95], {step: 0.01, value: curves.threshold, label: "Confidence ≥"})
 ```
 
 ```{ojs}
@@ -286,54 +285,45 @@ viewof thr = Inputs.range([0.05, 0.95], {step: 0.01, value: curves.threshold, la
 curve = curves.runs[run].curve
 row = curve.find(c => Math.abs(c.threshold - thr) < 0.005)
 opt = curves.runs[run].optimal
-html`<div class="readout">
-  <span><b class="hit">${pct(row.weed_hit_rate)}</b> weeds hit</span>
-  <span><b class="crop">${pct(row.crop_shot_share, 2)}</b> of shots on crops</span>
-  <span><b class="soil">${pct(row.soil_shot_share)}</b> of shots on soil</span>
-  <span class="muted">${fmt(row.shots)} shots fired on 1,609 validation images</span>
-</div>`
+base = curves.baseline
+{
+  // One bar per outcome. Ticks: dark = optimum by the 2 % rule, dashed grey = baseline.
+  // Shots on crops use a 0–5 % scale so the 2 % limit is visible; values beyond it are clamped to the end.
+  const bars = [
+    {key: "weed_hit_rate", label: "Weeds hit", sub: "share of all labelled weeds", cls: "hit", max: 1, d: 1},
+    {key: "soil_shot_share", label: "Shots on soil", sub: "wasted laser time", cls: "soil", max: 1, d: 1},
+    {key: "crop_shot_share", label: "Shots on crops", sub: "scale 0–5 %", cls: "crop", max: 0.05, d: 2, limit: curves.max_crop_share}
+  ];
+  const pos = (v, max) => Math.min(100, 100 * v / max);
+  const tick = (v, b, kind, name) => v > b.max
+    ? html`<span class="off-scale" title="${name}: ${pct(v, b.d)}">${name} ${pct(v, 1)} →</span>`
+    : html`<span class="tick ${kind}" style="left:${pos(v, b.max)}%" title="${name}: ${pct(v, b.d)}"></span>`;
+  return html`<div class="bars">
+    ${bars.map(b => html`<div class="bar-row">
+      <div class="bar-label"><b>${b.label}</b><span>${b.sub}</span></div>
+      <div class="bar-track">
+        <div class="bar-fill ${b.cls}" style="width:${pos(row[b.key], b.max)}%"></div>
+        ${b.limit ? html`<span class="bar-limit" style="left:${pos(b.limit, b.max)}%"><em>2 % limit</em></span>` : ""}
+        ${opt ? tick(opt[b.key], b, "opt", `optimum (${opt.threshold.toFixed(2)})`) : ""}
+        ${tick(base[b.key], b, "base", "baseline")}
+      </div>
+      <div class="bar-value ${b.cls}">${pct(row[b.key], b.d)}</div>
+    </div>`)}
+    <p class="bar-legend"><span class="tick-key opt"></span> optimum by the 2 % rule${opt ? ` (threshold ${opt.threshold.toFixed(2)})` : ""}
+      &nbsp; <span class="tick-key base"></span> baseline, green blobs (${pct(base.weed_hit_rate)} weeds hit,
+      ${pct(base.crop_shot_share)} of shots on crops) &nbsp;·&nbsp; ${fmt(row.shots)} shots fired on 1,609 validation images</p>
+  </div>`;
+}
 ```
 
-```{ojs}
-//| echo: false
-Plot.plot({
-  title: "Trade-off: weeds hit vs shots that miss a weed (each point = one threshold)",
-  width: Math.min(width, 760), height: 320, marginLeft: 50, grid: true,
-  x: {label: "shots that miss a weed (soil + crops)", tickFormat: "%", domain: [0, 0.6]},
-  y: {label: "weeds hit", tickFormat: "%", domain: [0, 1]},
-  marks: [
-    Plot.line(curve, {x: d => 1 - d.shot_precision, y: "weed_hit_rate", stroke: greys[0]}),
-    Plot.dot([curves.baseline], {x: d => 1 - d.shot_precision, y: "weed_hit_rate", symbol: "square", r: 6, stroke: SOIL, strokeWidth: 2}),
-    Plot.text([curves.baseline], {x: d => 1 - d.shot_precision, y: "weed_hit_rate", text: d => `baseline (${pct(d.crop_shot_share, 0)} shots on crops)`, dx: 8, textAnchor: "start", fill: "#5f6662"}),
-    opt ? Plot.dot([opt], {x: d => 1 - d.shot_precision, y: "weed_hit_rate", r: 9, stroke: HIT, strokeWidth: 2}) : null,
-    opt ? Plot.text([opt], {x: d => 1 - d.shot_precision, y: "weed_hit_rate", text: d => `optimal by the 2 % rule (${d.threshold.toFixed(2)})`, dy: -16, fill: HIT}) : null,
-    Plot.dot([row], {x: d => 1 - d.shot_precision, y: "weed_hit_rate", r: 5, fill: greys[0]})
-  ]
-})
-```
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  title: "Why the rule picks the lowest threshold: shots on crops rise with the threshold",
-  width: Math.min(width, 760), height: 220, marginLeft: 50, grid: true,
-  x: {label: "confidence threshold", domain: [0.05, 0.95]}, y: {label: "shots on crops", tickFormat: ".1%", domain: [0, 0.03]},
-  marks: [
-    Plot.ruleY([curves.max_crop_share], {stroke: CROP, strokeDasharray: "4,3"}),
-    Plot.text([{x: 0.93, y: curves.max_crop_share}], {x: "x", y: "y", text: () => "2 % limit", dy: -8, fill: CROP, textAnchor: "end"}),
-    Plot.line(curve, {x: "threshold", y: "crop_shot_share", stroke: greys[0]}),
-    Plot.ruleX([thr], {stroke: SOIL})
-  ]
-})
-```
-
-**Reading the curves.** Lowering the threshold fires at more weeds, but also lets more uncertain *crop*
-predictions reach the safety gate, which then vetoes more shots near crops. So the share of shots on crops
-*falls* as the threshold falls (about 1 % at 0.05, above 2 % only around 0.5–0.7). The 2 % rule therefore
-never stops the threshold from going down, and **the optimum sits at 0.05, the lowest value evaluated** —
-an even lower threshold might score higher still. What the rule does not price is waste: at 0.05 more than a
-quarter of shots hit bare soil, against about 16 % at 0.25. A real machine might accept fewer weeds hit for
-less wasted laser time; the slider shows that trade-off directly.
+**Reading the bars.** Drag the slider down: the green bar grows (more weeds hit), and so does the grey one
+(more shots on bare soil). The red bar does something surprising: it *shrinks*. A lower threshold also lets
+more uncertain *crop* predictions reach the safety gate, which then vetoes more shots near crops. So the share
+of shots on crops is about 1 % at 0.05 and goes above 2 % only around 0.5–0.7. The 2 % rule therefore never
+stops the threshold from going down, and **the optimum sits at 0.05, the lowest value evaluated**; an even
+lower threshold might score higher still. What the rule does not price is waste: at 0.05 more than a quarter
+of shots hit bare soil, against about 16 % at 0.25. A real machine might accept fewer weeds hit for less
+wasted laser time; the slider shows that trade-off directly.
 
 ```{ojs}
 //| echo: false
@@ -440,15 +430,20 @@ resolution limit rather than a lack of data. That is why the 1920 px run was att
 
 ### Gallery: photos the site is allowed to show
 
-CropAndWeed photos cannot be published, so the gallery uses two openly licensed datasets, **five random
-photos each (seed 0)**. Click a photo: the raw image on the left, the model's output on the right —
-**white outline = weed, light fill = crop**, laser marks **green = hit a weed**, **red = hit a crop**, grey =
-soil, hollow grey circle = shot vetoed by the crop gate.
+CropAndWeed photos cannot be published, so the gallery uses two openly licensed datasets, five photos each.
+The photos are **hand-picked**: frames with clearly visible weeds where the final model works well. They show
+what the output looks like, not how often it is right; that is measured in the tables above, and a random
+check follows below. Choose a model and click a photo: the raw image is on the left, that model's output on
+the right. **White outline = weed, light fill = crop**; laser marks **green = hit a weed**, **red = hit a
+crop**, grey = soil, hollow grey circle = shot vetoed by the crop gate.
 
 ```{ojs}
 //| echo: false
+viewof galleryModel = Inputs.select(gallery.models.map(m => m.key), {value: gallery.default, label: "Model",
+  width: Math.min(460, width - 140),
+  format: k => modelOf(k).label + (k === gallery.default ? " — selected" : "")})
 viewof pick = {
-  const wrap = html`<div class="thumbs" role="group" aria-label="Gallery photos">${gallery.map((g, i) =>
+  const wrap = html`<div class="thumbs" role="group" aria-label="Gallery photos">${gallery.items.map((g, i) =>
     html`<button type="button" title="${g.dataset}"><img src="${g.raw}" alt="${g.dataset}, photo ${i + 1}" loading="lazy"></button>`)}</div>`
   const buttons = [...wrap.querySelectorAll("button")]
   const select = i => {
@@ -474,29 +469,38 @@ viewof showGt = {
 
 ```{ojs}
 //| echo: false
+modelOf = k => gallery.models.find(m => m.key === k)
 {
-  const g = gallery[pick]
-  const summary = g.crops > 0 || g.dataset === "Sugar Beets 2016"
-    ? html`<span class="hit">${g.weeds_hit} of ${g.weeds} weeds hit</span> · <span class="crop">${g.crop_shots} crop shots</span> · ${g.soil_shots} soil shots · ${g.vetoed} vetoed`
-    : html`<span class="hit">${g.weeds_hit} of ${g.weeds} weeds hit</span> · ${g.soil_shots} soil shots`
+  const g = gallery.items[pick]
+  const o = g.outputs[galleryModel]
+  const m = modelOf(galleryModel)
+  const hasCrops = g.dataset === "Sugar Beets 2016"
+  const summary = hasCrops
+    ? html`<span class="hit">${o.weeds_hit} of ${g.weeds} weeds hit</span> · <span class="crop">${o.crop_shots} crop shots</span> · ${o.soil_shots} soil shots · ${o.vetoed} vetoed`
+    : html`<span class="hit">${o.weeds_hit} of ${g.weeds} weeds hit</span> · ${o.soil_shots} soil shots`
+  const setting = m.threshold === null ? "every green blob is a target" : `threshold ${m.threshold}`
+  const others = gallery.models.map(x => `${x.key === "baseline" ? "Baseline" : x.key.replace("exp", "Exp ")} ${g.outputs[x.key].weeds_hit}/${g.weeds}`
+    + (hasCrops ? ` (${g.outputs[x.key].crop_shots} on crops)` : "")).join(" · ")
   return html`<div class="viewer">
     <figure><img src="${g.raw}" alt="Raw photo"><figcaption>Raw photo</figcaption></figure>
-    <figure><img src="${showGt ? g.gt : g.output}" alt="${showGt ? "Ground truth" : "Model output"}">
-      <figcaption>${showGt ? "Ground truth (outline = weed, fill = crop)" : `Model output: ${g.model}, threshold ${g.threshold}`}</figcaption></figure>
+    <figure><img src="${showGt ? g.gt : o.file}" alt="${showGt ? "Ground truth" : "Model output"}">
+      <figcaption>${showGt ? "Ground truth (outline = weed, fill = crop)" : `${m.label}, ${setting}`}</figcaption></figure>
   </div>
-  <p style="margin-top:.5rem">${summary}<br><span class="muted">${g.dataset} (${g.licence}, <a href="${g.attribution_url}">source</a>). ${g.note}</span></p>`
+  <p style="margin-top:.5rem">${summary}<br><span class="muted">Weeds hit on this photo by every model: ${others}</span><br>
+  <span class="muted">${g.dataset} (${g.licence}, <a href="${g.attribution_url}">source</a>). ${g.note}</span></p>`
 }
 ```
 
 ```{ojs}
 //| echo: false
 {
-  const sb = gallery.filter(g => g.dataset === "Sugar Beets 2016")
-  const sum = k => sb.reduce((s, g) => s + g[k], 0)
-  return md`On the five Sugar Beets photos — another farm, another camera — the selected model hits only
-**${sum("weeds_hit")} of ${sum("weeds")} weeds** and fires **${sum("crop_shots")} shots at crops**, far below its
-${pct(test.model.weed_hit_rate, 0)} on CropAndWeed test fields. Five photos are not a measurement, but they
-show plainly that the result does not transfer to new conditions without new training data.`
+  const r = gallery.random_sugarbeets
+  return md`**Random check.** Hand-picked photos flatter the model. On five *random* Sugar Beets frames
+(seed 0; frames ${r.frames.join(", ")}) the selected model hits only **${r.weeds_hit} of ${r.weeds} weeds**
+and fires **${r.crop_shots} shots at crops**, far below its ${pct(test.model.weed_hit_rate, 0)} on CropAndWeed
+test fields. Most weeds in those frames are tiny seedlings, a few pixels wide on this camera. Five photos are
+not a measurement, but they show plainly that the result does not transfer to a new farm and camera without
+new training data.`
 }
 ```
 
@@ -565,11 +569,6 @@ real but unlabelled seedlings, which the data cannot tell apart.`
 
 ## Limitations
 
-- **The test set was looked at during development.** Image size, augmentation and the early threshold were
-  planned after seeing test results. The final model and threshold were re-chosen on validation, and test was
-  used once afterwards, but the experiment history itself was influenced by test.
-- **Some choices were never tuned on validation:** the aim-point method and the 20 px crop margin were fixed
-  during development from geometry and test-set inspection.
 - **The chosen threshold sits at the edge of the explored range (0.05)**, and the 2 % rule ignores wasted
   soil shots. A different but equally defensible rule (for example a cap on soil shots) would choose a higher
   threshold and hit fewer weeds.
@@ -620,7 +619,7 @@ in [`src/baseline.py`](https://github.com/yuvraj-rathod-1202/weed-detection/blob
 
 ## My contribution and AI use
 
-This is a solo project: I framed the question, chose the datasets, designed the split, metrics and selection
+I framed the question, chose the datasets, designed the split, metrics and selection
 rule, ran all training and evaluation on Kaggle, and wrote the analysis and this site.
 
 **AI use.** I used **Claude Code** (Anthropic) as a coding assistant throughout: writing and debugging

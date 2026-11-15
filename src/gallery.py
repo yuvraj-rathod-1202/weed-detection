@@ -24,6 +24,16 @@ WHITE = (255, 255, 255)
 SUGARBEET_CROP_BGR = (0, 0, 255)       # Sugar Beets 2016 label colour of sugar beet; every other colour is a weed
 SUGARBEET_UNKNOWN_BGR = (150, 150, 150)  # "unknown" plants: neither weed nor crop (left out, like ignore regions)
 
+# Gallery photos, hand-picked to show the models working (the site says so). Sugar Beets 2016: among the 30
+# frames with the most large weeds (>= 1500 px) and >= 2 sugar beets, those where the final model hits most
+# weeds with at most 1 crop shot, checked by eye. CottonWeedDet12: test photos with >= 2 weeds that exp 2 hits
+# fully, preferring ones exp 4 also does well on.
+SUGARBEETS_FRAMES = (116, 136, 126, 102, 164)
+COTTON_IMAGES = ("20210903_NIKOND3300_YL_120", "180_20210910_NIKOND3300_YL_219", "90_20210913_iPhoneSE_YL_84",
+                 "90_20210827_iPhone11Pro_BT_94", "180_20210912_CanonEOS4000D_YL_12")
+# Honesty check: 5 random Sugar Beets frames, random.Random(0).sample(sorted(all 283 frames), 5).
+RANDOM_SUGARBEETS_FRAMES = (43, 155, 220, 238, 284)
+
 
 def shot_outcome(point, gt_weed_masks: list[np.ndarray], gt_crop_masks: list[np.ndarray]) -> str:
     if any(point_in_mask(point, m) for m in gt_weed_masks):

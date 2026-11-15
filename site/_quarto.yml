@@ -16,9 +16,8 @@ website:
         aria-label: Source code on GitHub
   page-footer:
     center: >
-      ES 335 project · Yuvraj Rathod · Code: AGPL-3.0 (ultralytics) /
-      own code in the repository · Gallery photos: Sugar Beets 2016 (CC BY-SA 4.0),
-      CottonWeedDet12 (CC BY-NC 4.0) · No CropAndWeed images are shown (licence).
+      ES 335 project · Yuvraj Rathod
+      
 
 format:
   html:

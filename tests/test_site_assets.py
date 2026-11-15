@@ -18,9 +18,27 @@ def _site_images():
             yield rel.as_posix()
 
 
+def _gallery():
+    return json.loads((SITE / "data" / "gallery.json").read_text(encoding="utf-8"))
+
+
+def test_gallery_has_an_output_for_every_model_on_every_photo():
+    gallery = _gallery()
+    keys = [m["key"] for m in gallery["models"]]
+    assert keys == ["baseline", "exp2", "exp3", "exp4", "exp5"] and gallery["default"] == "exp4"
+    for item in gallery["items"]:
+        assert sorted(item["outputs"]) == sorted(keys), item["id"]
+        for out in item["outputs"].values():
+            assert {"file", "weeds_hit", "crop_shots", "soil_shots", "vetoed"} <= set(out)
+            assert 0 <= out["weeds_hit"] <= item["weeds"]
+
+
 def test_site_images_are_only_permitted_gallery_files():
-    gallery = json.loads((SITE / "data" / "gallery.json").read_text(encoding="utf-8"))
-    permitted = {item[k]: item["dataset"] for item in gallery for k in ("raw", "output", "gt")}
+    gallery = _gallery()
+    permitted = {}
+    for item in gallery["items"]:
+        files = [item["raw"], item["gt"]] + [out["file"] for out in item["outputs"].values()]
+        permitted.update({f: item["dataset"] for f in files})
     for image in _site_images():
         assert not CROPANDWEED_NAME.search(image), f"CropAndWeed image in site/: {image}"
         assert image in permitted, f"{image} is not a gallery file listed in site/data/gallery.json"
