@@ -31,8 +31,6 @@ Given one top-down RGB photo of a crop field, can a model place **one laser poin
 most weeds are hit and almost no crop plants are?
 :::
 
-**Short answer - on the held-out test fields, yes, with a cost.**
-
 ```{ojs}
 //| echo: false
 html`<div class="stats">
