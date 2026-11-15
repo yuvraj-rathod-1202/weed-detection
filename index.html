@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Yuvraj Rathod · ES 335">
+<meta name="dcterms.date" content="2026-11-16">
+
+<title>AI-Based Weed Localization for Precision Weed Removal – Weed laser targeting</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8ab5e945deb7afd835d7d683ee67f38f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+</head>
+
+<body class="floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Weed laser targeting</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/yuvraj-rathod-1202/weed-detection"> <i class="bi bi-github" role="img" aria-label="Source code on GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#question" id="toc-question" class="nav-link active" data-scroll-target="#question">Question</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">Preprocessing</a></li>
+  <li><a href="#baseline-and-methods" id="toc-baseline-and-methods" class="nav-link" data-scroll-target="#baseline-and-methods">Baseline and methods</a></li>
+  <li><a href="#evaluation" id="toc-evaluation" class="nav-link" data-scroll-target="#evaluation">Evaluation</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#errors" id="toc-errors" class="nav-link" data-scroll-target="#errors">Errors</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#reproduce" id="toc-reproduce" class="nav-link" data-scroll-target="#reproduce">Reproduce</a></li>
+  <li><a href="#my-contribution-and-ai-use" id="toc-my-contribution-and-ai-use" class="nav-link" data-scroll-target="#my-contribution-and-ai-use">My contribution and AI use</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">AI-Based Weed Localization for Precision Weed Removal</h1>
+<p class="subtitle lead">Instance segmentation of field photos → one laser point per weed, with a crop safety gate</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Yuvraj Rathod · ES 335 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 16, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="10" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 9;"><span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/dataset.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>splits <span class="op">=</span> [<span class="st">"train"</span><span class="op">,</span> <span class="st">"val"</span><span class="op">,</span> <span class="st">"test"</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> (key) <span class="kw">=&gt;</span> splits<span class="op">.</span><span class="fu">reduce</span>((s<span class="op">,</span> k) <span class="kw">=&gt;</span> s <span class="op">+</span> dataset<span class="op">.</span><span class="at">splits</span>[k][key]<span class="op">,</span> <span class="dv">0</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>pct <span class="op">=</span> (x<span class="op">,</span> d <span class="op">=</span> <span class="dv">1</span>) <span class="kw">=&gt;</span> (<span class="dv">100</span> <span class="op">*</span> x)<span class="op">.</span><span class="fu">toFixed</span>(d) <span class="op">+</span> <span class="st">"%"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>fmt <span class="op">=</span> (x) <span class="kw">=&gt;</span> x<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">"en-US"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>greys <span class="op">=</span> [<span class="st">"#3a3f3c"</span><span class="op">,</span> <span class="st">"#9aa19d"</span>]</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>HIT <span class="op">=</span> <span class="st">"#2e7d32"</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>CROP <span class="op">=</span> <span class="st">"#c62828"</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>SOIL <span class="op">=</span> <span class="st">"#9e9e9e"</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>curves <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/curves.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/comparison.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/test.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/errors.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>training <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/training.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>gallery <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/gallery.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>REPO <span class="op">=</span> <span class="st">"https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/"</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>ci <span class="op">=</span> (r<span class="op">,</span> d <span class="op">=</span> <span class="dv">1</span>) <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="fu">pct</span>(r[<span class="dv">0</span>]<span class="op">,</span> d)<span class="sc">}</span><span class="vs">–</span><span class="sc">${</span><span class="fu">pct</span>(r[<span class="dv">1</span>]<span class="op">,</span> d)<span class="sc">}</span><span class="vs">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-12" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-13" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-14" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-15" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-16" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-17" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="lead-question">
+<p>Given one top-down RGB photo of a crop field, can a model place <strong>one laser point on each weed</strong>, so that most weeds are hit and almost no crop plants are?</p>
+</div>
+<p><strong>Short answer — on the held-out test fields, yes, with a cost.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="37" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 36;"><span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div class="stats"&gt;</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="stat"&gt;&lt;b class="hit"&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">&lt;/b&gt;&lt;span&gt;of weeds hit (95% CI </span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">)&lt;/span&gt;&lt;/div&gt;</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="stat"&gt;&lt;b class="crop"&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;/b&gt;&lt;span&gt;of shots land on a crop (CI </span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">)&lt;/span&gt;&lt;/div&gt;</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="stat"&gt;&lt;b class="soil"&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">soil_shot_share</span><span class="op">,</span> <span class="dv">0</span>)<span class="sc">}</span><span class="vs">&lt;/b&gt;&lt;span&gt;of shots wasted on bare soil&lt;/span&gt;&lt;/div&gt;</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;div class="stat"&gt;&lt;b&gt;</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">inference_ms</span>)<span class="sc">}</span><span class="vs"> ms&lt;/b&gt;&lt;span&gt;per image on one T4 GPU&lt;/span&gt;&lt;/div&gt;</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/div&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="47" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 46;"><span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`The non-learned baseline (aim at every green blob) hits </span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs"> of weeds but puts</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="vs">**</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs"> of its shots on crops** — the trained model's value is crop safety. Model:</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="vs">YOLO11s-seg at 1280 px, chosen on validation. Per crop plant: </span><span class="sc">${</span>errors<span class="op">.</span><span class="at">total_crop_shots</span><span class="sc">}</span><span class="vs"> crop shots on</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">num_gt_crops</span>)<span class="sc">}</span><span class="vs"> test crop plants, so **at most </span><span class="sc">${</span><span class="fu">pct</span>(errors<span class="op">.</span><span class="at">total_crop_shots</span> <span class="op">/</span> test<span class="op">.</span><span class="at">num_gt_crops</span>)<span class="sc">}</span><span class="vs"> of crop</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="vs">plants are hit**. Test = </span><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">num_images</span>)<span class="sc">}</span><span class="vs"> images, </span><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">num_gt_weeds</span>)<span class="sc">}</span><span class="vs"> weeds and</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">num_gt_crops</span>)<span class="sc">}</span><span class="vs"> crop plants, not used by the final selection (model and threshold were chosen on</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="vs">validation; earlier development did look at test — see *Evaluation*).`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<section id="question" class="level1">
+<h1>Question</h1>
+<p><strong>Why it matters.</strong> A laser weeder destroys weeds without herbicide by heating the plant’s growing point. It needs a single aim point per weed — a bounding box is not enough, because the centre of a box around an irregular weed can fall on bare soil or on the crop next to it. Every shot that lands on a crop damages the harvest, so avoiding crops matters more than hitting every last weed.</p>
+<p><strong>What is predicted, and when.</strong> The prediction is made on the machine, frame by frame, as the camera passes over the field. At that moment the only information is the <strong>RGB image itself</strong> — no species list, no stem positions, no earlier frames.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Unit (one row)</strong></td>
+<td>one plant instance (a weed or a crop) in one image; for the laser metrics, one shot</td>
+</tr>
+<tr class="even">
+<td><strong>Model output</strong></td>
+<td>for every predicted weed: a pixel mask and one aim point (x, y)</td>
+</tr>
+<tr class="odd">
+<td><strong>Target</strong></td>
+<td>a shot is correct when its point lands inside a real weed and outside every crop</td>
+</tr>
+<tr class="even">
+<td><strong>Decision rule</strong></td>
+<td>the laser fires only when the model is at least <em>X</em> sure a plant is a weed, and not within 20 px of a plant it thinks is a crop</td>
+</tr>
+<tr class="odd">
+<td><strong>Main metrics</strong></td>
+<td>share of weeds hit; share of shots that land on a crop; share of shots wasted on soil</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Limits of the claim.</strong> All evidence comes from offline photos: one main dataset recorded in European fields with one camera, evaluated image by image. Nothing here is a field trial, says how much laser energy kills a plant, or shows that the model works on other farms, crops or cameras. A small gallery of photos from a different farm (Results) shows how quickly that can break.</p>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
+<p><strong>Main dataset: CropAndWeed</strong> <span class="citation" data-cites="steininger2023cropandweed">(<a href="#ref-steininger2023cropandweed" role="doc-biblioref">Steininger et al. 2023</a>)</span>. <span><span id="ojs-element-id-1"></span></span> top-down RGB photos (1920 × 1088 px, about 0.4 mm per pixel) of crop rows with weeds, recorded in <span><span id="ojs-element-id-2"></span></span> recording sessions. It is one of the few public datasets that label <strong>both crops and weeds</strong>, which this question needs: a weeds-only dataset cannot tell us whether the laser would hit a crop.</p>
+<ul>
+<li><strong>Annotations:</strong> a box and stem position for every plant, plus a pixel mask that gives each pixel its species. We use the authors’ own two-class variant <em>CropOrWeed2</em>: <strong>Crop</strong> (maize, sugar beet, soybean, sunflower, potato, pea, bean, pumpkin) and <strong>Weed</strong> (57 weed species).</li>
+<li><strong>Two recording sets:</strong> <em>ave</em> = the Application set (real farm fields) and <em>vwg</em> = the Experimental set (test plots). Real fields are the harder, more realistic case.</li>
+<li><strong>Access limits:</strong> non-commercial use only, and <strong>no redistribution</strong> of images or annotations. The data is downloaded from the official source in each run.</li>
+</ul>
+<p><strong>Key variables.</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Level</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RGB image (1920 × 1088)</td>
+<td>image</td>
+<td>the only model input</td>
+</tr>
+<tr class="even">
+<td>recording session (<code>ave-0543</code>, …)</td>
+<td>image</td>
+<td>grouping for the split and for confidence intervals</td>
+</tr>
+<tr class="odd">
+<td>plant class: Crop / Weed / ignored</td>
+<td>plant</td>
+<td>target of the model</td>
+</tr>
+<tr class="even">
+<td>plant mask (pixels)</td>
+<td>plant</td>
+<td>training target; “did the shot land inside the plant?”</td>
+</tr>
+<tr class="odd">
+<td>plant box, species id, stem point</td>
+<td>plant</td>
+<td>building masks; error analysis by size and species</td>
+</tr>
+<tr class="even">
+<td>predicted mask, class, confidence</td>
+<td>prediction</td>
+<td>laser decision (confidence threshold, crop gate)</td>
+</tr>
+<tr class="odd">
+<td>shot point (x, y) and where it lands</td>
+<td>shot</td>
+<td>the main metrics</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="109" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 108;"><span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div class="table-scroll"&gt;&lt;table class="data"&gt;</span></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Split&lt;/th&gt;&lt;th&gt;Images&lt;/th&gt;&lt;th&gt;Sessions&lt;/th&gt;&lt;th&gt;Crop plants&lt;/th&gt;&lt;th&gt;Weed plants&lt;/th&gt;</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;th&gt;Ignored plants&lt;/th&gt;&lt;th&gt;Real-field / test-plot images&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;tbody&gt;</span><span class="sc">${</span>splits<span class="op">.</span><span class="fu">map</span>(s <span class="kw">=&gt;</span> { <span class="kw">const</span> d <span class="op">=</span> dataset<span class="op">.</span><span class="at">splits</span>[s]<span class="op">;</span> <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;tr&gt;&lt;td&gt;</span><span class="sc">${</span>s<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">images</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;</span></span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">sessions</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">crop</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">weed</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">ignored</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;</span></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">ave</span>)<span class="sc">}</span><span class="vs"> / </span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">vwg</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;/tr&gt;`</span> })<span class="sc">}</span><span class="vs">&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<p><strong>Quality issues that shape the method.</strong></p>
+<ol type="1">
+<li><strong>Plants outside the two classes.</strong> <span><span id="ojs-element-id-3"></span></span> annotated plants <span>(<span id="ojs-element-id-4"></span></span> of all) are species outside CropOrWeed2 or are labelled only “Vegetation” because the annotators could not identify them. They are kept as <strong>ignore regions</strong>: a prediction on them counts neither as right nor wrong.</li>
+<li><strong>Masks are per class, not per plant.</strong> Two touching weeds share one blob of “weed” pixels, but the laser needs one point per plant. <em>Preprocessing</em> explains how the plants are separated.</li>
+<li><strong>Many plants are tiny.</strong> Weeds outnumber crops about <span><span id="ojs-element-id-5"></span></span> to 1, and <span><span id="ojs-element-id-6"></span></span> of weeds are at most 24 px across (about 1 cm) — a few pixels once the image is shrunk for the network.</li>
+<li><strong>Near-duplicate frames.</strong> Consecutive photos in a session overlap heavily, so a random split would put almost the same image in training and test.</li>
+<li><strong>Imbalanced crops.</strong> A few crop species dominate (chart below); rare ones are harder to learn.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="135" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 134;"><span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>sizeRows <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(dataset<span class="op">.</span><span class="at">sizes</span>)<span class="op">.</span><span class="fu">flatMap</span>(([cls<span class="op">,</span> bins]) <span class="kw">=&gt;</span> {</span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> n <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(bins)<span class="op">.</span><span class="fu">reduce</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a <span class="op">+</span> b)</span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(bins)<span class="op">.</span><span class="fu">map</span>(([bin<span class="op">,</span> count]) <span class="kw">=&gt;</span> ({cls<span class="op">,</span> bin<span class="op">,</span> <span class="dt">share</span><span class="op">:</span> count <span class="op">/</span> n}))</span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Plant size (sqrt of box area, px): weeds are much smaller than crops"</span><span class="op">,</span></span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(width<span class="op">,</span> <span class="dv">760</span>)<span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">260</span><span class="op">,</span> <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"plant size (px)"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(dataset<span class="op">.</span><span class="at">sizes</span><span class="op">.</span><span class="at">Weed</span>)}<span class="op">,</span></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"share of plants"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> <span class="st">"%"</span>}<span class="op">,</span> <span class="dt">fx</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="kw">null</span>}<span class="op">,</span> <span class="dt">color</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="st">"Weed"</span><span class="op">,</span> <span class="st">"Crop"</span>]<span class="op">,</span> <span class="dt">range</span><span class="op">:</span> greys<span class="op">,</span> <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [Plot<span class="op">.</span><span class="fu">barY</span>(sizeRows<span class="op">,</span> {<span class="dt">fx</span><span class="op">:</span> <span class="st">"cls"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"bin"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"share"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"cls"</span><span class="op">,</span> <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span> Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])]</span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="148" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 147;"><span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Crop plants per species (all splits)"</span><span class="op">,</span></span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(width<span class="op">,</span> <span class="dv">760</span>)<span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">240</span><span class="op">,</span> <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">80</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"plants"</span>}<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="kw">null</span>}<span class="op">,</span></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [Plot<span class="op">.</span><span class="fu">barX</span>(<span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(dataset<span class="op">.</span><span class="at">crop_species</span>)<span class="op">.</span><span class="fu">map</span>(([species<span class="op">,</span> n]) <span class="kw">=&gt;</span> ({species<span class="op">,</span> n}))<span class="op">,</span></span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a>                    {<span class="dt">y</span><span class="op">:</span> <span class="st">"species"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"n"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> greys[<span class="dv">0</span>]<span class="op">,</span> <span class="dt">sort</span><span class="op">:</span> {<span class="dt">y</span><span class="op">:</span> <span class="st">"-x"</span>}<span class="op">,</span> <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span> Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])]</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<p><strong>Earlier dataset: CottonWeedDet12</strong> <span class="citation" data-cites="lu2023cottonweeddet12 dang2023yoloweeds">(<a href="#ref-lu2023cottonweeddet12" role="doc-biblioref"><span class="nocase">Lu et al.</span> 2023</a>; <a href="#ref-dang2023yoloweeds" role="doc-biblioref">Dang et al. 2023</a>)</span>. Photos from US cotton fields with boxes for 12 weed species (5,648 in the full release; a 2,391-image subset — 1,554 / 478 / 359 for train / validation / test — was used). The first experiments used it, but it labels <strong>no crops</strong>, so it can show weed finding but not crop safety. That gap is why the project moved to CropAndWeed; five of its photos still appear in the gallery.</p>
+</section>
+<section id="preprocessing" class="level1">
+<h1>Preprocessing</h1>
+<p>All steps are deterministic rules or come from the dataset itself; <strong>no statistic is fitted on the data</strong>, so nothing can leak from validation or test into training.</p>
+<ol type="1">
+<li><strong>Labels → two classes.</strong> Each species id is mapped to Crop or Weed with the official CropOrWeed2 table; unmapped species and “Vegetation” become ignore regions.</li>
+<li><strong>Per-plant masks.</strong> For each plant box, the mask is the class’s pixels inside that box. Where that is ambiguous — two overlapping boxes of the same class, or a box with no class pixels — the image is passed to SAM 2.1 <span class="citation" data-cites="ravi2024sam2">(<a href="#ref-ravi2024sam2" role="doc-biblioref"><span class="nocase">Ravi et al.</span> 2024</a>)</span> with the box as a prompt, and SAM’s mask is cut back to the class’s pixels, so SAM can only split plants, never invent leaves. Each mask is stored as its largest outline (polygon).</li>
+<li><strong>Split by recording session, before any model is trained.</strong> Whole sessions go to train / validation / test (65 / 20 / 15 % of images, seed 42), so near-duplicate frames never cross splits. The split is fixed in <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/configs/datasets/cropandweed.yaml"><code>configs/datasets/cropandweed.yaml</code></a> and rebuilt identically on every machine.</li>
+<li><strong>Model input.</strong> Images are resized to the model’s input size (1024 or 1280 px wide, aspect kept) and scaled to 0–1 by dividing by 255.</li>
+<li><strong>Augmentation (training only).</strong> Random mosaics, scale and colour jitter and horizontal flips; experiment 5 adds vertical flips and ±15° rotations, since a top-down photo is equally valid upside down.</li>
+</ol>
+<p><strong>Who sees which split.</strong> Training uses <em>train</em> only. <em>Validation</em> picks the best training epoch, the model and the laser’s confidence threshold. <em>Test</em> is used once, at the very end (Evaluation).</p>
+</section>
+<section id="baseline-and-methods" class="level1">
+<h1>Baseline and methods</h1>
+<section id="baseline-every-green-blob-is-a-weed" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-every-green-blob-is-a-weed">Baseline: “every green blob is a weed”</h2>
+<p>Without machine learning, a weeder could aim at anything green. The baseline computes the vegetation index ExG − ExR <span class="citation" data-cites="meyer2008exgr">(<a href="#ref-meyer2008exgr" role="doc-biblioref">Meyer and Neto 2008</a>)</span> on brightness-normalised colours and keeps pixels where it is positive (its published threshold, no tuning), cleans specks with a 3 × 3 opening, and treats <strong>every connected blob of at least 64 px</strong> (8 × 8, smaller than the smallest labelled plants) as a weed, aimed at with the same point method as the model. It cannot tell crops from weeds, so it has no crop safety gate. If a trained model is worth having, it must beat this on crop safety without losing too many weeds.</p>
+<p>The textbook ExG index with an Otsu threshold <span class="citation" data-cites="woebbecke1995exg">(<a href="#ref-woebbecke1995exg" role="doc-biblioref">Woebbecke et al. 1995</a>)</span> was tried first, on two validation images only: the greenish tint of the soil in these photos turned it into hundreds of soil fragments per image, so the published ExG − ExR rule replaced it.</p>
+</section>
+<section id="model-yolo11s-seg-instance-segmentation" class="level2">
+<h2 class="anchored" data-anchor-id="model-yolo11s-seg-instance-segmentation">Model: YOLO11s-seg instance segmentation</h2>
+<p>YOLO11s-seg <span class="citation" data-cites="jocher2024yolo11">(<a href="#ref-jocher2024yolo11" role="doc-biblioref">Jocher and Qiu 2024</a>)</span> is a one-stage instance-segmentation network (10 M parameters). For every detected plant it predicts a box, a class score (Crop / Weed) and 32 mask coefficients that are combined with shared prototype masks into a pixel mask. It starts from weights pretrained on everyday photos (COCO) and is fine-tuned on CropAndWeed.</p>
+<ul>
+<li><strong>Objective:</strong> a sum of box-regression loss, class loss (binary cross-entropy) and per-pixel mask loss, minimised with AdamW for up to 80 epochs; training stops early when validation accuracy has not improved for 20 epochs, and the best validation epoch is kept.</li>
+<li><strong>Why this method:</strong> the laser needs one point <em>per plant</em>, so plain semantic segmentation (one class per pixel) is not enough, and a box alone puts the aim point off the plant. A one-stage model runs in real time on a modest GPU, unlike two-stage models such as Mask R-CNN <span class="citation" data-cites="he2017maskrcnn">(<a href="#ref-he2017maskrcnn" role="doc-biblioref">He et al. 2017</a>)</span>.</li>
+<li><strong>Assumptions:</strong> a top-down view at a fixed height, plants visible (not hidden under leaves), labels that are right on average, and test fields that look like training fields. The gallery tests the last one.</li>
+<li><strong>Three trained candidates:</strong> exp 3 at 1024 px input, exp 4 at 1280 px (small weeds get more pixels), exp 5 at 1280 px with vertical flips and rotations. A fourth run at full 1920 px did not finish in time.</li>
+</ul>
+</section>
+<section id="from-mask-to-laser-point" class="level2">
+<h2 class="anchored" data-anchor-id="from-mask-to-laser-point">From mask to laser point</h2>
+<p>The aim point is the mask pixel that maximises <em>(distance to the mask’s edge) × (a Gaussian around the mask’s centre, width = half the plant’s radius)</em>: it always lies inside the plant, near its centre, and not on a thin leaf tip. Simpler rules fail in predictable ways — the centre of mass can fall between the leaves of a star-shaped weed, and the box centre can fall on soil.</p>
+</section>
+<section id="crop-safety-gate" class="level2">
+<h2 class="anchored" data-anchor-id="crop-safety-gate">Crop safety gate</h2>
+<p>A shot is vetoed when its point lies within <strong>20 px (about 8 mm)</strong> of a plant the model predicts as a crop — roughly the laser spot radius plus aiming error. The gate can only protect crops the model actually recognises; the Errors section shows what that means in practice.</p>
+</section>
+</section>
+<section id="evaluation" class="level1">
+<h1>Evaluation</h1>
+<section id="split-and-protocol" class="level2">
+<h2 class="anchored" data-anchor-id="split-and-protocol">Split and protocol</h2>
+<p>The split is fixed before any model is trained: whole recording sessions go to train (65 %), validation (20 %) or test (15 %), so near-duplicate frames never appear on both sides. Then:</p>
+<ol type="1">
+<li><strong>Train</strong> on <em>train</em> only. Ultralytics keeps the epoch with the best validation mask accuracy.</li>
+<li><strong>Choose on validation.</strong> Every candidate (exp 3, 4, 5) is run once on the 1,609 validation images, and every predicted weed down to confidence 0.05 is saved with where its aim point lands. Any confidence threshold can then be evaluated offline, without re-running the model.</li>
+<li><strong>The rule, fixed before looking at the validation numbers:</strong> for each candidate, the threshold with the <strong>most weeds hit while at most 2 % of shots land on crops</strong>; the final model is the candidate whose best threshold hits the most weeds (ties: the faster model).</li>
+<li><strong>Test once</strong>, for the final model at its chosen threshold and for the baseline. Test results are never used to change anything.</li>
+</ol>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>What changed after redoing the choices on validation.</strong> During development, test results were inspected after each experiment, and exp 5 at threshold 0.15 looked best. To keep the test set clean, all choices were redone on validation with the rule above, and test was re-run only for the final setup. The redo <strong>changed both choices</strong>: exp 4 at threshold 0.05. The image size and augmentation experiments themselves were also planned after looking at test results; that history is a limitation, not something the redo can erase.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="metrics" class="level2">
+<h2 class="anchored" data-anchor-id="metrics">Metrics</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Definition</th>
+<th>Why it matters for a laser weeder</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Weeds hit</strong></td>
+<td>share of real weeds with at least one fired shot inside their mask</td>
+<td>weeds left alive keep competing with the crop</td>
+</tr>
+<tr class="even">
+<td><strong>Shots on crops</strong></td>
+<td>share of fired shots that land inside a crop plant</td>
+<td>each one damages the harvest — the costly error</td>
+</tr>
+<tr class="odd">
+<td><strong>Shots on soil</strong></td>
+<td>share of fired shots that land on neither a weed nor a crop</td>
+<td>wasted laser time; harmless to the crop</td>
+</tr>
+<tr class="even">
+<td><strong>Shot precision</strong></td>
+<td>share of fired shots that land inside a weed</td>
+<td>1 − crops − soil</td>
+</tr>
+<tr class="odd">
+<td>Mask mAP50-95</td>
+<td>standard instance-segmentation accuracy on validation</td>
+<td>secondary: how good the masks are, independent of the laser</td>
+</tr>
+<tr class="even">
+<td>Inference time</td>
+<td>ms per 1920 × 1088 image, one Tesla T4 GPU</td>
+<td>the machine must keep up with its driving speed</td>
+</tr>
+</tbody>
+</table>
+<p>Shots on plants that are marked “ignore” (unidentified plants) are left out of every count. Uncertainty: 95 % intervals come from <strong>resampling whole recording sessions</strong> (2,000 bootstrap draws), because images of one session are not independent.</p>
+</section>
+<section id="interaction-how-sure-should-the-laser-be-before-it-fires" class="level2">
+<h2 class="anchored" data-anchor-id="interaction-how-sure-should-the-laser-be-before-it-fires">Interaction: how sure should the laser be before it fires?</h2>
+<p>Move the slider to change the confidence the model needs before the laser fires. The bars show what happens on the <strong>validation</strong> images; switch the model to compare candidates.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="278" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 277;"><span id="cb7-278"><a href="#cb7-278" aria-hidden="true" tabindex="-1"></a>viewof run <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(<span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(curves<span class="op">.</span><span class="at">runs</span>)<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> curves<span class="op">.</span><span class="at">selected</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Model"</span><span class="op">,</span></span>
+<span id="cb7-279"><a href="#cb7-279" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> k <span class="kw">=&gt;</span> curves<span class="op">.</span><span class="at">runs</span>[k]<span class="op">.</span><span class="at">label</span> <span class="op">+</span> (k <span class="op">===</span> curves<span class="op">.</span><span class="at">selected</span> <span class="op">?</span> <span class="st">" — selected"</span> <span class="op">:</span> <span class="st">""</span>)})</span>
+<span id="cb7-280"><a href="#cb7-280" aria-hidden="true" tabindex="-1"></a>viewof thr <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="fl">0.05</span><span class="op">,</span> <span class="fl">0.95</span>]<span class="op">,</span> {<span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> curves<span class="op">.</span><span class="at">threshold</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Confidence ≥"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-7-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="285" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 284;"><span id="cb8-285"><a href="#cb8-285" aria-hidden="true" tabindex="-1"></a>curve <span class="op">=</span> curves<span class="op">.</span><span class="at">runs</span>[run]<span class="op">.</span><span class="at">curve</span></span>
+<span id="cb8-286"><a href="#cb8-286" aria-hidden="true" tabindex="-1"></a>row <span class="op">=</span> curve<span class="op">.</span><span class="fu">find</span>(c <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(c<span class="op">.</span><span class="at">threshold</span> <span class="op">-</span> thr) <span class="op">&lt;</span> <span class="fl">0.005</span>)</span>
+<span id="cb8-287"><a href="#cb8-287" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> curves<span class="op">.</span><span class="at">runs</span>[run]<span class="op">.</span><span class="at">optimal</span></span>
+<span id="cb8-288"><a href="#cb8-288" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> curves<span class="op">.</span><span class="at">baseline</span></span>
+<span id="cb8-289"><a href="#cb8-289" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb8-290"><a href="#cb8-290" aria-hidden="true" tabindex="-1"></a>  <span class="co">// One bar per outcome. Ticks: dark = optimum by the 2 % rule, dashed grey = baseline.</span></span>
+<span id="cb8-291"><a href="#cb8-291" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Shots on crops use a 0–5 % scale so the 2 % limit is visible; values beyond it are clamped to the end.</span></span>
+<span id="cb8-292"><a href="#cb8-292" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> bars <span class="op">=</span> [</span>
+<span id="cb8-293"><a href="#cb8-293" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">key</span><span class="op">:</span> <span class="st">"weed_hit_rate"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Weeds hit"</span><span class="op">,</span> <span class="dt">sub</span><span class="op">:</span> <span class="st">"share of all labelled weeds"</span><span class="op">,</span> <span class="dt">cls</span><span class="op">:</span> <span class="st">"hit"</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">d</span><span class="op">:</span> <span class="dv">1</span>}<span class="op">,</span></span>
+<span id="cb8-294"><a href="#cb8-294" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">key</span><span class="op">:</span> <span class="st">"soil_shot_share"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Shots on soil"</span><span class="op">,</span> <span class="dt">sub</span><span class="op">:</span> <span class="st">"wasted laser time"</span><span class="op">,</span> <span class="dt">cls</span><span class="op">:</span> <span class="st">"soil"</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">d</span><span class="op">:</span> <span class="dv">1</span>}<span class="op">,</span></span>
+<span id="cb8-295"><a href="#cb8-295" aria-hidden="true" tabindex="-1"></a>    {<span class="dt">key</span><span class="op">:</span> <span class="st">"crop_shot_share"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Shots on crops"</span><span class="op">,</span> <span class="dt">sub</span><span class="op">:</span> <span class="st">"scale 0–5 %"</span><span class="op">,</span> <span class="dt">cls</span><span class="op">:</span> <span class="st">"crop"</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="fl">0.05</span><span class="op">,</span> <span class="dt">d</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">limit</span><span class="op">:</span> curves<span class="op">.</span><span class="at">max_crop_share</span>}</span>
+<span id="cb8-296"><a href="#cb8-296" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb8-297"><a href="#cb8-297" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pos <span class="op">=</span> (v<span class="op">,</span> max) <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">100</span><span class="op">,</span> <span class="dv">100</span> <span class="op">*</span> v <span class="op">/</span> max)<span class="op">;</span></span>
+<span id="cb8-298"><a href="#cb8-298" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tick <span class="op">=</span> (v<span class="op">,</span> b<span class="op">,</span> kind<span class="op">,</span> name) <span class="kw">=&gt;</span> v <span class="op">&gt;</span> b<span class="op">.</span><span class="at">max</span></span>
+<span id="cb8-299"><a href="#cb8-299" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="fu">html</span><span class="vs">`&lt;span class="off-scale" title="</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="fu">pct</span>(v<span class="op">,</span> b<span class="op">.</span><span class="at">d</span>)<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span><span class="fu">pct</span>(v<span class="op">,</span> <span class="dv">1</span>)<span class="sc">}</span><span class="vs"> →&lt;/span&gt;`</span></span>
+<span id="cb8-300"><a href="#cb8-300" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="fu">html</span><span class="vs">`&lt;span class="tick </span><span class="sc">${</span>kind<span class="sc">}</span><span class="vs">" style="left:</span><span class="sc">${</span><span class="fu">pos</span>(v<span class="op">,</span> b<span class="op">.</span><span class="at">max</span>)<span class="sc">}</span><span class="vs">%" title="</span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="fu">pct</span>(v<span class="op">,</span> b<span class="op">.</span><span class="at">d</span>)<span class="sc">}</span><span class="vs">"&gt;&lt;/span&gt;`</span><span class="op">;</span></span>
+<span id="cb8-301"><a href="#cb8-301" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div class="bars"&gt;</span></span>
+<span id="cb8-302"><a href="#cb8-302" aria-hidden="true" tabindex="-1"></a><span class="vs">    </span><span class="sc">${</span>bars<span class="op">.</span><span class="fu">map</span>(b <span class="kw">=&gt;</span> <span class="fu">html</span><span class="vs">`&lt;div class="bar-row"&gt;</span></span>
+<span id="cb8-303"><a href="#cb8-303" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="bar-label"&gt;&lt;b&gt;</span><span class="sc">${</span>b<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">&lt;/b&gt;&lt;span&gt;</span><span class="sc">${</span>b<span class="op">.</span><span class="at">sub</span><span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/div&gt;</span></span>
+<span id="cb8-304"><a href="#cb8-304" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="bar-track"&gt;</span></span>
+<span id="cb8-305"><a href="#cb8-305" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;div class="bar-fill </span><span class="sc">${</span>b<span class="op">.</span><span class="at">cls</span><span class="sc">}</span><span class="vs">" style="width:</span><span class="sc">${</span><span class="fu">pos</span>(row[b<span class="op">.</span><span class="at">key</span>]<span class="op">,</span> b<span class="op">.</span><span class="at">max</span>)<span class="sc">}</span><span class="vs">%"&gt;&lt;/div&gt;</span></span>
+<span id="cb8-306"><a href="#cb8-306" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span><span class="sc">${</span>b<span class="op">.</span><span class="at">limit</span> <span class="op">?</span> <span class="fu">html</span><span class="vs">`&lt;span class="bar-limit" style="left:</span><span class="sc">${</span><span class="fu">pos</span>(b<span class="op">.</span><span class="at">limit</span><span class="op">,</span> b<span class="op">.</span><span class="at">max</span>)<span class="sc">}</span><span class="vs">%"&gt;&lt;em&gt;2 % limit&lt;/em&gt;&lt;/span&gt;`</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}</span></span>
+<span id="cb8-307"><a href="#cb8-307" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span><span class="sc">${</span>opt <span class="op">?</span> <span class="fu">tick</span>(opt[b<span class="op">.</span><span class="at">key</span>]<span class="op">,</span> b<span class="op">,</span> <span class="st">"opt"</span><span class="op">,</span> <span class="vs">`optimum (</span><span class="sc">${</span>opt<span class="op">.</span><span class="at">threshold</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">)`</span>) <span class="op">:</span> <span class="st">""</span><span class="sc">}</span></span>
+<span id="cb8-308"><a href="#cb8-308" aria-hidden="true" tabindex="-1"></a><span class="vs">        </span><span class="sc">${</span><span class="fu">tick</span>(base[b<span class="op">.</span><span class="at">key</span>]<span class="op">,</span> b<span class="op">,</span> <span class="st">"base"</span><span class="op">,</span> <span class="st">"baseline"</span>)<span class="sc">}</span></span>
+<span id="cb8-309"><a href="#cb8-309" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/div&gt;</span></span>
+<span id="cb8-310"><a href="#cb8-310" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;div class="bar-value </span><span class="sc">${</span>b<span class="op">.</span><span class="at">cls</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span><span class="fu">pct</span>(row[b<span class="op">.</span><span class="at">key</span>]<span class="op">,</span> b<span class="op">.</span><span class="at">d</span>)<span class="sc">}</span><span class="vs">&lt;/div&gt;</span></span>
+<span id="cb8-311"><a href="#cb8-311" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/div&gt;`</span>)<span class="sc">}</span></span>
+<span id="cb8-312"><a href="#cb8-312" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;p class="bar-legend"&gt;&lt;span class="tick-key opt"&gt;&lt;/span&gt; optimum by the 2 % rule</span><span class="sc">${</span>opt <span class="op">?</span> <span class="vs">` (threshold </span><span class="sc">${</span>opt<span class="op">.</span><span class="at">threshold</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">)`</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}</span></span>
+<span id="cb8-313"><a href="#cb8-313" aria-hidden="true" tabindex="-1"></a><span class="vs">      &amp;nbsp; &lt;span class="tick-key base"&gt;&lt;/span&gt; baseline, green blobs (</span><span class="sc">${</span><span class="fu">pct</span>(base<span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs"> weeds hit,</span></span>
+<span id="cb8-314"><a href="#cb8-314" aria-hidden="true" tabindex="-1"></a><span class="vs">      </span><span class="sc">${</span><span class="fu">pct</span>(base<span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs"> of shots on crops) &amp;nbsp;·&amp;nbsp; </span><span class="sc">${</span><span class="fu">fmt</span>(row<span class="op">.</span><span class="at">shots</span>)<span class="sc">}</span><span class="vs"> shots fired on 1,609 validation images&lt;/p&gt;</span></span>
+<span id="cb8-315"><a href="#cb8-315" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb8-316"><a href="#cb8-316" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-8-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-8-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-8-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-8-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-8-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p><strong>Reading the bars.</strong> Drag the slider down: the green bar grows (more weeds hit), and so does the grey one (more shots on bare soil). The red bar does something surprising: it <em>shrinks</em>. A lower threshold also lets more uncertain <em>crop</em> predictions reach the safety gate, which then vetoes more shots near crops. So the share of shots on crops is about 1 % at 0.05 and goes above 2 % only around 0.5–0.7. The 2 % rule therefore never stops the threshold from going down, and <strong>the optimum sits at 0.05, the lowest value evaluated</strong>; an even lower threshold might score higher still. What the rule does not price is waste: at 0.05 more than a quarter of shots hit bare soil, against about 16 % at 0.25. A real machine might accept fewer weeds hit for less wasted laser time; the slider shows that trade-off directly.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="329" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 328;"><span id="cb9-329"><a href="#cb9-329" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Test result (used once):** </span><span class="sc">${</span>curves<span class="op">.</span><span class="at">runs</span>[curves<span class="op">.</span><span class="at">selected</span>]<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs"> at threshold </span><span class="sc">${</span>curves<span class="op">.</span><span class="at">threshold</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span></span>
+<span id="cb9-330"><a href="#cb9-330" aria-hidden="true" tabindex="-1"></a><span class="vs">hits **</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">** of test weeds (95 % CI </span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">), with</span></span>
+<span id="cb9-331"><a href="#cb9-331" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs"> of shots on crops (CI </span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">) and</span></span>
+<span id="cb9-332"><a href="#cb9-332" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">soil_shot_share</span>)<span class="sc">}</span><span class="vs"> on soil — close to its validation values (</span><span class="sc">${</span><span class="fu">pct</span>(curves<span class="op">.</span><span class="at">runs</span>[curves<span class="op">.</span><span class="at">selected</span>]<span class="op">.</span><span class="at">optimal</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">,</span></span>
+<span id="cb9-333"><a href="#cb9-333" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span><span class="fu">pct</span>(curves<span class="op">.</span><span class="at">runs</span>[curves<span class="op">.</span><span class="at">selected</span>]<span class="op">.</span><span class="at">optimal</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">, </span><span class="sc">${</span><span class="fu">pct</span>(curves<span class="op">.</span><span class="at">runs</span>[curves<span class="op">.</span><span class="at">selected</span>]<span class="op">.</span><span class="at">optimal</span><span class="op">.</span><span class="at">soil_shot_share</span>)<span class="sc">}</span><span class="vs">), so there is no sign that the</span></span>
+<span id="cb9-334"><a href="#cb9-334" aria-hidden="true" tabindex="-1"></a><span class="vs">selection on validation was optimistic. Note that the upper end of the crop-shot interval</span></span>
+<span id="cb9-335"><a href="#cb9-335" aria-hidden="true" tabindex="-1"></a><span class="vs">(</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">crop_shot_share</span>[<span class="dv">1</span>])<span class="sc">}</span><span class="vs">) is just above the 2 % limit: on new fields one cannot be confident the limit holds.`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-9" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<section id="final-model-vs-baseline-test" class="level2">
+<h2 class="anchored" data-anchor-id="final-model-vs-baseline-test">Final model vs baseline (test)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="344" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 343;"><span id="cb10-344"><a href="#cb10-344" aria-hidden="true" tabindex="-1"></a><span class="fu">html</span><span class="vs">`&lt;div class="table-scroll"&gt;&lt;table class="data"&gt;</span></span>
+<span id="cb10-345"><a href="#cb10-345" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Test, </span><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">num_images</span>)<span class="sc">}</span><span class="vs"> images&lt;/th&gt;&lt;th&gt;Weeds hit&lt;/th&gt;&lt;th&gt;Shots on crops&lt;/th&gt;&lt;th&gt;Shots on soil&lt;/th&gt;&lt;th&gt;Shot precision&lt;/th&gt;&lt;th&gt;Shots fired&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</span></span>
+<span id="cb10-346"><a href="#cb10-346" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;tbody&gt;</span></span>
+<span id="cb10-347"><a href="#cb10-347" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;tr class="selected"&gt;&lt;td&gt;</span><span class="sc">${</span>test<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs"> (threshold </span><span class="sc">${</span>test<span class="op">.</span><span class="at">threshold</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">)&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">&lt;br&gt;&lt;span class="muted"&gt;</span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/td&gt;</span></span>
+<span id="cb10-348"><a href="#cb10-348" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;br&gt;&lt;span class="muted"&gt;</span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">soil_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">shot_precision</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">shots</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;/tr&gt;</span></span>
+<span id="cb10-349"><a href="#cb10-349" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;tr&gt;&lt;td&gt;Baseline: every green blob&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">&lt;br&gt;&lt;span class="muted"&gt;</span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">weed_hit_rate</span>)<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/td&gt;</span></span>
+<span id="cb10-350"><a href="#cb10-350" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;br&gt;&lt;span class="muted"&gt;</span><span class="sc">${</span><span class="fu">ci</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">ci</span><span class="op">.</span><span class="at">crop_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">soil_shot_share</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">shot_precision</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;td&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(test<span class="op">.</span><span class="at">baseline</span><span class="op">.</span><span class="at">shots</span>)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;/tr&gt;</span></span>
+<span id="cb10-351"><a href="#cb10-351" aria-hidden="true" tabindex="-1"></a><span class="vs">&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<p>The model hits more weeds than the baseline <strong>and</strong> puts about 20 times fewer shots on crops. The baseline is not useless — most weeds are green blobs — but it cannot tell a crop from a weed, so roughly one shot in four lands on the crop.</p>
+</section>
+<section id="interaction-compare-the-candidates-validation" class="level2">
+<h2 class="anchored" data-anchor-id="interaction-compare-the-candidates-validation">Interaction: compare the candidates (validation)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="363" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 362;"><span id="cb11-363"><a href="#cb11-363" aria-hidden="true" tabindex="-1"></a>metrics <span class="op">=</span> [</span>
+<span id="cb11-364"><a href="#cb11-364" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">key</span><span class="op">:</span> <span class="st">"weed_hit_rate"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Weeds hit"</span><span class="op">,</span> <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="fu">pct</span>(x)<span class="op">,</span> <span class="dt">tick</span><span class="op">:</span> <span class="st">"%"</span>}<span class="op">,</span></span>
+<span id="cb11-365"><a href="#cb11-365" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">key</span><span class="op">:</span> <span class="st">"crop_shot_share"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Shots on crops"</span><span class="op">,</span> <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="fu">pct</span>(x<span class="op">,</span> <span class="dv">2</span>)<span class="op">,</span> <span class="dt">tick</span><span class="op">:</span> <span class="st">"%"</span>}<span class="op">,</span></span>
+<span id="cb11-366"><a href="#cb11-366" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">key</span><span class="op">:</span> <span class="st">"soil_shot_share"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Shots on soil"</span><span class="op">,</span> <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="fu">pct</span>(x)<span class="op">,</span> <span class="dt">tick</span><span class="op">:</span> <span class="st">"%"</span>}<span class="op">,</span></span>
+<span id="cb11-367"><a href="#cb11-367" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">key</span><span class="op">:</span> <span class="st">"val_mask_map50_95"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Mask mAP50-95 (validation)"</span><span class="op">,</span> <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> x<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">3</span>)<span class="op">,</span> <span class="dt">tick</span><span class="op">:</span> <span class="st">".2f"</span>}<span class="op">,</span></span>
+<span id="cb11-368"><a href="#cb11-368" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">key</span><span class="op">:</span> <span class="st">"inference_ms"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Time per image (ms)"</span><span class="op">,</span> <span class="dt">f</span><span class="op">:</span> x <span class="kw">=&gt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(x) <span class="op">+</span> <span class="st">" ms"</span><span class="op">,</span> <span class="dt">tick</span><span class="op">:</span> <span class="st">"d"</span>}</span>
+<span id="cb11-369"><a href="#cb11-369" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a>viewof metric <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(metrics<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Metric"</span><span class="op">,</span> <span class="dt">format</span><span class="op">:</span> m <span class="kw">=&gt;</span> m<span class="op">.</span><span class="at">label</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-11-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-11-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="374" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 373;"><span id="cb12-374"><a href="#cb12-374" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb12-375"><a href="#cb12-375" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(width<span class="op">,</span> <span class="dv">760</span>)<span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span> <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">230</span><span class="op">,</span> <span class="dt">marginRight</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
+<span id="cb12-376"><a href="#cb12-376" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> metric<span class="op">.</span><span class="at">label</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> metric<span class="op">.</span><span class="at">tick</span>}<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="kw">null</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> comparison<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">label</span>)}<span class="op">,</span></span>
+<span id="cb12-377"><a href="#cb12-377" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb12-378"><a href="#cb12-378" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(comparison<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d[metric<span class="op">.</span><span class="at">key</span>] <span class="op">!=</span> <span class="kw">null</span>)<span class="op">,</span> {<span class="dt">y</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> metric<span class="op">.</span><span class="at">key</span><span class="op">,</span></span>
+<span id="cb12-379"><a href="#cb12-379" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fill</span><span class="op">:</span> d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">selected</span> <span class="op">?</span> greys[<span class="dv">0</span>] <span class="op">:</span> <span class="st">"#c4c9c6"</span><span class="op">,</span> <span class="dt">title</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">label</span><span class="sc">}\n${</span>d<span class="op">.</span><span class="at">change</span><span class="sc">}\n${</span>metric<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">: </span><span class="sc">${</span>metric<span class="op">.</span><span class="fu">f</span>(d[metric<span class="op">.</span><span class="at">key</span>])<span class="sc">}</span><span class="vs">`</span>})<span class="op">,</span></span>
+<span id="cb12-380"><a href="#cb12-380" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(comparison<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d[metric<span class="op">.</span><span class="at">key</span>] <span class="op">!=</span> <span class="kw">null</span>)<span class="op">,</span> {<span class="dt">y</span><span class="op">:</span> <span class="st">"label"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> metric<span class="op">.</span><span class="at">key</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> d <span class="kw">=&gt;</span> metric<span class="op">.</span><span class="fu">f</span>(d[metric<span class="op">.</span><span class="at">key</span>])<span class="op">,</span> <span class="dt">dx</span><span class="op">:</span> <span class="dv">6</span><span class="op">,</span> <span class="dt">textAnchor</span><span class="op">:</span> <span class="st">"start"</span>})<span class="op">,</span></span>
+<span id="cb12-381"><a href="#cb12-381" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
+<span id="cb12-382"><a href="#cb12-382" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb12-383"><a href="#cb12-383" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-12" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="388" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 387;"><span id="cb13-388"><a href="#cb13-388" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb13-389"><a href="#cb13-389" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sel <span class="op">=</span> comparison<span class="op">.</span><span class="fu">find</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">selected</span>)</span>
+<span id="cb13-390"><a href="#cb13-390" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pts <span class="op">=</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>(<span class="dv">100</span> <span class="op">*</span> d<span class="op">.</span><span class="at">vs_selected</span><span class="op">.</span><span class="at">diff</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs"> points (95 % CI </span><span class="sc">${</span>(<span class="dv">100</span> <span class="op">*</span> d<span class="op">.</span><span class="at">vs_selected</span><span class="op">.</span><span class="at">ci</span>[<span class="dv">0</span>])<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs"> to </span><span class="sc">${</span>(<span class="dv">100</span> <span class="op">*</span> d<span class="op">.</span><span class="at">vs_selected</span><span class="op">.</span><span class="at">ci</span>[<span class="dv">1</span>])<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">)`</span></span>
+<span id="cb13-391"><a href="#cb13-391" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">md</span><span class="vs">`Each model is shown at its own best threshold by the 2 % rule (the baseline has a single operating point;</span></span>
+<span id="cb13-392"><a href="#cb13-392" aria-hidden="true" tabindex="-1"></a><span class="vs">it runs on the CPU, so its time is not comparable). **Is the selected </span><span class="sc">${</span>sel<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs"> really better?** A paired</span></span>
+<span id="cb13-393"><a href="#cb13-393" aria-hidden="true" tabindex="-1"></a><span class="vs">bootstrap over validation sessions gives the gap in weeds hit, selected minus other:</span></span>
+<span id="cb13-394"><a href="#cb13-394" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span>comparison<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> <span class="op">!</span>d<span class="op">.</span><span class="at">selected</span>)<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">\n</span><span class="vs">- vs </span><span class="sc">${</span>d<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">: **</span><span class="sc">${</span><span class="fu">pts</span>(d)<span class="sc">}</span><span class="vs">**`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="sc">}</span></span>
+<span id="cb13-395"><a href="#cb13-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-396"><a href="#cb13-396" aria-hidden="true" tabindex="-1"></a><span class="vs">The gap to exp 3 (1024 px) is larger than field-to-field variation, consistent with larger input helping small</span></span>
+<span id="cb13-397"><a href="#cb13-397" aria-hidden="true" tabindex="-1"></a><span class="vs">weeds (each configuration was trained once, so training noise is not covered). The gap to exp 5 is **not**: its</span></span>
+<span id="cb13-398"><a href="#cb13-398" aria-hidden="true" tabindex="-1"></a><span class="vs">interval contains zero, so the augmentation neither helped nor hurt measurably; exp 4 wins on a 0.2-point</span></span>
+<span id="cb13-399"><a href="#cb13-399" aria-hidden="true" tabindex="-1"></a><span class="vs">difference the data cannot resolve, and the rule picks it anyway. Exp 5's slightly better masks (higher mAP) do</span></span>
+<span id="cb13-400"><a href="#cb13-400" aria-hidden="true" tabindex="-1"></a><span class="vs">not translate into more weeds hit.`</span></span>
+<span id="cb13-401"><a href="#cb13-401" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-13" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="did-the-final-model-overfit" class="level2">
+<h2 class="anchored" data-anchor-id="did-the-final-model-overfit">Did the final model overfit?</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="408" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 407;"><span id="cb14-408"><a href="#cb14-408" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb14-409"><a href="#cb14-409" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> w <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(width<span class="op">,</span> <span class="dv">760</span>) <span class="op">/</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">10</span></span>
+<span id="cb14-410"><a href="#cb14-410" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> loss <span class="op">=</span> training<span class="op">.</span><span class="at">history</span><span class="op">.</span><span class="fu">flatMap</span>(h <span class="kw">=&gt;</span> [{<span class="dt">epoch</span><span class="op">:</span> h<span class="op">.</span><span class="at">epoch</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> h<span class="op">.</span><span class="at">train_seg</span><span class="op">,</span> <span class="dt">series</span><span class="op">:</span> <span class="st">"train"</span>}<span class="op">,</span> {<span class="dt">epoch</span><span class="op">:</span> h<span class="op">.</span><span class="at">epoch</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> h<span class="op">.</span><span class="at">val_seg</span><span class="op">,</span> <span class="dt">series</span><span class="op">:</span> <span class="st">"validation"</span>}])</span>
+<span id="cb14-411"><a href="#cb14-411" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> left <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({<span class="dt">title</span><span class="op">:</span> <span class="st">"Mask loss (lower is better)"</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> w<span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">230</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
+<span id="cb14-412"><a href="#cb14-412" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"epoch"</span>}<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="kw">null</span>}<span class="op">,</span> <span class="dt">color</span><span class="op">:</span> {<span class="dt">domain</span><span class="op">:</span> [<span class="st">"train"</span><span class="op">,</span> <span class="st">"validation"</span>]<span class="op">,</span> <span class="dt">range</span><span class="op">:</span> [greys[<span class="dv">1</span>]<span class="op">,</span> greys[<span class="dv">0</span>]]<span class="op">,</span> <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb14-413"><a href="#cb14-413" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [Plot<span class="op">.</span><span class="fu">lineY</span>(loss<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"epoch"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"value"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"series"</span>})<span class="op">,</span> Plot<span class="op">.</span><span class="fu">ruleX</span>([training<span class="op">.</span><span class="at">best_epoch</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> SOIL<span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"2,2"</span>})]})</span>
+<span id="cb14-414"><a href="#cb14-414" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> right <span class="op">=</span> Plot<span class="op">.</span><span class="fu">plot</span>({<span class="dt">title</span><span class="op">:</span> <span class="st">"Validation mask mAP50-95 (higher is better)"</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> w<span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">230</span><span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb14-415"><a href="#cb14-415" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"epoch"</span>}<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="kw">null</span>}<span class="op">,</span></span>
+<span id="cb14-416"><a href="#cb14-416" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [Plot<span class="op">.</span><span class="fu">lineY</span>(training<span class="op">.</span><span class="at">history</span><span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"epoch"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"val_map50_95"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> greys[<span class="dv">0</span>]})<span class="op">,</span></span>
+<span id="cb14-417"><a href="#cb14-417" aria-hidden="true" tabindex="-1"></a>            Plot<span class="op">.</span><span class="fu">ruleX</span>([training<span class="op">.</span><span class="at">best_epoch</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> SOIL<span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> <span class="st">"2,2"</span>})<span class="op">,</span></span>
+<span id="cb14-418"><a href="#cb14-418" aria-hidden="true" tabindex="-1"></a>            Plot<span class="op">.</span><span class="fu">text</span>([{<span class="dt">x</span><span class="op">:</span> training<span class="op">.</span><span class="at">best_epoch</span>}]<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">frameAnchor</span><span class="op">:</span> <span class="st">"bottom"</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> () <span class="kw">=&gt;</span> <span class="st">"kept epoch"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"#5f6662"</span>})]})</span>
+<span id="cb14-419"><a href="#cb14-419" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:flex;flex-wrap:wrap;gap:20px"&gt;</span><span class="sc">${</span>left<span class="sc">}${</span>right<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
+<span id="cb14-420"><a href="#cb14-420" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-14" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<p>Validation loss stops improving around epoch 50 while training loss keeps falling, and validation mask accuracy plateaus; the kept weights are from epoch <span><span id="ojs-element-id-7"></span></span> of <span><span id="ojs-element-id-8"></span>.</span> A development-time check (not reproduced in the repository; it used local test images) scored exp 5 the same way on 297 training and 297 test images: large weeds were found far more often on training images than on new ones (95 % vs 82 %: overfitting), while weeds under 24 px were missed even on training images (71 % vs 66 %) — pointing to a resolution limit rather than a lack of data. That is why the 1920 px run was attempted.</p>
+</section>
+<section id="gallery-photos-the-site-is-allowed-to-show" class="level2">
+<h2 class="anchored" data-anchor-id="gallery-photos-the-site-is-allowed-to-show">Gallery: photos the site is allowed to show</h2>
+<p>CropAndWeed photos cannot be published, so the gallery uses two openly licensed datasets, five photos each. The photos are <strong>hand-picked</strong>: frames with clearly visible weeds where the final model works well. They show what the output looks like, not how often it is right; that is measured in the tables above, and a random check follows below. Choose a model and click a photo: the raw image is on the left, that model’s output on the right. <strong>White outline = weed, light fill = crop</strong>; laser marks <strong>green = hit a weed</strong>, <strong>red = hit a crop</strong>, grey = soil, hollow grey circle = shot vetoed by the crop gate.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb15" data-startfrom="442" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 441;"><span id="cb15-442"><a href="#cb15-442" aria-hidden="true" tabindex="-1"></a>viewof galleryModel <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(gallery<span class="op">.</span><span class="at">models</span><span class="op">.</span><span class="fu">map</span>(m <span class="kw">=&gt;</span> m<span class="op">.</span><span class="at">key</span>)<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> gallery<span class="op">.</span><span class="at">default</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Model"</span><span class="op">,</span></span>
+<span id="cb15-443"><a href="#cb15-443" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">460</span><span class="op">,</span> width <span class="op">-</span> <span class="dv">140</span>)<span class="op">,</span></span>
+<span id="cb15-444"><a href="#cb15-444" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> k <span class="kw">=&gt;</span> <span class="fu">modelOf</span>(k)<span class="op">.</span><span class="at">label</span> <span class="op">+</span> (k <span class="op">===</span> gallery<span class="op">.</span><span class="at">default</span> <span class="op">?</span> <span class="st">" — selected"</span> <span class="op">:</span> <span class="st">""</span>)})</span>
+<span id="cb15-445"><a href="#cb15-445" aria-hidden="true" tabindex="-1"></a>viewof pick <span class="op">=</span> {</span>
+<span id="cb15-446"><a href="#cb15-446" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrap <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="thumbs" role="group" aria-label="Gallery photos"&gt;</span><span class="sc">${</span>gallery<span class="op">.</span><span class="at">items</span><span class="op">.</span><span class="fu">map</span>((g<span class="op">,</span> i) <span class="kw">=&gt;</span></span>
+<span id="cb15-447"><a href="#cb15-447" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html</span><span class="vs">`&lt;button type="button" title="</span><span class="sc">${</span>g<span class="op">.</span><span class="at">dataset</span><span class="sc">}</span><span class="vs">"&gt;&lt;img src="</span><span class="sc">${</span>g<span class="op">.</span><span class="at">raw</span><span class="sc">}</span><span class="vs">" alt="</span><span class="sc">${</span>g<span class="op">.</span><span class="at">dataset</span><span class="sc">}</span><span class="vs">, photo </span><span class="sc">${</span>i <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs">" loading="lazy"&gt;&lt;/button&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span>
+<span id="cb15-448"><a href="#cb15-448" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> buttons <span class="op">=</span> [<span class="op">...</span>wrap<span class="op">.</span><span class="fu">querySelectorAll</span>(<span class="st">"button"</span>)]</span>
+<span id="cb15-449"><a href="#cb15-449" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> select <span class="op">=</span> i <span class="kw">=&gt;</span> {</span>
+<span id="cb15-450"><a href="#cb15-450" aria-hidden="true" tabindex="-1"></a>    wrap<span class="op">.</span><span class="at">value</span> <span class="op">=</span> i</span>
+<span id="cb15-451"><a href="#cb15-451" aria-hidden="true" tabindex="-1"></a>    buttons<span class="op">.</span><span class="fu">forEach</span>((b<span class="op">,</span> j) <span class="kw">=&gt;</span> b<span class="op">.</span><span class="fu">setAttribute</span>(<span class="st">"aria-pressed"</span><span class="op">,</span> <span class="bu">String</span>(j <span class="op">===</span> i)))</span>
+<span id="cb15-452"><a href="#cb15-452" aria-hidden="true" tabindex="-1"></a>    wrap<span class="op">.</span><span class="fu">dispatchEvent</span>(<span class="kw">new</span> <span class="bu">Event</span>(<span class="st">"input"</span><span class="op">,</span> {<span class="dt">bubbles</span><span class="op">:</span> <span class="kw">true</span>}))</span>
+<span id="cb15-453"><a href="#cb15-453" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-454"><a href="#cb15-454" aria-hidden="true" tabindex="-1"></a>  buttons<span class="op">.</span><span class="fu">forEach</span>((b<span class="op">,</span> i) <span class="kw">=&gt;</span> b<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"click"</span><span class="op">,</span> () <span class="kw">=&gt;</span> <span class="fu">select</span>(i)))</span>
+<span id="cb15-455"><a href="#cb15-455" aria-hidden="true" tabindex="-1"></a>  wrap<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb15-456"><a href="#cb15-456" aria-hidden="true" tabindex="-1"></a>  buttons<span class="op">.</span><span class="fu">forEach</span>((b<span class="op">,</span> j) <span class="kw">=&gt;</span> b<span class="op">.</span><span class="fu">setAttribute</span>(<span class="st">"aria-pressed"</span><span class="op">,</span> <span class="bu">String</span>(j <span class="op">===</span> <span class="dv">0</span>)))</span>
+<span id="cb15-457"><a href="#cb15-457" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrap</span>
+<span id="cb15-458"><a href="#cb15-458" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-459"><a href="#cb15-459" aria-hidden="true" tabindex="-1"></a>viewof showGt <span class="op">=</span> {</span>
+<span id="cb15-460"><a href="#cb15-460" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> label <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;label style="display:inline-flex;gap:.5rem;align-items:center;cursor:pointer"&gt;</span></span>
+<span id="cb15-461"><a href="#cb15-461" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;input type="checkbox"&gt; Show the hand-drawn ground truth instead of the model output&lt;/label&gt;`</span></span>
+<span id="cb15-462"><a href="#cb15-462" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> box <span class="op">=</span> label<span class="op">.</span><span class="fu">querySelector</span>(<span class="st">"input"</span>)</span>
+<span id="cb15-463"><a href="#cb15-463" aria-hidden="true" tabindex="-1"></a>  label<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="kw">false</span></span>
+<span id="cb15-464"><a href="#cb15-464" aria-hidden="true" tabindex="-1"></a>  <span class="co">// runs on the checkbox before its native "input" event bubbles to the label, where Observable reads the value</span></span>
+<span id="cb15-465"><a href="#cb15-465" aria-hidden="true" tabindex="-1"></a>  box<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"input"</span><span class="op">,</span> () <span class="kw">=&gt;</span> { label<span class="op">.</span><span class="at">value</span> <span class="op">=</span> box<span class="op">.</span><span class="at">checked</span> })</span>
+<span id="cb15-466"><a href="#cb15-466" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> label</span>
+<span id="cb15-467"><a href="#cb15-467" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-15-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-15-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-15-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb16" data-startfrom="472" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 471;"><span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a>modelOf <span class="op">=</span> k <span class="kw">=&gt;</span> gallery<span class="op">.</span><span class="at">models</span><span class="op">.</span><span class="fu">find</span>(m <span class="kw">=&gt;</span> m<span class="op">.</span><span class="at">key</span> <span class="op">===</span> k)</span>
+<span id="cb16-473"><a href="#cb16-473" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb16-474"><a href="#cb16-474" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> g <span class="op">=</span> gallery<span class="op">.</span><span class="at">items</span>[pick]</span>
+<span id="cb16-475"><a href="#cb16-475" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> o <span class="op">=</span> g<span class="op">.</span><span class="at">outputs</span>[galleryModel]</span>
+<span id="cb16-476"><a href="#cb16-476" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> m <span class="op">=</span> <span class="fu">modelOf</span>(galleryModel)</span>
+<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> hasCrops <span class="op">=</span> g<span class="op">.</span><span class="at">dataset</span> <span class="op">===</span> <span class="st">"Sugar Beets 2016"</span></span>
+<span id="cb16-478"><a href="#cb16-478" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> summary <span class="op">=</span> hasCrops</span>
+<span id="cb16-479"><a href="#cb16-479" aria-hidden="true" tabindex="-1"></a>    <span class="op">?</span> <span class="fu">html</span><span class="vs">`&lt;span class="hit"&gt;</span><span class="sc">${</span>o<span class="op">.</span><span class="at">weeds_hit</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>g<span class="op">.</span><span class="at">weeds</span><span class="sc">}</span><span class="vs"> weeds hit&lt;/span&gt; · &lt;span class="crop"&gt;</span><span class="sc">${</span>o<span class="op">.</span><span class="at">crop_shots</span><span class="sc">}</span><span class="vs"> crop shots&lt;/span&gt; · </span><span class="sc">${</span>o<span class="op">.</span><span class="at">soil_shots</span><span class="sc">}</span><span class="vs"> soil shots · </span><span class="sc">${</span>o<span class="op">.</span><span class="at">vetoed</span><span class="sc">}</span><span class="vs"> vetoed`</span></span>
+<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span> <span class="fu">html</span><span class="vs">`&lt;span class="hit"&gt;</span><span class="sc">${</span>o<span class="op">.</span><span class="at">weeds_hit</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>g<span class="op">.</span><span class="at">weeds</span><span class="sc">}</span><span class="vs"> weeds hit&lt;/span&gt; · </span><span class="sc">${</span>o<span class="op">.</span><span class="at">soil_shots</span><span class="sc">}</span><span class="vs"> soil shots`</span></span>
+<span id="cb16-481"><a href="#cb16-481" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> setting <span class="op">=</span> m<span class="op">.</span><span class="at">threshold</span> <span class="op">===</span> <span class="kw">null</span> <span class="op">?</span> <span class="st">"every green blob is a target"</span> <span class="op">:</span> <span class="vs">`threshold </span><span class="sc">${</span>m<span class="op">.</span><span class="at">threshold</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> others <span class="op">=</span> gallery<span class="op">.</span><span class="at">models</span><span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>x<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"baseline"</span> <span class="op">?</span> <span class="st">"Baseline"</span> <span class="op">:</span> x<span class="op">.</span><span class="at">key</span><span class="op">.</span><span class="fu">replace</span>(<span class="st">"exp"</span><span class="op">,</span> <span class="st">"Exp "</span>)<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>g<span class="op">.</span><span class="at">outputs</span>[x<span class="op">.</span><span class="at">key</span>]<span class="op">.</span><span class="at">weeds_hit</span><span class="sc">}</span><span class="vs">/</span><span class="sc">${</span>g<span class="op">.</span><span class="at">weeds</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> (hasCrops <span class="op">?</span> <span class="vs">` (</span><span class="sc">${</span>g<span class="op">.</span><span class="at">outputs</span>[x<span class="op">.</span><span class="at">key</span>]<span class="op">.</span><span class="at">crop_shots</span><span class="sc">}</span><span class="vs"> on crops)`</span> <span class="op">:</span> <span class="st">""</span>))<span class="op">.</span><span class="fu">join</span>(<span class="st">" · "</span>)</span>
+<span id="cb16-484"><a href="#cb16-484" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`&lt;div class="viewer"&gt;</span></span>
+<span id="cb16-485"><a href="#cb16-485" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;figure&gt;&lt;img src="</span><span class="sc">${</span>g<span class="op">.</span><span class="at">raw</span><span class="sc">}</span><span class="vs">" alt="Raw photo"&gt;&lt;figcaption&gt;Raw photo&lt;/figcaption&gt;&lt;/figure&gt;</span></span>
+<span id="cb16-486"><a href="#cb16-486" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;figure&gt;&lt;img src="</span><span class="sc">${</span>showGt <span class="op">?</span> g<span class="op">.</span><span class="at">gt</span> <span class="op">:</span> o<span class="op">.</span><span class="at">file</span><span class="sc">}</span><span class="vs">" alt="</span><span class="sc">${</span>showGt <span class="op">?</span> <span class="st">"Ground truth"</span> <span class="op">:</span> <span class="st">"Model output"</span><span class="sc">}</span><span class="vs">"&gt;</span></span>
+<span id="cb16-487"><a href="#cb16-487" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;figcaption&gt;</span><span class="sc">${</span>showGt <span class="op">?</span> <span class="st">"Ground truth (outline = weed, fill = crop)"</span> <span class="op">:</span> <span class="vs">`</span><span class="sc">${</span>m<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">, </span><span class="sc">${</span>setting<span class="sc">}</span><span class="vs">`</span><span class="sc">}</span><span class="vs">&lt;/figcaption&gt;&lt;/figure&gt;</span></span>
+<span id="cb16-488"><a href="#cb16-488" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;/div&gt;</span></span>
+<span id="cb16-489"><a href="#cb16-489" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;p style="margin-top:.5rem"&gt;</span><span class="sc">${</span>summary<span class="sc">}</span><span class="vs">&lt;br&gt;&lt;span class="muted"&gt;Weeds hit on this photo by every model: </span><span class="sc">${</span>others<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;br&gt;</span></span>
+<span id="cb16-490"><a href="#cb16-490" aria-hidden="true" tabindex="-1"></a><span class="vs">  &lt;span class="muted"&gt;</span><span class="sc">${</span>g<span class="op">.</span><span class="at">dataset</span><span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>g<span class="op">.</span><span class="at">licence</span><span class="sc">}</span><span class="vs">, &lt;a href="</span><span class="sc">${</span>g<span class="op">.</span><span class="at">attribution_url</span><span class="sc">}</span><span class="vs">"&gt;source&lt;/a&gt;). </span><span class="sc">${</span>g<span class="op">.</span><span class="at">note</span><span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/p&gt;`</span></span>
+<span id="cb16-491"><a href="#cb16-491" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-16-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-16-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb17" data-startfrom="495" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 494;"><span id="cb17-495"><a href="#cb17-495" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb17-496"><a href="#cb17-496" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> r <span class="op">=</span> gallery<span class="op">.</span><span class="at">random_sugarbeets</span></span>
+<span id="cb17-497"><a href="#cb17-497" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">md</span><span class="vs">`**Random check.** Hand-picked photos flatter the model. On five *random* Sugar Beets frames</span></span>
+<span id="cb17-498"><a href="#cb17-498" aria-hidden="true" tabindex="-1"></a><span class="vs">(seed 0; frames </span><span class="sc">${</span>r<span class="op">.</span><span class="at">frames</span><span class="op">.</span><span class="fu">join</span>(<span class="st">", "</span>)<span class="sc">}</span><span class="vs">) the selected model hits only **</span><span class="sc">${</span>r<span class="op">.</span><span class="at">weeds_hit</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>r<span class="op">.</span><span class="at">weeds</span><span class="sc">}</span><span class="vs"> weeds**</span></span>
+<span id="cb17-499"><a href="#cb17-499" aria-hidden="true" tabindex="-1"></a><span class="vs">and fires **</span><span class="sc">${</span>r<span class="op">.</span><span class="at">crop_shots</span><span class="sc">}</span><span class="vs"> shots at crops**, far below its </span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">weed_hit_rate</span><span class="op">,</span> <span class="dv">0</span>)<span class="sc">}</span><span class="vs"> on CropAndWeed</span></span>
+<span id="cb17-500"><a href="#cb17-500" aria-hidden="true" tabindex="-1"></a><span class="vs">test fields. Most weeds in those frames are tiny seedlings, a few pixels wide on this camera. Five photos are</span></span>
+<span id="cb17-501"><a href="#cb17-501" aria-hidden="true" tabindex="-1"></a><span class="vs">not a measurement, but they show plainly that the result does not transfer to a new farm and camera without</span></span>
+<span id="cb17-502"><a href="#cb17-502" aria-hidden="true" tabindex="-1"></a><span class="vs">new training data.`</span></span>
+<span id="cb17-503"><a href="#cb17-503" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-17" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="earlier-experiments-cottonweeddet12-weeds-only" class="level2">
+<h2 class="anchored" data-anchor-id="earlier-experiments-cottonweeddet12-weeds-only">Earlier experiments (CottonWeedDet12, weeds only)</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Experiment</th>
+<th>Model</th>
+<th>Mask mAP50-95</th>
+<th>Weeds hit</th>
+<th>Shot precision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>exp 1</td>
+<td>YOLO11n-seg, 640 px</td>
+<td>0.812</td>
+<td>92.5 %</td>
+<td>94.3 %</td>
+</tr>
+<tr class="even">
+<td>exp 2</td>
+<td>YOLO11s-seg, 640 px</td>
+<td>0.825</td>
+<td>92.3 %</td>
+<td>92.7 %</td>
+</tr>
+</tbody>
+</table>
+<p>Both use SAM masks made from the dataset’s boxes, threshold 0.25, measured on CottonWeedDet12’s own test split during development. That test split’s labels were partly corrected by reviewing the first model’s own test predictions (52 weeds added, 35 marked unsure, 2 removed), which flatters these numbers. They show that weed finding works on a simpler dataset with large, isolated weeds, but say nothing about crops — which is why the project moved to CropAndWeed. Full outputs are in the repository (<a href="https://github.com/yuvraj-rathod-1202/weed-detection/tree/main/experiments/"><code>experiments/</code></a>, <code>results/comparison.csv</code>).</p>
+</section>
+</section>
+<section id="errors" class="level1">
+<h1>Errors</h1>
+<p>All numbers below are for the final model on the <strong>test</strong> images at threshold <span><span id="ojs-element-id-9"></span>.</span> CropAndWeed photos cannot be shown, so errors are described by type and counted; the gallery shows the same kinds of errors on publishable photos. Plant size here is the square root of the <strong>mask</strong> area, which is much smaller than the <strong>box</strong> size used in <em>Data</em> (a plant’s leaves fill only part of its box), so the same bin labels hold different plants in the two charts.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb18" data-startfrom="530" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 529;"><span id="cb18-530"><a href="#cb18-530" aria-hidden="true" tabindex="-1"></a>sizeOrder <span class="op">=</span> [<span class="st">"0–16"</span><span class="op">,</span> <span class="st">"16–24"</span><span class="op">,</span> <span class="st">"24–32"</span><span class="op">,</span> <span class="st">"32–48"</span><span class="op">,</span> <span class="st">"48–64"</span><span class="op">,</span> <span class="st">"64–128"</span><span class="op">,</span> <span class="st">"128+"</span>]</span>
+<span id="cb18-531"><a href="#cb18-531" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb18-532"><a href="#cb18-532" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> <span class="st">"Weeds hit by plant size (sqrt of mask area, px; ~0.4 mm per px)"</span><span class="op">,</span></span>
+<span id="cb18-533"><a href="#cb18-533" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(width<span class="op">,</span> <span class="dv">760</span>)<span class="op">,</span> <span class="dt">height</span><span class="op">:</span> <span class="dv">240</span><span class="op">,</span> <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb18-534"><a href="#cb18-534" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"weed size (px)"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> sizeOrder}<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"weeds hit"</span><span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> <span class="st">"%"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb18-535"><a href="#cb18-535" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb18-536"><a href="#cb18-536" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(sizeOrder<span class="op">.</span><span class="fu">map</span>(k <span class="kw">=&gt;</span> ({<span class="dt">bin</span><span class="op">:</span> k<span class="op">,</span> <span class="op">...</span>errors<span class="op">.</span><span class="at">by_size</span>[k]}))<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"bin"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"rate"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> greys[<span class="dv">0</span>]<span class="op">,</span></span>
+<span id="cb18-537"><a href="#cb18-537" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">bin</span><span class="sc">}</span><span class="vs"> px: </span><span class="sc">${</span>d<span class="op">.</span><span class="at">hit</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>d<span class="op">.</span><span class="at">weeds</span><span class="sc">}</span><span class="vs"> weeds hit (</span><span class="sc">${</span><span class="fu">pct</span>(d<span class="op">.</span><span class="at">rate</span>)<span class="sc">}</span><span class="vs">)`</span>})<span class="op">,</span></span>
+<span id="cb18-538"><a href="#cb18-538" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">text</span>(sizeOrder<span class="op">.</span><span class="fu">map</span>(k <span class="kw">=&gt;</span> ({<span class="dt">bin</span><span class="op">:</span> k<span class="op">,</span> <span class="op">...</span>errors<span class="op">.</span><span class="at">by_size</span>[k]}))<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"bin"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"rate"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`n=</span><span class="sc">${</span><span class="fu">fmt</span>(d<span class="op">.</span><span class="at">weeds</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> <span class="dt">dy</span><span class="op">:</span> <span class="op">-</span><span class="dv">8</span>})<span class="op">,</span></span>
+<span id="cb18-539"><a href="#cb18-539" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb18-540"><a href="#cb18-540" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb18-541"><a href="#cb18-541" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-18-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-18-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb19" data-startfrom="545" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 544;"><span id="cb19-545"><a href="#cb19-545" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb19-546"><a href="#cb19-546" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tiny <span class="op">=</span> errors<span class="op">.</span><span class="at">by_size</span>[<span class="st">"0–16"</span>]<span class="op">,</span> <span class="kw">set</span> <span class="op">=</span> errors<span class="op">.</span><span class="at">by_set</span></span>
+<span id="cb19-547"><a href="#cb19-547" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sp <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">entries</span>(errors<span class="op">.</span><span class="at">crop_shots_by_species</span>)</span>
+<span id="cb19-548"><a href="#cb19-548" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> top <span class="op">=</span> errors<span class="op">.</span><span class="at">top_sessions</span></span>
+<span id="cb19-549"><a href="#cb19-549" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">md</span><span class="vs">`1. **Tiny weeds are missed.** Weeds under 16 px (≈ 6 mm) are hit </span><span class="sc">${</span><span class="fu">pct</span>(tiny<span class="op">.</span><span class="at">rate</span>)<span class="sc">}</span><span class="vs"> of the time,</span></span>
+<span id="cb19-550"><a href="#cb19-550" aria-hidden="true" tabindex="-1"></a><span class="vs">against 87–92 % for larger ones; they make up </span><span class="sc">${</span><span class="fu">pct</span>(tiny<span class="op">.</span><span class="at">weeds</span> <span class="op">/</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">values</span>(errors<span class="op">.</span><span class="at">by_size</span>)<span class="op">.</span><span class="fu">reduce</span>((s<span class="op">,</span> d) <span class="kw">=&gt;</span> s <span class="op">+</span> d<span class="op">.</span><span class="at">weeds</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">,</span> <span class="dv">0</span>)<span class="sc">}</span></span>
+<span id="cb19-551"><a href="#cb19-551" aria-hidden="true" tabindex="-1"></a><span class="vs">of all test weeds and </span><span class="sc">${</span><span class="fu">pct</span>((tiny<span class="op">.</span><span class="at">weeds</span> <span class="op">-</span> tiny<span class="op">.</span><span class="at">hit</span>) <span class="op">/</span> errors<span class="op">.</span><span class="at">missed_weeds</span><span class="op">,</span> <span class="dv">0</span>)<span class="sc">}</span><span class="vs"> of the </span><span class="sc">${</span><span class="fu">fmt</span>(errors<span class="op">.</span><span class="at">missed_weeds</span>)<span class="sc">}</span><span class="vs"> missed ones.</span></span>
+<span id="cb19-552"><a href="#cb19-552" aria-hidden="true" tabindex="-1"></a><span class="vs">At 1280 px input a 16 px plant shrinks to about 11 px.</span></span>
+<span id="cb19-553"><a href="#cb19-553" aria-hidden="true" tabindex="-1"></a><span class="vs">2. **Real fields are harder than test plots:** </span><span class="sc">${</span><span class="fu">pct</span>(<span class="kw">set</span>[<span class="st">"Real fields (ave)"</span>]<span class="op">.</span><span class="at">rate</span>)<span class="sc">}</span><span class="vs"> of weeds hit on real fields</span></span>
+<span id="cb19-554"><a href="#cb19-554" aria-hidden="true" tabindex="-1"></a><span class="vs">vs </span><span class="sc">${</span><span class="fu">pct</span>(<span class="kw">set</span>[<span class="st">"Test plots (vwg)"</span>]<span class="op">.</span><span class="at">rate</span>)<span class="sc">}</span><span class="vs"> on test plots.</span></span>
+<span id="cb19-555"><a href="#cb19-555" aria-hidden="true" tabindex="-1"></a><span class="vs">3. **Crop shots come from crops the model does not recognise.** By construction, a fired shot that lands on a</span></span>
+<span id="cb19-556"><a href="#cb19-556" aria-hidden="true" tabindex="-1"></a><span class="vs">crop means no crop prediction (at the threshold) was within 20 px — the gate cannot protect a crop the model</span></span>
+<span id="cb19-557"><a href="#cb19-557" aria-hidden="true" tabindex="-1"></a><span class="vs">thinks is a weed or does not see. Crop shots per 100 test plants of each species:</span></span>
+<span id="cb19-558"><a href="#cb19-558" aria-hidden="true" tabindex="-1"></a><span class="sc">${</span>sp<span class="op">.</span><span class="fu">map</span>(([k<span class="op">,</span> v]) <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>k<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>v<span class="op">.</span><span class="at">per_100_plants</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">" · "</span>)<span class="sc">}</span><span class="vs">. **Sunflower** seedlings, broad-leaved</span></span>
+<span id="cb19-559"><a href="#cb19-559" aria-hidden="true" tabindex="-1"></a><span class="vs">like many weeds, are shot most often.</span></span>
+<span id="cb19-560"><a href="#cb19-560" aria-hidden="true" tabindex="-1"></a><span class="vs">4. **Crop shots are concentrated:** the top recording session alone (</span><span class="sc">${</span>top[<span class="dv">0</span>]<span class="op">.</span><span class="at">session</span><span class="sc">}</span><span class="vs">; in a development-time look</span></span>
+<span id="cb19-561"><a href="#cb19-561" aria-hidden="true" tabindex="-1"></a><span class="vs">at the annotations, very small soybean seedlings, median box ≈ 29 px vs ≈ 63 px for training soybeans) causes </span><span class="sc">${</span>top[<span class="dv">0</span>]<span class="op">.</span><span class="at">crop_shots</span><span class="sc">}</span><span class="vs"> of </span><span class="sc">${</span>errors<span class="op">.</span><span class="at">total_crop_shots</span><span class="sc">}</span></span>
+<span id="cb19-562"><a href="#cb19-562" aria-hidden="true" tabindex="-1"></a><span class="vs">crop shots, the top three </span><span class="sc">${</span>top<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">.</span><span class="fu">reduce</span>((s<span class="op">,</span> d) <span class="kw">=&gt;</span> s <span class="op">+</span> d<span class="op">.</span><span class="at">crop_shots</span><span class="op">,</span> <span class="dv">0</span>)<span class="sc">}</span><span class="vs">. A single unusual field can</span></span>
+<span id="cb19-563"><a href="#cb19-563" aria-hidden="true" tabindex="-1"></a><span class="vs">dominate the safety metric — one reason the confidence interval for crop shots is wide.</span></span>
+<span id="cb19-564"><a href="#cb19-564" aria-hidden="true" tabindex="-1"></a><span class="vs">5. **Soil shots (</span><span class="sc">${</span><span class="fu">pct</span>(test<span class="op">.</span><span class="at">model</span><span class="op">.</span><span class="at">soil_shot_share</span><span class="op">,</span> <span class="dv">0</span>)<span class="sc">}</span><span class="vs">).** Mostly false detections at low confidence; some may be</span></span>
+<span id="cb19-565"><a href="#cb19-565" aria-hidden="true" tabindex="-1"></a><span class="vs">real but unlabelled seedlings, which the data cannot tell apart.`</span></span>
+<span id="cb19-566"><a href="#cb19-566" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-19" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</section>
+<section id="limitations" class="level1">
+<h1>Limitations</h1>
+<ul>
+<li><strong>The chosen threshold sits at the edge of the explored range (0.05)</strong>, and the 2 % rule ignores wasted soil shots. A different but equally defensible rule (for example a cap on soil shots) would choose a higher threshold and hit fewer weeds.</li>
+<li><strong>One dataset, one camera.</strong> CropAndWeed comes from European fields with one camera setup; the Sugar Beets gallery shows a large drop on a new farm and camera. No claim is made for other crops, regions or machines.</li>
+<li><strong>One training run per configuration.</strong> Seeds were not repeated, so differences between experiments include training noise; the paired bootstrap covers sampling of fields, not of training runs.</li>
+<li><strong>Labels are imperfect.</strong> Tiny plants have rough outlines; 30 % of annotated plants are outside the two classes and ignored; per-plant masks for touching plants come partly from SAM.</li>
+<li><strong>Offline image metrics only.</strong> No field trial, no laser physics, no motion blur or timing. A shot “inside the mask” is assumed to kill the weed.</li>
+<li><strong>The 1920 px run did not finish</strong> (out of GPU memory, then out of time), so the resolution question is open.</li>
+<li><strong>Prediction, not causation.</strong> The analysis shows <em>where</em> the model fails (small plants, sunflower, one soybean field); it does not prove <em>why</em> — size, appearance and field conditions are entangled.</li>
+</ul>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>On held-out CropAndWeed test fields, an instance-segmentation model with a crop safety gate hits about <strong>85 %</strong> of weeds while putting about <strong>1 %</strong> of its shots on crops — far safer than aiming at every green blob, which hits fewer weeds and puts almost a quarter of its shots on crops. The price is waste: at the chosen threshold more than a quarter of shots land on bare soil, and the threshold choice depends on how one values wasted shots against missed weeds. The remaining failures are tiny weeds and crops the model does not recognise (sunflower, very young soybean), and the model does not transfer to a new farm and camera without new data. The next steps would be full-resolution input for small weeds, more varied training fields, and a selection rule that prices soil shots explicitly.</p>
+</section>
+<section id="reproduce" class="level1">
+<h1>Reproduce</h1>
+<p>Everything needed to check these numbers is in the <a href="https://github.com/yuvraj-rathod-1202/weed-detection">repository</a>; its <a href="https://github.com/yuvraj-rathod-1202/weed-detection#readme">README</a> has the full setup.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Command / file</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Environment</td>
+<td>Python 3.12, <code>pip install -r requirements.txt</code>, <code>python -m pytest</code></td>
+</tr>
+<tr class="even">
+<td>Data access</td>
+<td><code>python scripts/convert_cropandweed.py --download --src data/raw/cropandweed_src --out data/raw/cropandweed</code> (official source; licence forbids redistribution)</td>
+</tr>
+<tr class="odd">
+<td>Exact split</td>
+<td><code>configs/datasets/cropandweed.yaml</code>: grouped by session (<code>^[a-z]+-\d{4}</code>), 65/20/15, seed 42</td>
+</tr>
+<tr class="even">
+<td>Preprocessing</td>
+<td><code>python scripts/prepare_data.py --dataset configs/datasets/cropandweed.yaml</code> (<a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/src/data/prepare.py"><code>src/data/prepare.py</code></a>)</td>
+</tr>
+<tr class="odd">
+<td>Training (Kaggle, 2 × T4)</td>
+<td><code>python scripts/run_experiment.py --config configs/experiments/&lt;exp&gt;.yaml</code> (<a href="https://github.com/yuvraj-rathod-1202/weed-detection/tree/main/configs/experiments">configs</a>), see <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/docs/kaggle_cropandweed.md"><code>docs/kaggle_cropandweed.md</code></a></td>
+</tr>
+<tr class="even">
+<td>Trained weights</td>
+<td><a href="https://github.com/yuvraj-rathod-1202/weed-detection/tree/main/models/released/"><code>models/released/</code></a> (exp 3–5 and the CottonWeedDet12 model)</td>
+</tr>
+<tr class="odd">
+<td>Validation, selection, test</td>
+<td><a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/docs/kaggle_validation.md"><code>docs/kaggle_validation.md</code></a>: <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/scripts/evaluate_split.py"><code>scripts/evaluate_split.py</code></a>, <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/scripts/select_model.py"><code>scripts/select_model.py</code></a></td>
+</tr>
+<tr class="even">
+<td>Site data and gallery</td>
+<td><code>python scripts/site/export_site_data.py</code>, <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/scripts/site/fetch_sugarbeets_sample.py"><code>scripts/site/fetch_sugarbeets_sample.py</code></a>, <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/scripts/site/make_gallery.py"><code>scripts/site/make_gallery.py</code></a></td>
+</tr>
+<tr class="odd">
+<td>This website</td>
+<td><code>cd site &amp;&amp; quarto render</code></td>
+</tr>
+<tr class="even">
+<td>Analysis notebooks</td>
+<td><a href="https://github.com/yuvraj-rathod-1202/weed-detection/tree/main/notebooks"><code>notebooks/</code></a> (data exploration, model outputs, results analysis)</td>
+</tr>
+</tbody>
+</table>
+<p>Key code: threshold sweep and the 2 % rule in <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/src/targeting/sweep.py"><code>src/targeting/sweep.py</code></a>, model selection in <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/src/selection.py"><code>src/selection.py</code></a>, aim points in <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/src/targeting/points.py"><code>src/targeting/points.py</code></a>, crop gate in <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/src/targeting/safety.py"><code>src/targeting/safety.py</code></a>, baseline in <a href="https://github.com/yuvraj-rathod-1202/weed-detection/blob/main/src/baseline.py"><code>src/baseline.py</code></a>.</p>
+</section>
+<section id="my-contribution-and-ai-use" class="level1">
+<h1>My contribution and AI use</h1>
+<p>I framed the question, chose the datasets, designed the split, metrics and selection rule, ran all training and evaluation on Kaggle, and wrote the analysis and this site.</p>
+<p><strong>AI use.</strong> I used <strong>Claude Code</strong> (Anthropic) as a coding assistant throughout: writing and debugging code (data conversion, training and evaluation scripts, the threshold sweep, the gallery and this website), analysing results, and drafting text. I reviewed and ran all code myself, checked the key numbers against the raw outputs, and am responsible for every result and claim on this page. No other AI tools were used. External code and data are cited below; ultralytics (YOLO11, AGPL-3.0) and SAM 2.1 are used as libraries.</p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-dang2023yoloweeds" class="csl-entry" role="listitem">
+Dang, Fengying, Dong Chen, Yuzhen Lu, and Zhaojian Li. 2023. <span>“<span>YOLOWeeds</span>: A Novel Benchmark of <span>YOLO</span> Object Detectors for Multi-Class Weed Detection in Cotton Production Systems.”</span> <em>Computers and Electronics in Agriculture</em> 205: 107655.
+</div>
+<div id="ref-he2017maskrcnn" class="csl-entry" role="listitem">
+He, Kaiming, Georgia Gkioxari, Piotr Dollár, and Ross Girshick. 2017. <span>“Mask <span>R-CNN</span>.”</span> <em>Proceedings of the IEEE International Conference on Computer Vision (ICCV)</em>, 2961–69.
+</div>
+<div id="ref-jocher2024yolo11" class="csl-entry" role="listitem">
+Jocher, Glenn, and Jing Qiu. 2024. <em>Ultralytics <span>YOLO11</span></em>. Released. <a href="https://github.com/ultralytics/ultralytics">https://github.com/ultralytics/ultralytics</a>.
+</div>
+<div id="ref-lu2023cottonweeddet12" class="csl-entry" role="listitem">
+<span class="nocase">Lu, Yuzhen et al.</span> 2023. <em><span>CottonWeedDet12</span>: A 12-Class Weed Dataset of Cotton Production Systems for Benchmarking <span>AI</span> Models for Weed Detection</em>. Zenodo. <a href="https://doi.org/10.5281/zenodo.7535814">https://doi.org/10.5281/zenodo.7535814</a>.
+</div>
+<div id="ref-meyer2008exgr" class="csl-entry" role="listitem">
+Meyer, George E., and João Camargo Neto. 2008. <span>“Verification of Color Vegetation Indices for Automated Crop Imaging Applications.”</span> <em>Computers and Electronics in Agriculture</em> 63 (2): 282–93.
+</div>
+<div id="ref-ravi2024sam2" class="csl-entry" role="listitem">
+<span class="nocase">Ravi, Nikhila, Valentin Gabeur, Yuan-Ting Hu, et al.</span> 2024. <span>“<span>SAM</span> 2: Segment Anything in Images and Videos.”</span> <em>arXiv Preprint arXiv:2408.00714</em>.
+</div>
+<div id="ref-steininger2023cropandweed" class="csl-entry" role="listitem">
+Steininger, Daniel, Andreas Trondl, Gerardus Croonen, Julia Simon, and Verena Widhalm. 2023. <span>“The CropAndWeed Dataset: A Multi-Modal Learning Approach for Efficient Crop and Weed Manipulation.”</span> <em>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)</em>, 3729–38.
+</div>
+<div id="ref-woebbecke1995exg" class="csl-entry" role="listitem">
+Woebbecke, D. M., G. E. Meyer, K. Von Bargen, and D. A. Mortensen. 1995. <span>“Color Indices for Weed Identification Under Various Soil, Residue, and Lighting Conditions.”</span> <em>Transactions of the ASAE</em> 38 (1): 259–69.
+</div>
+</div>
+
+
+<div class="ojs-auto-generated hidden">
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6WyAgeyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiaW5saW5lIjoidHJ1ZSIsInNvdXJjZSI6Imh0bC5odG1sYDxzcGFuPiR7Zm10KHRvdGFsKFwiaW1hZ2VzXCIpKX08L3NwYW4+YCIsICJjZWxsTmFtZSI6Im9qcy1lbGVtZW50LWlkLTEifSwgIHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImlubGluZSI6InRydWUiLCJzb3VyY2UiOiJodGwuaHRtbGA8c3Bhbj4ke2ZtdCh0b3RhbChcInNlc3Npb25zXCIpKX08L3NwYW4+YCIsICJjZWxsTmFtZSI6Im9qcy1lbGVtZW50LWlkLTIifSwgIHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImlubGluZSI6InRydWUiLCJzb3VyY2UiOiJodGwuaHRtbGA8c3Bhbj4ke2ZtdCh0b3RhbChcImlnbm9yZWRcIikpfTwvc3Bhbj5gIiwgImNlbGxOYW1lIjoib2pzLWVsZW1lbnQtaWQtMyJ9LCAgeyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiaW5saW5lIjoidHJ1ZSIsInNvdXJjZSI6Imh0bC5odG1sYDxzcGFuPiR7cGN0KHRvdGFsKFwiaWdub3JlZFwiKSAvICh0b3RhbChcImlnbm9yZWRcIikgKyB0b3RhbChcImNyb3BcIikgKyB0b3RhbChcIndlZWRcIikpKX08L3NwYW4+YCIsICJjZWxsTmFtZSI6Im9qcy1lbGVtZW50LWlkLTQifSwgIHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImlubGluZSI6InRydWUiLCJzb3VyY2UiOiJodGwuaHRtbGA8c3Bhbj4keyh0b3RhbChcIndlZWRcIikgLyB0b3RhbChcImNyb3BcIikpLnRvRml4ZWQoMSl9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC01In0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHtwY3QoKGRhdGFzZXQuc2l6ZXMuV2VlZFtcIjDigJMxNlwiXSArIGRhdGFzZXQuc2l6ZXMuV2VlZFtcIjE24oCTMjRcIl0pIC8gT2JqZWN0LnZhbHVlcyhkYXRhc2V0LnNpemVzLldlZWQpLnJlZHVjZSgoYSwgYikgPT4gYSArIGIpKX08L3NwYW4+YCIsICJjZWxsTmFtZSI6Im9qcy1lbGVtZW50LWlkLTYifSwgIHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImlubGluZSI6InRydWUiLCJzb3VyY2UiOiJodGwuaHRtbGA8c3Bhbj4ke3RyYWluaW5nLmJlc3RfZXBvY2h9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC03In0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHt0cmFpbmluZy5lcG9jaHN9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC04In0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHtlcnJvcnMudGhyZXNob2xkLnRvRml4ZWQoMil9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC05In1dfQ==
+</script>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGFzZXQgPSBGaWxlQXR0YWNobWVudChcImRhdGEvZGF0YXNldC5qc29uXCIpLmpzb24oKVxyXG5zcGxpdHMgPSBbXCJ0cmFpblwiLCBcInZhbFwiLCBcInRlc3RcIl1cclxudG90YWwgPSAoa2V5KSA9PiBzcGxpdHMucmVkdWNlKChzLCBrKSA9PiBzICsgZGF0YXNldC5zcGxpdHNba11ba2V5XSwgMClcclxucGN0ID0gKHgsIGQgPSAxKSA9PiAoMTAwICogeCkudG9GaXhlZChkKSArIFwiJVwiXHJcbmZtdCA9ICh4KSA9PiB4LnRvTG9jYWxlU3RyaW5nKFwiZW4tVVNcIilcclxuZ3JleXMgPSBbXCIjM2EzZjNjXCIsIFwiIzlhYTE5ZFwiXVxyXG5ISVQgPSBcIiMyZTdkMzJcIlxyXG5DUk9QID0gXCIjYzYyODI4XCJcclxuU09JTCA9IFwiIzllOWU5ZVwiXHJcbmN1cnZlcyA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9jdXJ2ZXMuanNvblwiKS5qc29uKClcclxuY29tcGFyaXNvbiA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9jb21wYXJpc29uLmpzb25cIikuanNvbigpXHJcbnRlc3QgPSBGaWxlQXR0YWNobWVudChcImRhdGEvdGVzdC5qc29uXCIpLmpzb24oKVxyXG5lcnJvcnMgPSBGaWxlQXR0YWNobWVudChcImRhdGEvZXJyb3JzLmpzb25cIikuanNvbigpXHJcbnRyYWluaW5nID0gRmlsZUF0dGFjaG1lbnQoXCJkYXRhL3RyYWluaW5nLmpzb25cIikuanNvbigpXHJcbmdhbGxlcnkgPSBGaWxlQXR0YWNobWVudChcImRhdGEvZ2FsbGVyeS5qc29uXCIpLmpzb24oKVxyXG5SRVBPID0gXCJodHRwczovL2dpdGh1Yi5jb20veXV2cmFqLXJhdGhvZC0xMjAyL3dlZWQtZGV0ZWN0aW9uL2Jsb2IvbWFpbi9cIlxyXG5jaSA9IChyLCBkID0gMSkgPT4gYCR7cGN0KHJbMF0sIGQpfeKAkyR7cGN0KHJbMV0sIGQpfWBcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaHRtbGA8ZGl2IGNsYXNzPVwic3RhdHNcIj5cclxuICA8ZGl2IGNsYXNzPVwic3RhdFwiPjxiIGNsYXNzPVwiaGl0XCI+JHtwY3QodGVzdC5tb2RlbC53ZWVkX2hpdF9yYXRlKX08L2I+PHNwYW4+b2Ygd2VlZHMgaGl0ICg5NSUgQ0kgJHtjaSh0ZXN0Lm1vZGVsLmNpLndlZWRfaGl0X3JhdGUpfSk8L3NwYW4+PC9kaXY+XHJcbiAgPGRpdiBjbGFzcz1cInN0YXRcIj48YiBjbGFzcz1cImNyb3BcIj4ke3BjdCh0ZXN0Lm1vZGVsLmNyb3Bfc2hvdF9zaGFyZSl9PC9iPjxzcGFuPm9mIHNob3RzIGxhbmQgb24gYSBjcm9wIChDSSAke2NpKHRlc3QubW9kZWwuY2kuY3JvcF9zaG90X3NoYXJlKX0pPC9zcGFuPjwvZGl2PlxyXG4gIDxkaXYgY2xhc3M9XCJzdGF0XCI+PGIgY2xhc3M9XCJzb2lsXCI+JHtwY3QodGVzdC5tb2RlbC5zb2lsX3Nob3Rfc2hhcmUsIDApfTwvYj48c3Bhbj5vZiBzaG90cyB3YXN0ZWQgb24gYmFyZSBzb2lsPC9zcGFuPjwvZGl2PlxyXG4gIDxkaXYgY2xhc3M9XCJzdGF0XCI+PGI+JHtNYXRoLnJvdW5kKHRlc3QubW9kZWwuaW5mZXJlbmNlX21zKX0gbXM8L2I+PHNwYW4+cGVyIGltYWdlIG9uIG9uZSBUNCBHUFU8L3NwYW4+PC9kaXY+XHJcbjwvZGl2PmBcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibWRgVGhlIG5vbi1sZWFybmVkIGJhc2VsaW5lIChhaW0gYXQgZXZlcnkgZ3JlZW4gYmxvYikgaGl0cyAke3BjdCh0ZXN0LmJhc2VsaW5lLndlZWRfaGl0X3JhdGUpfSBvZiB3ZWVkcyBidXQgcHV0c1xyXG4qKiR7cGN0KHRlc3QuYmFzZWxpbmUuY3JvcF9zaG90X3NoYXJlKX0gb2YgaXRzIHNob3RzIG9uIGNyb3BzKiog4oCUIHRoZSB0cmFpbmVkIG1vZGVsJ3MgdmFsdWUgaXMgY3JvcCBzYWZldHkuIE1vZGVsOlxyXG5ZT0xPMTFzLXNlZyBhdCAxMjgwIHB4LCBjaG9zZW4gb24gdmFsaWRhdGlvbi4gUGVyIGNyb3AgcGxhbnQ6ICR7ZXJyb3JzLnRvdGFsX2Nyb3Bfc2hvdHN9IGNyb3Agc2hvdHMgb25cclxuJHtmbXQodGVzdC5udW1fZ3RfY3JvcHMpfSB0ZXN0IGNyb3AgcGxhbnRzLCBzbyAqKmF0IG1vc3QgJHtwY3QoZXJyb3JzLnRvdGFsX2Nyb3Bfc2hvdHMgLyB0ZXN0Lm51bV9ndF9jcm9wcyl9IG9mIGNyb3BcclxucGxhbnRzIGFyZSBoaXQqKi4gVGVzdCA9ICR7Zm10KHRlc3QubnVtX2ltYWdlcyl9IGltYWdlcywgJHtmbXQodGVzdC5udW1fZ3Rfd2VlZHMpfSB3ZWVkcyBhbmRcclxuJHtmbXQodGVzdC5udW1fZ3RfY3JvcHMpfSBjcm9wIHBsYW50cywgbm90IHVzZWQgYnkgdGhlIGZpbmFsIHNlbGVjdGlvbiAobW9kZWwgYW5kIHRocmVzaG9sZCB3ZXJlIGNob3NlbiBvblxyXG52YWxpZGF0aW9uOyBlYXJsaWVyIGRldmVsb3BtZW50IGRpZCBsb29rIGF0IHRlc3Qg4oCUIHNlZSAqRXZhbHVhdGlvbiopLmBcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaHRtbGA8ZGl2IGNsYXNzPVwidGFibGUtc2Nyb2xsXCI+PHRhYmxlIGNsYXNzPVwiZGF0YVwiPlxyXG4gIDx0aGVhZD48dHI+PHRoPlNwbGl0PC90aD48dGg+SW1hZ2VzPC90aD48dGg+U2Vzc2lvbnM8L3RoPjx0aD5Dcm9wIHBsYW50czwvdGg+PHRoPldlZWQgcGxhbnRzPC90aD5cclxuICA8dGg+SWdub3JlZCBwbGFudHM8L3RoPjx0aD5SZWFsLWZpZWxkIC8gdGVzdC1wbG90IGltYWdlczwvdGg+PC90cj48L3RoZWFkPlxyXG4gIDx0Ym9keT4ke3NwbGl0cy5tYXAocyA9PiB7IGNvbnN0IGQgPSBkYXRhc2V0LnNwbGl0c1tzXTsgcmV0dXJuIGh0bWxgPHRyPjx0ZD4ke3N9PC90ZD48dGQ+JHtmbXQoZC5pbWFnZXMpfTwvdGQ+XHJcbiAgICA8dGQ+JHtmbXQoZC5zZXNzaW9ucyl9PC90ZD48dGQ+JHtmbXQoZC5jcm9wKX08L3RkPjx0ZD4ke2ZtdChkLndlZWQpfTwvdGQ+PHRkPiR7Zm10KGQuaWdub3JlZCl9PC90ZD5cclxuICAgIDx0ZD4ke2ZtdChkLmF2ZSl9IC8gJHtmbXQoZC52d2cpfTwvdGQ+PC90cj5gIH0pfTwvdGJvZHk+PC90YWJsZT48L2Rpdj5gXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InNpemVSb3dzID0gT2JqZWN0LmVudHJpZXMoZGF0YXNldC5zaXplcykuZmxhdE1hcCgoW2NscywgYmluc10pID0+IHtcclxuICBjb25zdCBuID0gT2JqZWN0LnZhbHVlcyhiaW5zKS5yZWR1Y2UoKGEsIGIpID0+IGEgKyBiKVxyXG4gIHJldHVybiBPYmplY3QuZW50cmllcyhiaW5zKS5tYXAoKFtiaW4sIGNvdW50XSkgPT4gKHtjbHMsIGJpbiwgc2hhcmU6IGNvdW50IC8gbn0pKVxyXG59KVxyXG5QbG90LnBsb3Qoe1xyXG4gIHRpdGxlOiBcIlBsYW50IHNpemUgKHNxcnQgb2YgYm94IGFyZWEsIHB4KTogd2VlZHMgYXJlIG11Y2ggc21hbGxlciB0aGFuIGNyb3BzXCIsXHJcbiAgd2lkdGg6IE1hdGgubWluKHdpZHRoLCA3NjApLCBoZWlnaHQ6IDI2MCwgbWFyZ2luTGVmdDogNTAsIHg6IHtsYWJlbDogXCJwbGFudCBzaXplIChweClcIiwgZG9tYWluOiBPYmplY3Qua2V5cyhkYXRhc2V0LnNpemVzLldlZWQpfSxcclxuICB5OiB7bGFiZWw6IFwic2hhcmUgb2YgcGxhbnRzXCIsIHRpY2tGb3JtYXQ6IFwiJVwifSwgZng6IHtsYWJlbDogbnVsbH0sIGNvbG9yOiB7ZG9tYWluOiBbXCJXZWVkXCIsIFwiQ3JvcFwiXSwgcmFuZ2U6IGdyZXlzLCBsZWdlbmQ6IHRydWV9LFxyXG4gIG1hcmtzOiBbUGxvdC5iYXJZKHNpemVSb3dzLCB7Zng6IFwiY2xzXCIsIHg6IFwiYmluXCIsIHk6IFwic2hhcmVcIiwgZmlsbDogXCJjbHNcIiwgdGlwOiB0cnVlfSksIFBsb3QucnVsZVkoWzBdKV1cclxufSlcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiUGxvdC5wbG90KHtcclxuICB0aXRsZTogXCJDcm9wIHBsYW50cyBwZXIgc3BlY2llcyAoYWxsIHNwbGl0cylcIixcclxuICB3aWR0aDogTWF0aC5taW4od2lkdGgsIDc2MCksIGhlaWdodDogMjQwLCBtYXJnaW5MZWZ0OiA4MCwgeDoge2xhYmVsOiBcInBsYW50c1wifSwgeToge2xhYmVsOiBudWxsfSxcclxuICBtYXJrczogW1Bsb3QuYmFyWChPYmplY3QuZW50cmllcyhkYXRhc2V0LmNyb3Bfc3BlY2llcykubWFwKChbc3BlY2llcywgbl0pID0+ICh7c3BlY2llcywgbn0pKSxcclxuICAgICAgICAgICAgICAgICAgICB7eTogXCJzcGVjaWVzXCIsIHg6IFwiblwiLCBmaWxsOiBncmV5c1swXSwgc29ydDoge3k6IFwiLXhcIn0sIHRpcDogdHJ1ZX0pLCBQbG90LnJ1bGVYKFswXSldXHJcbn0pXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBydW4gPSBJbnB1dHMuc2VsZWN0KE9iamVjdC5rZXlzKGN1cnZlcy5ydW5zKSwge3ZhbHVlOiBjdXJ2ZXMuc2VsZWN0ZWQsIGxhYmVsOiBcIk1vZGVsXCIsXHJcbiAgZm9ybWF0OiBrID0+IGN1cnZlcy5ydW5zW2tdLmxhYmVsICsgKGsgPT09IGN1cnZlcy5zZWxlY3RlZCA/IFwiIOKAlCBzZWxlY3RlZFwiIDogXCJcIil9KVxyXG52aWV3b2YgdGhyID0gSW5wdXRzLnJhbmdlKFswLjA1LCAwLjk1XSwge3N0ZXA6IDAuMDEsIHZhbHVlOiBjdXJ2ZXMudGhyZXNob2xkLCBsYWJlbDogXCJDb25maWRlbmNlIOKJpVwifSlcclxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC04IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiY3VydmUgPSBjdXJ2ZXMucnVuc1tydW5dLmN1cnZlXHJcbnJvdyA9IGN1cnZlLmZpbmQoYyA9PiBNYXRoLmFicyhjLnRocmVzaG9sZCAtIHRocikgPCAwLjAwNSlcclxub3B0ID0gY3VydmVzLnJ1bnNbcnVuXS5vcHRpbWFsXHJcbmJhc2UgPSBjdXJ2ZXMuYmFzZWxpbmVcclxue1xyXG4gIC8vIE9uZSBiYXIgcGVyIG91dGNvbWUuIFRpY2tzOiBkYXJrID0gb3B0aW11bSBieSB0aGUgMiAlIHJ1bGUsIGRhc2hlZCBncmV5ID0gYmFzZWxpbmUuXHJcbiAgLy8gU2hvdHMgb24gY3JvcHMgdXNlIGEgMOKAkzUgJSBzY2FsZSBzbyB0aGUgMiAlIGxpbWl0IGlzIHZpc2libGU7IHZhbHVlcyBiZXlvbmQgaXQgYXJlIGNsYW1wZWQgdG8gdGhlIGVuZC5cclxuICBjb25zdCBiYXJzID0gW1xyXG4gICAge2tleTogXCJ3ZWVkX2hpdF9yYXRlXCIsIGxhYmVsOiBcIldlZWRzIGhpdFwiLCBzdWI6IFwic2hhcmUgb2YgYWxsIGxhYmVsbGVkIHdlZWRzXCIsIGNsczogXCJoaXRcIiwgbWF4OiAxLCBkOiAxfSxcclxuICAgIHtrZXk6IFwic29pbF9zaG90X3NoYXJlXCIsIGxhYmVsOiBcIlNob3RzIG9uIHNvaWxcIiwgc3ViOiBcIndhc3RlZCBsYXNlciB0aW1lXCIsIGNsczogXCJzb2lsXCIsIG1heDogMSwgZDogMX0sXHJcbiAgICB7a2V5OiBcImNyb3Bfc2hvdF9zaGFyZVwiLCBsYWJlbDogXCJTaG90cyBvbiBjcm9wc1wiLCBzdWI6IFwic2NhbGUgMOKAkzUgJVwiLCBjbHM6IFwiY3JvcFwiLCBtYXg6IDAuMDUsIGQ6IDIsIGxpbWl0OiBjdXJ2ZXMubWF4X2Nyb3Bfc2hhcmV9XHJcbiAgXTtcclxuICBjb25zdCBwb3MgPSAodiwgbWF4KSA9PiBNYXRoLm1pbigxMDAsIDEwMCAqIHYgLyBtYXgpO1xyXG4gIGNvbnN0IHRpY2sgPSAodiwgYiwga2luZCwgbmFtZSkgPT4gdiA+IGIubWF4XHJcbiAgICA/IGh0bWxgPHNwYW4gY2xhc3M9XCJvZmYtc2NhbGVcIiB0aXRsZT1cIiR7bmFtZX06ICR7cGN0KHYsIGIuZCl9XCI+JHtuYW1lfSAke3BjdCh2LCAxKX0g4oaSPC9zcGFuPmBcclxuICAgIDogaHRtbGA8c3BhbiBjbGFzcz1cInRpY2sgJHtraW5kfVwiIHN0eWxlPVwibGVmdDoke3Bvcyh2LCBiLm1heCl9JVwiIHRpdGxlPVwiJHtuYW1lfTogJHtwY3QodiwgYi5kKX1cIj48L3NwYW4+YDtcclxuICByZXR1cm4gaHRtbGA8ZGl2IGNsYXNzPVwiYmFyc1wiPlxyXG4gICAgJHtiYXJzLm1hcChiID0+IGh0bWxgPGRpdiBjbGFzcz1cImJhci1yb3dcIj5cclxuICAgICAgPGRpdiBjbGFzcz1cImJhci1sYWJlbFwiPjxiPiR7Yi5sYWJlbH08L2I+PHNwYW4+JHtiLnN1Yn08L3NwYW4+PC9kaXY+XHJcbiAgICAgIDxkaXYgY2xhc3M9XCJiYXItdHJhY2tcIj5cclxuICAgICAgICA8ZGl2IGNsYXNzPVwiYmFyLWZpbGwgJHtiLmNsc31cIiBzdHlsZT1cIndpZHRoOiR7cG9zKHJvd1tiLmtleV0sIGIubWF4KX0lXCI+PC9kaXY+XHJcbiAgICAgICAgJHtiLmxpbWl0ID8gaHRtbGA8c3BhbiBjbGFzcz1cImJhci1saW1pdFwiIHN0eWxlPVwibGVmdDoke3BvcyhiLmxpbWl0LCBiLm1heCl9JVwiPjxlbT4yICUgbGltaXQ8L2VtPjwvc3Bhbj5gIDogXCJcIn1cclxuICAgICAgICAke29wdCA/IHRpY2sob3B0W2Iua2V5XSwgYiwgXCJvcHRcIiwgYG9wdGltdW0gKCR7b3B0LnRocmVzaG9sZC50b0ZpeGVkKDIpfSlgKSA6IFwiXCJ9XHJcbiAgICAgICAgJHt0aWNrKGJhc2VbYi5rZXldLCBiLCBcImJhc2VcIiwgXCJiYXNlbGluZVwiKX1cclxuICAgICAgPC9kaXY+XHJcbiAgICAgIDxkaXYgY2xhc3M9XCJiYXItdmFsdWUgJHtiLmNsc31cIj4ke3BjdChyb3dbYi5rZXldLCBiLmQpfTwvZGl2PlxyXG4gICAgPC9kaXY+YCl9XHJcbiAgICA8cCBjbGFzcz1cImJhci1sZWdlbmRcIj48c3BhbiBjbGFzcz1cInRpY2sta2V5IG9wdFwiPjwvc3Bhbj4gb3B0aW11bSBieSB0aGUgMiAlIHJ1bGUke29wdCA/IGAgKHRocmVzaG9sZCAke29wdC50aHJlc2hvbGQudG9GaXhlZCgyKX0pYCA6IFwiXCJ9XHJcbiAgICAgICZuYnNwOyA8c3BhbiBjbGFzcz1cInRpY2sta2V5IGJhc2VcIj48L3NwYW4+IGJhc2VsaW5lLCBncmVlbiBibG9icyAoJHtwY3QoYmFzZS53ZWVkX2hpdF9yYXRlKX0gd2VlZHMgaGl0LFxyXG4gICAgICAke3BjdChiYXNlLmNyb3Bfc2hvdF9zaGFyZSl9IG9mIHNob3RzIG9uIGNyb3BzKSAmbmJzcDvCtyZuYnNwOyAke2ZtdChyb3cuc2hvdHMpfSBzaG90cyBmaXJlZCBvbiAxLDYwOSB2YWxpZGF0aW9uIGltYWdlczwvcD5cclxuICA8L2Rpdj5gO1xyXG59XHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtOSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Im1kYCoqVGVzdCByZXN1bHQgKHVzZWQgb25jZSk6KiogJHtjdXJ2ZXMucnVuc1tjdXJ2ZXMuc2VsZWN0ZWRdLmxhYmVsfSBhdCB0aHJlc2hvbGQgJHtjdXJ2ZXMudGhyZXNob2xkLnRvRml4ZWQoMil9XHJcbmhpdHMgKioke3BjdCh0ZXN0Lm1vZGVsLndlZWRfaGl0X3JhdGUpfSoqIG9mIHRlc3Qgd2VlZHMgKDk1ICUgQ0kgJHtjaSh0ZXN0Lm1vZGVsLmNpLndlZWRfaGl0X3JhdGUpfSksIHdpdGhcclxuJHtwY3QodGVzdC5tb2RlbC5jcm9wX3Nob3Rfc2hhcmUpfSBvZiBzaG90cyBvbiBjcm9wcyAoQ0kgJHtjaSh0ZXN0Lm1vZGVsLmNpLmNyb3Bfc2hvdF9zaGFyZSl9KSBhbmRcclxuJHtwY3QodGVzdC5tb2RlbC5zb2lsX3Nob3Rfc2hhcmUpfSBvbiBzb2lsIOKAlCBjbG9zZSB0byBpdHMgdmFsaWRhdGlvbiB2YWx1ZXMgKCR7cGN0KGN1cnZlcy5ydW5zW2N1cnZlcy5zZWxlY3RlZF0ub3B0aW1hbC53ZWVkX2hpdF9yYXRlKX0sXHJcbiR7cGN0KGN1cnZlcy5ydW5zW2N1cnZlcy5zZWxlY3RlZF0ub3B0aW1hbC5jcm9wX3Nob3Rfc2hhcmUpfSwgJHtwY3QoY3VydmVzLnJ1bnNbY3VydmVzLnNlbGVjdGVkXS5vcHRpbWFsLnNvaWxfc2hvdF9zaGFyZSl9KSwgc28gdGhlcmUgaXMgbm8gc2lnbiB0aGF0IHRoZVxyXG5zZWxlY3Rpb24gb24gdmFsaWRhdGlvbiB3YXMgb3B0aW1pc3RpYy4gTm90ZSB0aGF0IHRoZSB1cHBlciBlbmQgb2YgdGhlIGNyb3Atc2hvdCBpbnRlcnZhbFxyXG4oJHtwY3QodGVzdC5tb2RlbC5jaS5jcm9wX3Nob3Rfc2hhcmVbMV0pfSkgaXMganVzdCBhYm92ZSB0aGUgMiAlIGxpbWl0OiBvbiBuZXcgZmllbGRzIG9uZSBjYW5ub3QgYmUgY29uZmlkZW50IHRoZSBsaW1pdCBob2xkcy5gXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTAiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJodG1sYDxkaXYgY2xhc3M9XCJ0YWJsZS1zY3JvbGxcIj48dGFibGUgY2xhc3M9XCJkYXRhXCI+XHJcbjx0aGVhZD48dHI+PHRoPlRlc3QsICR7Zm10KHRlc3QubnVtX2ltYWdlcyl9IGltYWdlczwvdGg+PHRoPldlZWRzIGhpdDwvdGg+PHRoPlNob3RzIG9uIGNyb3BzPC90aD48dGg+U2hvdHMgb24gc29pbDwvdGg+PHRoPlNob3QgcHJlY2lzaW9uPC90aD48dGg+U2hvdHMgZmlyZWQ8L3RoPjwvdHI+PC90aGVhZD5cclxuPHRib2R5PlxyXG48dHIgY2xhc3M9XCJzZWxlY3RlZFwiPjx0ZD4ke3Rlc3QubGFiZWx9ICh0aHJlc2hvbGQgJHt0ZXN0LnRocmVzaG9sZC50b0ZpeGVkKDIpfSk8L3RkPjx0ZD4ke3BjdCh0ZXN0Lm1vZGVsLndlZWRfaGl0X3JhdGUpfTxicj48c3BhbiBjbGFzcz1cIm11dGVkXCI+JHtjaSh0ZXN0Lm1vZGVsLmNpLndlZWRfaGl0X3JhdGUpfTwvc3Bhbj48L3RkPlxyXG48dGQ+JHtwY3QodGVzdC5tb2RlbC5jcm9wX3Nob3Rfc2hhcmUpfTxicj48c3BhbiBjbGFzcz1cIm11dGVkXCI+JHtjaSh0ZXN0Lm1vZGVsLmNpLmNyb3Bfc2hvdF9zaGFyZSl9PC9zcGFuPjwvdGQ+PHRkPiR7cGN0KHRlc3QubW9kZWwuc29pbF9zaG90X3NoYXJlKX08L3RkPjx0ZD4ke3BjdCh0ZXN0Lm1vZGVsLnNob3RfcHJlY2lzaW9uKX08L3RkPjx0ZD4ke2ZtdCh0ZXN0Lm1vZGVsLnNob3RzKX08L3RkPjwvdHI+XHJcbjx0cj48dGQ+QmFzZWxpbmU6IGV2ZXJ5IGdyZWVuIGJsb2I8L3RkPjx0ZD4ke3BjdCh0ZXN0LmJhc2VsaW5lLndlZWRfaGl0X3JhdGUpfTxicj48c3BhbiBjbGFzcz1cIm11dGVkXCI+JHtjaSh0ZXN0LmJhc2VsaW5lLmNpLndlZWRfaGl0X3JhdGUpfTwvc3Bhbj48L3RkPlxyXG48dGQ+JHtwY3QodGVzdC5iYXNlbGluZS5jcm9wX3Nob3Rfc2hhcmUpfTxicj48c3BhbiBjbGFzcz1cIm11dGVkXCI+JHtjaSh0ZXN0LmJhc2VsaW5lLmNpLmNyb3Bfc2hvdF9zaGFyZSl9PC9zcGFuPjwvdGQ+PHRkPiR7cGN0KHRlc3QuYmFzZWxpbmUuc29pbF9zaG90X3NoYXJlKX08L3RkPjx0ZD4ke3BjdCh0ZXN0LmJhc2VsaW5lLnNob3RfcHJlY2lzaW9uKX08L3RkPjx0ZD4ke2ZtdCh0ZXN0LmJhc2VsaW5lLnNob3RzKX08L3RkPjwvdHI+XHJcbjwvdGJvZHk+PC90YWJsZT48L2Rpdj5gXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTEiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJtZXRyaWNzID0gW1xyXG4gIHtrZXk6IFwid2VlZF9oaXRfcmF0ZVwiLCBsYWJlbDogXCJXZWVkcyBoaXRcIiwgZjogeCA9PiBwY3QoeCksIHRpY2s6IFwiJVwifSxcclxuICB7a2V5OiBcImNyb3Bfc2hvdF9zaGFyZVwiLCBsYWJlbDogXCJTaG90cyBvbiBjcm9wc1wiLCBmOiB4ID0+IHBjdCh4LCAyKSwgdGljazogXCIlXCJ9LFxyXG4gIHtrZXk6IFwic29pbF9zaG90X3NoYXJlXCIsIGxhYmVsOiBcIlNob3RzIG9uIHNvaWxcIiwgZjogeCA9PiBwY3QoeCksIHRpY2s6IFwiJVwifSxcclxuICB7a2V5OiBcInZhbF9tYXNrX21hcDUwXzk1XCIsIGxhYmVsOiBcIk1hc2sgbUFQNTAtOTUgKHZhbGlkYXRpb24pXCIsIGY6IHggPT4geC50b0ZpeGVkKDMpLCB0aWNrOiBcIi4yZlwifSxcclxuICB7a2V5OiBcImluZmVyZW5jZV9tc1wiLCBsYWJlbDogXCJUaW1lIHBlciBpbWFnZSAobXMpXCIsIGY6IHggPT4gTWF0aC5yb3VuZCh4KSArIFwiIG1zXCIsIHRpY2s6IFwiZFwifVxyXG5dXHJcbnZpZXdvZiBtZXRyaWMgPSBJbnB1dHMuc2VsZWN0KG1ldHJpY3MsIHtsYWJlbDogXCJNZXRyaWNcIiwgZm9ybWF0OiBtID0+IG0ubGFiZWx9KVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEyIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiUGxvdC5wbG90KHtcclxuICB3aWR0aDogTWF0aC5taW4od2lkdGgsIDc2MCksIGhlaWdodDogMjAwLCBtYXJnaW5MZWZ0OiAyMzAsIG1hcmdpblJpZ2h0OiA2MCxcclxuICB4OiB7bGFiZWw6IG1ldHJpYy5sYWJlbCwgZ3JpZDogdHJ1ZSwgdGlja0Zvcm1hdDogbWV0cmljLnRpY2t9LCB5OiB7bGFiZWw6IG51bGwsIGRvbWFpbjogY29tcGFyaXNvbi5tYXAoZCA9PiBkLmxhYmVsKX0sXHJcbiAgbWFya3M6IFtcclxuICAgIFBsb3QuYmFyWChjb21wYXJpc29uLmZpbHRlcihkID0+IGRbbWV0cmljLmtleV0gIT0gbnVsbCksIHt5OiBcImxhYmVsXCIsIHg6IG1ldHJpYy5rZXksXHJcbiAgICAgIGZpbGw6IGQgPT4gZC5zZWxlY3RlZCA/IGdyZXlzWzBdIDogXCIjYzRjOWM2XCIsIHRpdGxlOiBkID0+IGAke2QubGFiZWx9XFxuJHtkLmNoYW5nZX1cXG4ke21ldHJpYy5sYWJlbH06ICR7bWV0cmljLmYoZFttZXRyaWMua2V5XSl9YH0pLFxyXG4gICAgUGxvdC50ZXh0KGNvbXBhcmlzb24uZmlsdGVyKGQgPT4gZFttZXRyaWMua2V5XSAhPSBudWxsKSwge3k6IFwibGFiZWxcIiwgeDogbWV0cmljLmtleSwgdGV4dDogZCA9PiBtZXRyaWMuZihkW21ldHJpYy5rZXldKSwgZHg6IDYsIHRleHRBbmNob3I6IFwic3RhcnRcIn0pLFxyXG4gICAgUGxvdC5ydWxlWChbMF0pXHJcbiAgXVxyXG59KVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEzIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xyXG4gIGNvbnN0IHNlbCA9IGNvbXBhcmlzb24uZmluZChkID0+IGQuc2VsZWN0ZWQpXHJcbiAgY29uc3QgcHRzID0gZCA9PiBgJHsoMTAwICogZC52c19zZWxlY3RlZC5kaWZmKS50b0ZpeGVkKDEpfSBwb2ludHMgKDk1ICUgQ0kgJHsoMTAwICogZC52c19zZWxlY3RlZC5jaVswXSkudG9GaXhlZCgxKX0gdG8gJHsoMTAwICogZC52c19zZWxlY3RlZC5jaVsxXSkudG9GaXhlZCgxKX0pYFxyXG4gIHJldHVybiBtZGBFYWNoIG1vZGVsIGlzIHNob3duIGF0IGl0cyBvd24gYmVzdCB0aHJlc2hvbGQgYnkgdGhlIDIgJSBydWxlICh0aGUgYmFzZWxpbmUgaGFzIGEgc2luZ2xlIG9wZXJhdGluZyBwb2ludDtcclxuaXQgcnVucyBvbiB0aGUgQ1BVLCBzbyBpdHMgdGltZSBpcyBub3QgY29tcGFyYWJsZSkuICoqSXMgdGhlIHNlbGVjdGVkICR7c2VsLmxhYmVsfSByZWFsbHkgYmV0dGVyPyoqIEEgcGFpcmVkXHJcbmJvb3RzdHJhcCBvdmVyIHZhbGlkYXRpb24gc2Vzc2lvbnMgZ2l2ZXMgdGhlIGdhcCBpbiB3ZWVkcyBoaXQsIHNlbGVjdGVkIG1pbnVzIG90aGVyOlxyXG4ke2NvbXBhcmlzb24uZmlsdGVyKGQgPT4gIWQuc2VsZWN0ZWQpLm1hcChkID0+IGBcXG4tIHZzICR7ZC5sYWJlbH06ICoqJHtwdHMoZCl9KipgKS5qb2luKFwiXCIpfVxyXG5cclxuVGhlIGdhcCB0byBleHAgMyAoMTAyNCBweCkgaXMgbGFyZ2VyIHRoYW4gZmllbGQtdG8tZmllbGQgdmFyaWF0aW9uLCBjb25zaXN0ZW50IHdpdGggbGFyZ2VyIGlucHV0IGhlbHBpbmcgc21hbGxcclxud2VlZHMgKGVhY2ggY29uZmlndXJhdGlvbiB3YXMgdHJhaW5lZCBvbmNlLCBzbyB0cmFpbmluZyBub2lzZSBpcyBub3QgY292ZXJlZCkuIFRoZSBnYXAgdG8gZXhwIDUgaXMgKipub3QqKjogaXRzXHJcbmludGVydmFsIGNvbnRhaW5zIHplcm8sIHNvIHRoZSBhdWdtZW50YXRpb24gbmVpdGhlciBoZWxwZWQgbm9yIGh1cnQgbWVhc3VyYWJseTsgZXhwIDQgd2lucyBvbiBhIDAuMi1wb2ludFxyXG5kaWZmZXJlbmNlIHRoZSBkYXRhIGNhbm5vdCByZXNvbHZlLCBhbmQgdGhlIHJ1bGUgcGlja3MgaXQgYW55d2F5LiBFeHAgNSdzIHNsaWdodGx5IGJldHRlciBtYXNrcyAoaGlnaGVyIG1BUCkgZG9cclxubm90IHRyYW5zbGF0ZSBpbnRvIG1vcmUgd2VlZHMgaGl0LmBcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE0IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xyXG4gIGNvbnN0IHcgPSBNYXRoLm1pbih3aWR0aCwgNzYwKSAvIDIgLSAxMFxyXG4gIGNvbnN0IGxvc3MgPSB0cmFpbmluZy5oaXN0b3J5LmZsYXRNYXAoaCA9PiBbe2Vwb2NoOiBoLmVwb2NoLCB2YWx1ZTogaC50cmFpbl9zZWcsIHNlcmllczogXCJ0cmFpblwifSwge2Vwb2NoOiBoLmVwb2NoLCB2YWx1ZTogaC52YWxfc2VnLCBzZXJpZXM6IFwidmFsaWRhdGlvblwifV0pXHJcbiAgY29uc3QgbGVmdCA9IFBsb3QucGxvdCh7dGl0bGU6IFwiTWFzayBsb3NzIChsb3dlciBpcyBiZXR0ZXIpXCIsIHdpZHRoOiB3LCBoZWlnaHQ6IDIzMCwgZ3JpZDogdHJ1ZSwgbWFyZ2luTGVmdDogNDAsXHJcbiAgICB4OiB7bGFiZWw6IFwiZXBvY2hcIn0sIHk6IHtsYWJlbDogbnVsbH0sIGNvbG9yOiB7ZG9tYWluOiBbXCJ0cmFpblwiLCBcInZhbGlkYXRpb25cIl0sIHJhbmdlOiBbZ3JleXNbMV0sIGdyZXlzWzBdXSwgbGVnZW5kOiB0cnVlfSxcclxuICAgIG1hcmtzOiBbUGxvdC5saW5lWShsb3NzLCB7eDogXCJlcG9jaFwiLCB5OiBcInZhbHVlXCIsIHN0cm9rZTogXCJzZXJpZXNcIn0pLCBQbG90LnJ1bGVYKFt0cmFpbmluZy5iZXN0X2Vwb2NoXSwge3N0cm9rZTogU09JTCwgc3Ryb2tlRGFzaGFycmF5OiBcIjIsMlwifSldfSlcclxuICBjb25zdCByaWdodCA9IFBsb3QucGxvdCh7dGl0bGU6IFwiVmFsaWRhdGlvbiBtYXNrIG1BUDUwLTk1IChoaWdoZXIgaXMgYmV0dGVyKVwiLCB3aWR0aDogdywgaGVpZ2h0OiAyMzAsIGdyaWQ6IHRydWUsIG1hcmdpbkxlZnQ6IDQ1LFxyXG4gICAgeDoge2xhYmVsOiBcImVwb2NoXCJ9LCB5OiB7bGFiZWw6IG51bGx9LFxyXG4gICAgbWFya3M6IFtQbG90LmxpbmVZKHRyYWluaW5nLmhpc3RvcnksIHt4OiBcImVwb2NoXCIsIHk6IFwidmFsX21hcDUwXzk1XCIsIHN0cm9rZTogZ3JleXNbMF19KSxcclxuICAgICAgICAgICAgUGxvdC5ydWxlWChbdHJhaW5pbmcuYmVzdF9lcG9jaF0sIHtzdHJva2U6IFNPSUwsIHN0cm9rZURhc2hhcnJheTogXCIyLDJcIn0pLFxyXG4gICAgICAgICAgICBQbG90LnRleHQoW3t4OiB0cmFpbmluZy5iZXN0X2Vwb2NofV0sIHt4OiBcInhcIiwgZnJhbWVBbmNob3I6IFwiYm90dG9tXCIsIGR5OiAtNiwgdGV4dDogKCkgPT4gXCJrZXB0IGVwb2NoXCIsIGZpbGw6IFwiIzVmNjY2MlwifSldfSlcclxuICByZXR1cm4gaHRtbGA8ZGl2IHN0eWxlPVwiZGlzcGxheTpmbGV4O2ZsZXgtd3JhcDp3cmFwO2dhcDoyMHB4XCI+JHtsZWZ0fSR7cmlnaHR9PC9kaXY+YFxyXG59XHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgZ2FsbGVyeU1vZGVsID0gSW5wdXRzLnNlbGVjdChnYWxsZXJ5Lm1vZGVscy5tYXAobSA9PiBtLmtleSksIHt2YWx1ZTogZ2FsbGVyeS5kZWZhdWx0LCBsYWJlbDogXCJNb2RlbFwiLFxyXG4gIHdpZHRoOiBNYXRoLm1pbig0NjAsIHdpZHRoIC0gMTQwKSxcclxuICBmb3JtYXQ6IGsgPT4gbW9kZWxPZihrKS5sYWJlbCArIChrID09PSBnYWxsZXJ5LmRlZmF1bHQgPyBcIiDigJQgc2VsZWN0ZWRcIiA6IFwiXCIpfSlcclxudmlld29mIHBpY2sgPSB7XHJcbiAgY29uc3Qgd3JhcCA9IGh0bWxgPGRpdiBjbGFzcz1cInRodW1ic1wiIHJvbGU9XCJncm91cFwiIGFyaWEtbGFiZWw9XCJHYWxsZXJ5IHBob3Rvc1wiPiR7Z2FsbGVyeS5pdGVtcy5tYXAoKGcsIGkpID0+XHJcbiAgICBodG1sYDxidXR0b24gdHlwZT1cImJ1dHRvblwiIHRpdGxlPVwiJHtnLmRhdGFzZXR9XCI+PGltZyBzcmM9XCIke2cucmF3fVwiIGFsdD1cIiR7Zy5kYXRhc2V0fSwgcGhvdG8gJHtpICsgMX1cIiBsb2FkaW5nPVwibGF6eVwiPjwvYnV0dG9uPmApfTwvZGl2PmBcclxuICBjb25zdCBidXR0b25zID0gWy4uLndyYXAucXVlcnlTZWxlY3RvckFsbChcImJ1dHRvblwiKV1cclxuICBjb25zdCBzZWxlY3QgPSBpID0+IHtcclxuICAgIHdyYXAudmFsdWUgPSBpXHJcbiAgICBidXR0b25zLmZvckVhY2goKGIsIGopID0+IGIuc2V0QXR0cmlidXRlKFwiYXJpYS1wcmVzc2VkXCIsIFN0cmluZyhqID09PSBpKSkpXHJcbiAgICB3cmFwLmRpc3BhdGNoRXZlbnQobmV3IEV2ZW50KFwiaW5wdXRcIiwge2J1YmJsZXM6IHRydWV9KSlcclxuICB9XHJcbiAgYnV0dG9ucy5mb3JFYWNoKChiLCBpKSA9PiBiLmFkZEV2ZW50TGlzdGVuZXIoXCJjbGlja1wiLCAoKSA9PiBzZWxlY3QoaSkpKVxyXG4gIHdyYXAudmFsdWUgPSAwXHJcbiAgYnV0dG9ucy5mb3JFYWNoKChiLCBqKSA9PiBiLnNldEF0dHJpYnV0ZShcImFyaWEtcHJlc3NlZFwiLCBTdHJpbmcoaiA9PT0gMCkpKVxyXG4gIHJldHVybiB3cmFwXHJcbn1cclxudmlld29mIHNob3dHdCA9IHtcclxuICBjb25zdCBsYWJlbCA9IGh0bWxgPGxhYmVsIHN0eWxlPVwiZGlzcGxheTppbmxpbmUtZmxleDtnYXA6LjVyZW07YWxpZ24taXRlbXM6Y2VudGVyO2N1cnNvcjpwb2ludGVyXCI+XHJcbiAgICA8aW5wdXQgdHlwZT1cImNoZWNrYm94XCI+IFNob3cgdGhlIGhhbmQtZHJhd24gZ3JvdW5kIHRydXRoIGluc3RlYWQgb2YgdGhlIG1vZGVsIG91dHB1dDwvbGFiZWw+YFxyXG4gIGNvbnN0IGJveCA9IGxhYmVsLnF1ZXJ5U2VsZWN0b3IoXCJpbnB1dFwiKVxyXG4gIGxhYmVsLnZhbHVlID0gZmFsc2VcclxuICAvLyBydW5zIG9uIHRoZSBjaGVja2JveCBiZWZvcmUgaXRzIG5hdGl2ZSBcImlucHV0XCIgZXZlbnQgYnViYmxlcyB0byB0aGUgbGFiZWwsIHdoZXJlIE9ic2VydmFibGUgcmVhZHMgdGhlIHZhbHVlXHJcbiAgYm94LmFkZEV2ZW50TGlzdGVuZXIoXCJpbnB1dFwiLCAoKSA9PiB7IGxhYmVsLnZhbHVlID0gYm94LmNoZWNrZWQgfSlcclxuICByZXR1cm4gbGFiZWxcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE2IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoibW9kZWxPZiA9IGsgPT4gZ2FsbGVyeS5tb2RlbHMuZmluZChtID0+IG0ua2V5ID09PSBrKVxyXG57XHJcbiAgY29uc3QgZyA9IGdhbGxlcnkuaXRlbXNbcGlja11cclxuICBjb25zdCBvID0gZy5vdXRwdXRzW2dhbGxlcnlNb2RlbF1cclxuICBjb25zdCBtID0gbW9kZWxPZihnYWxsZXJ5TW9kZWwpXHJcbiAgY29uc3QgaGFzQ3JvcHMgPSBnLmRhdGFzZXQgPT09IFwiU3VnYXIgQmVldHMgMjAxNlwiXHJcbiAgY29uc3Qgc3VtbWFyeSA9IGhhc0Nyb3BzXHJcbiAgICA/IGh0bWxgPHNwYW4gY2xhc3M9XCJoaXRcIj4ke28ud2VlZHNfaGl0fSBvZiAke2cud2VlZHN9IHdlZWRzIGhpdDwvc3Bhbj4gwrcgPHNwYW4gY2xhc3M9XCJjcm9wXCI+JHtvLmNyb3Bfc2hvdHN9IGNyb3Agc2hvdHM8L3NwYW4+IMK3ICR7by5zb2lsX3Nob3RzfSBzb2lsIHNob3RzIMK3ICR7by52ZXRvZWR9IHZldG9lZGBcclxuICAgIDogaHRtbGA8c3BhbiBjbGFzcz1cImhpdFwiPiR7by53ZWVkc19oaXR9IG9mICR7Zy53ZWVkc30gd2VlZHMgaGl0PC9zcGFuPiDCtyAke28uc29pbF9zaG90c30gc29pbCBzaG90c2BcclxuICBjb25zdCBzZXR0aW5nID0gbS50aHJlc2hvbGQgPT09IG51bGwgPyBcImV2ZXJ5IGdyZWVuIGJsb2IgaXMgYSB0YXJnZXRcIiA6IGB0aHJlc2hvbGQgJHttLnRocmVzaG9sZH1gXHJcbiAgY29uc3Qgb3RoZXJzID0gZ2FsbGVyeS5tb2RlbHMubWFwKHggPT4gYCR7eC5rZXkgPT09IFwiYmFzZWxpbmVcIiA/IFwiQmFzZWxpbmVcIiA6IHgua2V5LnJlcGxhY2UoXCJleHBcIiwgXCJFeHAgXCIpfSAke2cub3V0cHV0c1t4LmtleV0ud2VlZHNfaGl0fS8ke2cud2VlZHN9YFxyXG4gICAgKyAoaGFzQ3JvcHMgPyBgICgke2cub3V0cHV0c1t4LmtleV0uY3JvcF9zaG90c30gb24gY3JvcHMpYCA6IFwiXCIpKS5qb2luKFwiIMK3IFwiKVxyXG4gIHJldHVybiBodG1sYDxkaXYgY2xhc3M9XCJ2aWV3ZXJcIj5cclxuICAgIDxmaWd1cmU+PGltZyBzcmM9XCIke2cucmF3fVwiIGFsdD1cIlJhdyBwaG90b1wiPjxmaWdjYXB0aW9uPlJhdyBwaG90bzwvZmlnY2FwdGlvbj48L2ZpZ3VyZT5cclxuICAgIDxmaWd1cmU+PGltZyBzcmM9XCIke3Nob3dHdCA/IGcuZ3QgOiBvLmZpbGV9XCIgYWx0PVwiJHtzaG93R3QgPyBcIkdyb3VuZCB0cnV0aFwiIDogXCJNb2RlbCBvdXRwdXRcIn1cIj5cclxuICAgICAgPGZpZ2NhcHRpb24+JHtzaG93R3QgPyBcIkdyb3VuZCB0cnV0aCAob3V0bGluZSA9IHdlZWQsIGZpbGwgPSBjcm9wKVwiIDogYCR7bS5sYWJlbH0sICR7c2V0dGluZ31gfTwvZmlnY2FwdGlvbj48L2ZpZ3VyZT5cclxuICA8L2Rpdj5cclxuICA8cCBzdHlsZT1cIm1hcmdpbi10b3A6LjVyZW1cIj4ke3N1bW1hcnl9PGJyPjxzcGFuIGNsYXNzPVwibXV0ZWRcIj5XZWVkcyBoaXQgb24gdGhpcyBwaG90byBieSBldmVyeSBtb2RlbDogJHtvdGhlcnN9PC9zcGFuPjxicj5cclxuICA8c3BhbiBjbGFzcz1cIm11dGVkXCI+JHtnLmRhdGFzZXR9ICgke2cubGljZW5jZX0sIDxhIGhyZWY9XCIke2cuYXR0cmlidXRpb25fdXJsfVwiPnNvdXJjZTwvYT4pLiAke2cubm90ZX08L3NwYW4+PC9wPmBcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE3IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoie1xyXG4gIGNvbnN0IHIgPSBnYWxsZXJ5LnJhbmRvbV9zdWdhcmJlZXRzXHJcbiAgcmV0dXJuIG1kYCoqUmFuZG9tIGNoZWNrLioqIEhhbmQtcGlja2VkIHBob3RvcyBmbGF0dGVyIHRoZSBtb2RlbC4gT24gZml2ZSAqcmFuZG9tKiBTdWdhciBCZWV0cyBmcmFtZXNcclxuKHNlZWQgMDsgZnJhbWVzICR7ci5mcmFtZXMuam9pbihcIiwgXCIpfSkgdGhlIHNlbGVjdGVkIG1vZGVsIGhpdHMgb25seSAqKiR7ci53ZWVkc19oaXR9IG9mICR7ci53ZWVkc30gd2VlZHMqKlxyXG5hbmQgZmlyZXMgKioke3IuY3JvcF9zaG90c30gc2hvdHMgYXQgY3JvcHMqKiwgZmFyIGJlbG93IGl0cyAke3BjdCh0ZXN0Lm1vZGVsLndlZWRfaGl0X3JhdGUsIDApfSBvbiBDcm9wQW5kV2VlZFxyXG50ZXN0IGZpZWxkcy4gTW9zdCB3ZWVkcyBpbiB0aG9zZSBmcmFtZXMgYXJlIHRpbnkgc2VlZGxpbmdzLCBhIGZldyBwaXhlbHMgd2lkZSBvbiB0aGlzIGNhbWVyYS4gRml2ZSBwaG90b3MgYXJlXHJcbm5vdCBhIG1lYXN1cmVtZW50LCBidXQgdGhleSBzaG93IHBsYWlubHkgdGhhdCB0aGUgcmVzdWx0IGRvZXMgbm90IHRyYW5zZmVyIHRvIGEgbmV3IGZhcm0gYW5kIGNhbWVyYSB3aXRob3V0XHJcbm5ldyB0cmFpbmluZyBkYXRhLmBcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE4IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoic2l6ZU9yZGVyID0gW1wiMOKAkzE2XCIsIFwiMTbigJMyNFwiLCBcIjI04oCTMzJcIiwgXCIzMuKAkzQ4XCIsIFwiNDjigJM2NFwiLCBcIjY04oCTMTI4XCIsIFwiMTI4K1wiXVxyXG5QbG90LnBsb3Qoe1xyXG4gIHRpdGxlOiBcIldlZWRzIGhpdCBieSBwbGFudCBzaXplIChzcXJ0IG9mIG1hc2sgYXJlYSwgcHg7IH4wLjQgbW0gcGVyIHB4KVwiLFxyXG4gIHdpZHRoOiBNYXRoLm1pbih3aWR0aCwgNzYwKSwgaGVpZ2h0OiAyNDAsIG1hcmdpbkxlZnQ6IDUwLFxyXG4gIHg6IHtsYWJlbDogXCJ3ZWVkIHNpemUgKHB4KVwiLCBkb21haW46IHNpemVPcmRlcn0sIHk6IHtsYWJlbDogXCJ3ZWVkcyBoaXRcIiwgdGlja0Zvcm1hdDogXCIlXCIsIGRvbWFpbjogWzAsIDFdLCBncmlkOiB0cnVlfSxcclxuICBtYXJrczogW1xyXG4gICAgUGxvdC5iYXJZKHNpemVPcmRlci5tYXAoayA9PiAoe2JpbjogaywgLi4uZXJyb3JzLmJ5X3NpemVba119KSksIHt4OiBcImJpblwiLCB5OiBcInJhdGVcIiwgZmlsbDogZ3JleXNbMF0sXHJcbiAgICAgIHRpdGxlOiBkID0+IGAke2QuYmlufSBweDogJHtkLmhpdH0gb2YgJHtkLndlZWRzfSB3ZWVkcyBoaXQgKCR7cGN0KGQucmF0ZSl9KWB9KSxcclxuICAgIFBsb3QudGV4dChzaXplT3JkZXIubWFwKGsgPT4gKHtiaW46IGssIC4uLmVycm9ycy5ieV9zaXplW2tdfSkpLCB7eDogXCJiaW5cIiwgeTogXCJyYXRlXCIsIHRleHQ6IGQgPT4gYG49JHtmbXQoZC53ZWVkcyl9YCwgZHk6IC04fSksXHJcbiAgICBQbG90LnJ1bGVZKFswXSlcclxuICBdXHJcbn0pXHJcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTkiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7XHJcbiAgY29uc3QgdGlueSA9IGVycm9ycy5ieV9zaXplW1wiMOKAkzE2XCJdLCBzZXQgPSBlcnJvcnMuYnlfc2V0XHJcbiAgY29uc3Qgc3AgPSBPYmplY3QuZW50cmllcyhlcnJvcnMuY3JvcF9zaG90c19ieV9zcGVjaWVzKVxyXG4gIGNvbnN0IHRvcCA9IGVycm9ycy50b3Bfc2Vzc2lvbnNcclxuICByZXR1cm4gbWRgMS4gKipUaW55IHdlZWRzIGFyZSBtaXNzZWQuKiogV2VlZHMgdW5kZXIgMTYgcHggKOKJiCA2IG1tKSBhcmUgaGl0ICR7cGN0KHRpbnkucmF0ZSl9IG9mIHRoZSB0aW1lLFxyXG5hZ2FpbnN0IDg34oCTOTIgJSBmb3IgbGFyZ2VyIG9uZXM7IHRoZXkgbWFrZSB1cCAke3BjdCh0aW55LndlZWRzIC8gT2JqZWN0LnZhbHVlcyhlcnJvcnMuYnlfc2l6ZSkucmVkdWNlKChzLCBkKSA9PiBzICsgZC53ZWVkcywgMCksIDApfVxyXG5vZiBhbGwgdGVzdCB3ZWVkcyBhbmQgJHtwY3QoKHRpbnkud2VlZHMgLSB0aW55LmhpdCkgLyBlcnJvcnMubWlzc2VkX3dlZWRzLCAwKX0gb2YgdGhlICR7Zm10KGVycm9ycy5taXNzZWRfd2VlZHMpfSBtaXNzZWQgb25lcy5cclxuQXQgMTI4MCBweCBpbnB1dCBhIDE2IHB4IHBsYW50IHNocmlua3MgdG8gYWJvdXQgMTEgcHguXHJcbjIuICoqUmVhbCBmaWVsZHMgYXJlIGhhcmRlciB0aGFuIHRlc3QgcGxvdHM6KiogJHtwY3Qoc2V0W1wiUmVhbCBmaWVsZHMgKGF2ZSlcIl0ucmF0ZSl9IG9mIHdlZWRzIGhpdCBvbiByZWFsIGZpZWxkc1xyXG52cyAke3BjdChzZXRbXCJUZXN0IHBsb3RzICh2d2cpXCJdLnJhdGUpfSBvbiB0ZXN0IHBsb3RzLlxyXG4zLiAqKkNyb3Agc2hvdHMgY29tZSBmcm9tIGNyb3BzIHRoZSBtb2RlbCBkb2VzIG5vdCByZWNvZ25pc2UuKiogQnkgY29uc3RydWN0aW9uLCBhIGZpcmVkIHNob3QgdGhhdCBsYW5kcyBvbiBhXHJcbmNyb3AgbWVhbnMgbm8gY3JvcCBwcmVkaWN0aW9uIChhdCB0aGUgdGhyZXNob2xkKSB3YXMgd2l0aGluIDIwIHB4IOKAlCB0aGUgZ2F0ZSBjYW5ub3QgcHJvdGVjdCBhIGNyb3AgdGhlIG1vZGVsXHJcbnRoaW5rcyBpcyBhIHdlZWQgb3IgZG9lcyBub3Qgc2VlLiBDcm9wIHNob3RzIHBlciAxMDAgdGVzdCBwbGFudHMgb2YgZWFjaCBzcGVjaWVzOlxyXG4ke3NwLm1hcCgoW2ssIHZdKSA9PiBgJHtrfSAke3YucGVyXzEwMF9wbGFudHMudG9GaXhlZCgxKX1gKS5qb2luKFwiIMK3IFwiKX0uICoqU3VuZmxvd2VyKiogc2VlZGxpbmdzLCBicm9hZC1sZWF2ZWRcclxubGlrZSBtYW55IHdlZWRzLCBhcmUgc2hvdCBtb3N0IG9mdGVuLlxyXG40LiAqKkNyb3Agc2hvdHMgYXJlIGNvbmNlbnRyYXRlZDoqKiB0aGUgdG9wIHJlY29yZGluZyBzZXNzaW9uIGFsb25lICgke3RvcFswXS5zZXNzaW9ufTsgaW4gYSBkZXZlbG9wbWVudC10aW1lIGxvb2tcclxuYXQgdGhlIGFubm90YXRpb25zLCB2ZXJ5IHNtYWxsIHNveWJlYW4gc2VlZGxpbmdzLCBtZWRpYW4gYm94IOKJiCAyOSBweCB2cyDiiYggNjMgcHggZm9yIHRyYWluaW5nIHNveWJlYW5zKSBjYXVzZXMgJHt0b3BbMF0uY3JvcF9zaG90c30gb2YgJHtlcnJvcnMudG90YWxfY3JvcF9zaG90c31cclxuY3JvcCBzaG90cywgdGhlIHRvcCB0aHJlZSAke3RvcC5zbGljZSgwLCAzKS5yZWR1Y2UoKHMsIGQpID0+IHMgKyBkLmNyb3Bfc2hvdHMsIDApfS4gQSBzaW5nbGUgdW51c3VhbCBmaWVsZCBjYW5cclxuZG9taW5hdGUgdGhlIHNhZmV0eSBtZXRyaWMg4oCUIG9uZSByZWFzb24gdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgZm9yIGNyb3Agc2hvdHMgaXMgd2lkZS5cclxuNS4gKipTb2lsIHNob3RzICgke3BjdCh0ZXN0Lm1vZGVsLnNvaWxfc2hvdF9zaGFyZSwgMCl9KS4qKiBNb3N0bHkgZmFsc2UgZGV0ZWN0aW9ucyBhdCBsb3cgY29uZmlkZW5jZTsgc29tZSBtYXkgYmVcclxucmVhbCBidXQgdW5sYWJlbGxlZCBzZWVkbGluZ3MsIHdoaWNoIHRoZSBkYXRhIGNhbm5vdCB0ZWxsIGFwYXJ0LmBcclxufVxyXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3J1bicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCd0aHInKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnbWV0cmljJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2dhbGxlcnlNb2RlbCcpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdwaWNrJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3Nob3dHdCcpIn1dfQ==
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/yuvraj-rathod-1202\.github\.io\/weed-detection\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>ES 335 project · Yuvraj Rathod</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

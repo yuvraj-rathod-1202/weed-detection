@@ -1,0 +1,537 @@
+{
+  "models": [
+    {
+      "key": "baseline",
+      "label": "Baseline \u00b7 green blobs (no learning)",
+      "threshold": null
+    },
+    {
+      "key": "exp2",
+      "label": "Exp 2 \u00b7 trained on CottonWeedDet12 (weeds only)",
+      "threshold": 0.25
+    },
+    {
+      "key": "exp3",
+      "label": "Exp 3 \u00b7 CropAndWeed, 1024 px",
+      "threshold": 0.05
+    },
+    {
+      "key": "exp4",
+      "label": "Exp 4 \u00b7 CropAndWeed, 1280 px",
+      "threshold": 0.05
+    },
+    {
+      "key": "exp5",
+      "label": "Exp 5 \u00b7 CropAndWeed, 1280 px + flips/rotation",
+      "threshold": 0.05
+    }
+  ],
+  "default": "exp4",
+  "items": [
+    {
+      "id": "sugarbeets-00116",
+      "dataset": "Sugar Beets 2016",
+      "licence": "CC BY-SA 4.0",
+      "attribution_url": "https://www.ipb.uni-bonn.de/data/sugarbeets2016/",
+      "note": "Farm (Bonn, Germany) and camera never seen by any model. The camera records dark images; they are brightened here for viewing only, the models saw the originals.",
+      "raw": "gallery/sugarbeets-00116_raw.jpg",
+      "gt": "gallery/sugarbeets-00116_gt.jpg",
+      "weeds": 13,
+      "crops": 8,
+      "brightened_for_display": true,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/sugarbeets-00116_baseline.jpg",
+          "weeds_hit": 10,
+          "crop_shots": 3,
+          "soil_shots": 13,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/sugarbeets-00116_exp2.jpg",
+          "weeds_hit": 1,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/sugarbeets-00116_exp3.jpg",
+          "weeds_hit": 9,
+          "crop_shots": 1,
+          "soil_shots": 10,
+          "vetoed": 4
+        },
+        "exp4": {
+          "file": "gallery/sugarbeets-00116_exp4.jpg",
+          "weeds_hit": 9,
+          "crop_shots": 0,
+          "soil_shots": 3,
+          "vetoed": 3
+        },
+        "exp5": {
+          "file": "gallery/sugarbeets-00116_exp5.jpg",
+          "weeds_hit": 8,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 5
+        }
+      }
+    },
+    {
+      "id": "sugarbeets-00136",
+      "dataset": "Sugar Beets 2016",
+      "licence": "CC BY-SA 4.0",
+      "attribution_url": "https://www.ipb.uni-bonn.de/data/sugarbeets2016/",
+      "note": "Farm (Bonn, Germany) and camera never seen by any model. The camera records dark images; they are brightened here for viewing only, the models saw the originals.",
+      "raw": "gallery/sugarbeets-00136_raw.jpg",
+      "gt": "gallery/sugarbeets-00136_gt.jpg",
+      "weeds": 11,
+      "crops": 5,
+      "brightened_for_display": true,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/sugarbeets-00136_baseline.jpg",
+          "weeds_hit": 6,
+          "crop_shots": 2,
+          "soil_shots": 4,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/sugarbeets-00136_exp2.jpg",
+          "weeds_hit": 1,
+          "crop_shots": 2,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/sugarbeets-00136_exp3.jpg",
+          "weeds_hit": 6,
+          "crop_shots": 1,
+          "soil_shots": 6,
+          "vetoed": 0
+        },
+        "exp4": {
+          "file": "gallery/sugarbeets-00136_exp4.jpg",
+          "weeds_hit": 6,
+          "crop_shots": 0,
+          "soil_shots": 8,
+          "vetoed": 0
+        },
+        "exp5": {
+          "file": "gallery/sugarbeets-00136_exp5.jpg",
+          "weeds_hit": 6,
+          "crop_shots": 2,
+          "soil_shots": 7,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "sugarbeets-00126",
+      "dataset": "Sugar Beets 2016",
+      "licence": "CC BY-SA 4.0",
+      "attribution_url": "https://www.ipb.uni-bonn.de/data/sugarbeets2016/",
+      "note": "Farm (Bonn, Germany) and camera never seen by any model. The camera records dark images; they are brightened here for viewing only, the models saw the originals.",
+      "raw": "gallery/sugarbeets-00126_raw.jpg",
+      "gt": "gallery/sugarbeets-00126_gt.jpg",
+      "weeds": 47,
+      "crops": 2,
+      "brightened_for_display": true,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/sugarbeets-00126_baseline.jpg",
+          "weeds_hit": 25,
+          "crop_shots": 2,
+          "soil_shots": 21,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/sugarbeets-00126_exp2.jpg",
+          "weeds_hit": 0,
+          "crop_shots": 3,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/sugarbeets-00126_exp3.jpg",
+          "weeds_hit": 27,
+          "crop_shots": 0,
+          "soil_shots": 26,
+          "vetoed": 5
+        },
+        "exp4": {
+          "file": "gallery/sugarbeets-00126_exp4.jpg",
+          "weeds_hit": 26,
+          "crop_shots": 0,
+          "soil_shots": 26,
+          "vetoed": 0
+        },
+        "exp5": {
+          "file": "gallery/sugarbeets-00126_exp5.jpg",
+          "weeds_hit": 18,
+          "crop_shots": 1,
+          "soil_shots": 14,
+          "vetoed": 3
+        }
+      }
+    },
+    {
+      "id": "sugarbeets-00102",
+      "dataset": "Sugar Beets 2016",
+      "licence": "CC BY-SA 4.0",
+      "attribution_url": "https://www.ipb.uni-bonn.de/data/sugarbeets2016/",
+      "note": "Farm (Bonn, Germany) and camera never seen by any model. The camera records dark images; they are brightened here for viewing only, the models saw the originals.",
+      "raw": "gallery/sugarbeets-00102_raw.jpg",
+      "gt": "gallery/sugarbeets-00102_gt.jpg",
+      "weeds": 26,
+      "crops": 2,
+      "brightened_for_display": true,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/sugarbeets-00102_baseline.jpg",
+          "weeds_hit": 17,
+          "crop_shots": 3,
+          "soil_shots": 9,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/sugarbeets-00102_exp2.jpg",
+          "weeds_hit": 1,
+          "crop_shots": 1,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/sugarbeets-00102_exp3.jpg",
+          "weeds_hit": 13,
+          "crop_shots": 0,
+          "soil_shots": 14,
+          "vetoed": 3
+        },
+        "exp4": {
+          "file": "gallery/sugarbeets-00102_exp4.jpg",
+          "weeds_hit": 14,
+          "crop_shots": 1,
+          "soil_shots": 8,
+          "vetoed": 0
+        },
+        "exp5": {
+          "file": "gallery/sugarbeets-00102_exp5.jpg",
+          "weeds_hit": 13,
+          "crop_shots": 1,
+          "soil_shots": 5,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "sugarbeets-00164",
+      "dataset": "Sugar Beets 2016",
+      "licence": "CC BY-SA 4.0",
+      "attribution_url": "https://www.ipb.uni-bonn.de/data/sugarbeets2016/",
+      "note": "Farm (Bonn, Germany) and camera never seen by any model. The camera records dark images; they are brightened here for viewing only, the models saw the originals.",
+      "raw": "gallery/sugarbeets-00164_raw.jpg",
+      "gt": "gallery/sugarbeets-00164_gt.jpg",
+      "weeds": 13,
+      "crops": 7,
+      "brightened_for_display": true,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/sugarbeets-00164_baseline.jpg",
+          "weeds_hit": 9,
+          "crop_shots": 4,
+          "soil_shots": 5,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/sugarbeets-00164_exp2.jpg",
+          "weeds_hit": 0,
+          "crop_shots": 1,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/sugarbeets-00164_exp3.jpg",
+          "weeds_hit": 7,
+          "crop_shots": 0,
+          "soil_shots": 13,
+          "vetoed": 0
+        },
+        "exp4": {
+          "file": "gallery/sugarbeets-00164_exp4.jpg",
+          "weeds_hit": 6,
+          "crop_shots": 1,
+          "soil_shots": 9,
+          "vetoed": 1
+        },
+        "exp5": {
+          "file": "gallery/sugarbeets-00164_exp5.jpg",
+          "weeds_hit": 5,
+          "crop_shots": 1,
+          "soil_shots": 5,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "cotton-20210903_NIKOND3300_YL_120",
+      "dataset": "CottonWeedDet12",
+      "licence": "CC BY-NC 4.0",
+      "attribution_url": "https://zenodo.org/records/7535814",
+      "note": "This dataset labels weeds only (no crops), so crop safety cannot be checked here. Exp 2 was trained on it (these are its test photos); exp 3\u20135 never saw it.",
+      "raw": "gallery/cotton-20210903_NIKOND3300_YL_120_raw.jpg",
+      "gt": "gallery/cotton-20210903_NIKOND3300_YL_120_gt.jpg",
+      "weeds": 3,
+      "crops": 0,
+      "brightened_for_display": false,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/cotton-20210903_NIKOND3300_YL_120_baseline.jpg",
+          "weeds_hit": 3,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/cotton-20210903_NIKOND3300_YL_120_exp2.jpg",
+          "weeds_hit": 3,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/cotton-20210903_NIKOND3300_YL_120_exp3.jpg",
+          "weeds_hit": 3,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 0
+        },
+        "exp4": {
+          "file": "gallery/cotton-20210903_NIKOND3300_YL_120_exp4.jpg",
+          "weeds_hit": 3,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp5": {
+          "file": "gallery/cotton-20210903_NIKOND3300_YL_120_exp5.jpg",
+          "weeds_hit": 3,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "cotton-180_20210910_NIKOND3300_YL_219",
+      "dataset": "CottonWeedDet12",
+      "licence": "CC BY-NC 4.0",
+      "attribution_url": "https://zenodo.org/records/7535814",
+      "note": "This dataset labels weeds only (no crops), so crop safety cannot be checked here. Exp 2 was trained on it (these are its test photos); exp 3\u20135 never saw it.",
+      "raw": "gallery/cotton-180_20210910_NIKOND3300_YL_219_raw.jpg",
+      "gt": "gallery/cotton-180_20210910_NIKOND3300_YL_219_gt.jpg",
+      "weeds": 2,
+      "crops": 0,
+      "brightened_for_display": false,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/cotton-180_20210910_NIKOND3300_YL_219_baseline.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/cotton-180_20210910_NIKOND3300_YL_219_exp2.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/cotton-180_20210910_NIKOND3300_YL_219_exp3.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 0
+        },
+        "exp4": {
+          "file": "gallery/cotton-180_20210910_NIKOND3300_YL_219_exp4.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp5": {
+          "file": "gallery/cotton-180_20210910_NIKOND3300_YL_219_exp5.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "cotton-90_20210913_iPhoneSE_YL_84",
+      "dataset": "CottonWeedDet12",
+      "licence": "CC BY-NC 4.0",
+      "attribution_url": "https://zenodo.org/records/7535814",
+      "note": "This dataset labels weeds only (no crops), so crop safety cannot be checked here. Exp 2 was trained on it (these are its test photos); exp 3\u20135 never saw it.",
+      "raw": "gallery/cotton-90_20210913_iPhoneSE_YL_84_raw.jpg",
+      "gt": "gallery/cotton-90_20210913_iPhoneSE_YL_84_gt.jpg",
+      "weeds": 2,
+      "crops": 0,
+      "brightened_for_display": false,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/cotton-90_20210913_iPhoneSE_YL_84_baseline.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 13,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/cotton-90_20210913_iPhoneSE_YL_84_exp2.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/cotton-90_20210913_iPhoneSE_YL_84_exp3.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 3,
+          "vetoed": 1
+        },
+        "exp4": {
+          "file": "gallery/cotton-90_20210913_iPhoneSE_YL_84_exp4.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp5": {
+          "file": "gallery/cotton-90_20210913_iPhoneSE_YL_84_exp5.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "cotton-90_20210827_iPhone11Pro_BT_94",
+      "dataset": "CottonWeedDet12",
+      "licence": "CC BY-NC 4.0",
+      "attribution_url": "https://zenodo.org/records/7535814",
+      "note": "This dataset labels weeds only (no crops), so crop safety cannot be checked here. Exp 2 was trained on it (these are its test photos); exp 3\u20135 never saw it.",
+      "raw": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_raw.jpg",
+      "gt": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_gt.jpg",
+      "weeds": 2,
+      "crops": 0,
+      "brightened_for_display": false,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_baseline.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 1,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_exp2.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_exp3.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 5,
+          "vetoed": 2
+        },
+        "exp4": {
+          "file": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_exp4.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 1
+        },
+        "exp5": {
+          "file": "gallery/cotton-90_20210827_iPhone11Pro_BT_94_exp5.jpg",
+          "weeds_hit": 2,
+          "crop_shots": 0,
+          "soil_shots": 2,
+          "vetoed": 0
+        }
+      }
+    },
+    {
+      "id": "cotton-180_20210912_CanonEOS4000D_YL_12",
+      "dataset": "CottonWeedDet12",
+      "licence": "CC BY-NC 4.0",
+      "attribution_url": "https://zenodo.org/records/7535814",
+      "note": "This dataset labels weeds only (no crops), so crop safety cannot be checked here. Exp 2 was trained on it (these are its test photos); exp 3\u20135 never saw it.",
+      "raw": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_raw.jpg",
+      "gt": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_gt.jpg",
+      "weeds": 5,
+      "crops": 0,
+      "brightened_for_display": false,
+      "outputs": {
+        "baseline": {
+          "file": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_baseline.jpg",
+          "weeds_hit": 5,
+          "crop_shots": 0,
+          "soil_shots": 10,
+          "vetoed": 0
+        },
+        "exp2": {
+          "file": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_exp2.jpg",
+          "weeds_hit": 5,
+          "crop_shots": 0,
+          "soil_shots": 0,
+          "vetoed": 0
+        },
+        "exp3": {
+          "file": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_exp3.jpg",
+          "weeds_hit": 5,
+          "crop_shots": 0,
+          "soil_shots": 2,
+          "vetoed": 6
+        },
+        "exp4": {
+          "file": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_exp4.jpg",
+          "weeds_hit": 5,
+          "crop_shots": 0,
+          "soil_shots": 2,
+          "vetoed": 1
+        },
+        "exp5": {
+          "file": "gallery/cotton-180_20210912_CanonEOS4000D_YL_12_exp5.jpg",
+          "weeds_hit": 5,
+          "crop_shots": 0,
+          "soil_shots": 3,
+          "vetoed": 3
+        }
+      }
+    }
+  ],
+  "random_sugarbeets": {
+    "model": "exp4",
+    "seed": 0,
+    "frames": [
+      43,
+      155,
+      220,
+      238,
+      284
+    ],
+    "weeds": 51,
+    "weeds_hit": 19,
+    "crop_shots": 4,
+    "soil_shots": 15
+  }
+}

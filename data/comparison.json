@@ -1,0 +1,88 @@
+[
+  {
+    "run": "yolo11s_seg_cropandweed",
+    "label": "Exp 3 \u00b7 1024 px",
+    "change": "input 1024 px wide",
+    "selected": false,
+    "threshold": 0.05,
+    "shots": 23269,
+    "weed_hit_rate": 0.8216057919140974,
+    "shot_precision": 0.7002019854742361,
+    "crop_shot_share": 0.010572005672783531,
+    "soil_shot_share": 0.2892260088529804,
+    "inference_ms": 33.98629583592293,
+    "epochs": 72,
+    "best_epoch": 52,
+    "val_mask_map50_95": 0.43875,
+    "val_mask_map50": 0.74573,
+    "vs_selected": {
+      "diff": 0.020662165460017867,
+      "ci": [
+        0.012047204995885739,
+        0.02892007550551527
+      ]
+    }
+  },
+  {
+    "run": "yolo11s_seg_cropandweed_1280",
+    "label": "Exp 4 \u00b7 1280 px",
+    "change": "input 1280 px: small weeds get ~1.25x more pixels",
+    "selected": true,
+    "threshold": 0.05,
+    "shots": 22814,
+    "weed_hit_rate": 0.8422679573741153,
+    "shot_precision": 0.7185061804155343,
+    "crop_shot_share": 0.010300692557201719,
+    "soil_shot_share": 0.27119312702726395,
+    "inference_ms": 45.189409571162216,
+    "epochs": 80,
+    "best_epoch": 67,
+    "val_mask_map50_95": 0.45851,
+    "val_mask_map50": 0.76251,
+    "vs_selected": null
+  },
+  {
+    "run": "yolo11s_seg_cropandweed_1280_aug",
+    "label": "Exp 5 \u00b7 1280 px + flips/rotation",
+    "change": "as exp 4 + vertical flips and \u00b115\u00b0 rotation",
+    "selected": false,
+    "threshold": 0.05,
+    "shots": 23368,
+    "weed_hit_rate": 0.8398275441308062,
+    "shot_precision": 0.7084474495035946,
+    "crop_shot_share": 0.009671345429647382,
+    "soil_shot_share": 0.28188120506675796,
+    "inference_ms": 45.343238036047225,
+    "epochs": 80,
+    "best_epoch": 63,
+    "val_mask_map50_95": 0.46523,
+    "val_mask_map50": 0.7661,
+    "vs_selected": {
+      "diff": 0.0024404132433091252,
+      "ci": [
+        -0.005467465679764185,
+        0.011564627322422935
+      ]
+    }
+  },
+  {
+    "run": "baseline_exg",
+    "label": "Baseline \u00b7 green blobs",
+    "change": "ExG\u2212ExR vegetation filter; every green blob is a weed",
+    "selected": false,
+    "threshold": 0.05,
+    "shots": 34396,
+    "weed_hit_rate": 0.7696249898316115,
+    "shot_precision": 0.5339574369112687,
+    "crop_shot_share": 0.16129782532852657,
+    "soil_shot_share": 0.30474473776020466,
+    "inference_ms": 85.53671845866997,
+    "vs_selected": {
+      "diff": 0.07264296754250377,
+      "ci": [
+        0.03724612821614627,
+        0.10763163403208464
+      ]
+    }
+  }
+]

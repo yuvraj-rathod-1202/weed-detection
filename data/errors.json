@@ -1,0 +1,118 @@
+{
+  "threshold": 0.05,
+  "by_size": {
+    "128+": {
+      "weeds": 262,
+      "hit": 241,
+      "rate": 0.9198473282442748
+    },
+    "32\u201348": {
+      "weeds": 839,
+      "hit": 749,
+      "rate": 0.8927294398092968
+    },
+    "48\u201364": {
+      "weeds": 410,
+      "hit": 358,
+      "rate": 0.8731707317073171
+    },
+    "64\u2013128": {
+      "weeds": 718,
+      "hit": 623,
+      "rate": 0.8676880222841226
+    },
+    "24\u201332": {
+      "weeds": 884,
+      "hit": 787,
+      "rate": 0.8902714932126696
+    },
+    "16\u201324": {
+      "weeds": 1740,
+      "hit": 1532,
+      "rate": 0.8804597701149425
+    },
+    "0\u201316": {
+      "weeds": 1694,
+      "hit": 1289,
+      "rate": 0.7609208972845336
+    }
+  },
+  "by_set": {
+    "Real fields (ave)": {
+      "weeds": 1521,
+      "hit": 1233,
+      "rate": 0.8106508875739645
+    },
+    "Test plots (vwg)": {
+      "weeds": 5026,
+      "hit": 4346,
+      "rate": 0.8647035415837644
+    }
+  },
+  "crop_shots_by_species": {
+    "Soybean": {
+      "shots": 42,
+      "plants": 1061,
+      "per_100_plants": 3.9585296889726673
+    },
+    "Sunflower": {
+      "shots": 30,
+      "plants": 187,
+      "per_100_plants": 16.0427807486631
+    },
+    "Sugar beet": {
+      "shots": 20,
+      "plants": 866,
+      "per_100_plants": 2.3094688221709005
+    },
+    "Maize": {
+      "shots": 13,
+      "plants": 1048,
+      "per_100_plants": 1.2404580152671756
+    },
+    "Pea": {
+      "shots": 11,
+      "plants": 168,
+      "per_100_plants": 6.5476190476190474
+    },
+    "Bean": {
+      "shots": 2,
+      "plants": 164,
+      "per_100_plants": 1.2195121951219512
+    },
+    "Potato": {
+      "shots": 1,
+      "plants": 13,
+      "per_100_plants": 7.6923076923076925
+    },
+    "Pumpkin": {
+      "shots": 1,
+      "plants": 48,
+      "per_100_plants": 2.0833333333333335
+    }
+  },
+  "top_sessions": [
+    {
+      "session": "ave-0543",
+      "crop_shots": 37
+    },
+    {
+      "session": "ave-0284",
+      "crop_shots": 22
+    },
+    {
+      "session": "vwg-0589",
+      "crop_shots": 11
+    },
+    {
+      "session": "ave-0153",
+      "crop_shots": 10
+    },
+    {
+      "session": "ave-0199",
+      "crop_shots": 4
+    }
+  ],
+  "total_crop_shots": 120,
+  "missed_weeds": 968
+}

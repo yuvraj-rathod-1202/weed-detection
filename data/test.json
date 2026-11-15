@@ -1,0 +1,45 @@
+{
+  "run": "yolo11s_seg_cropandweed_1280",
+  "label": "Exp 4 \u00b7 1280 px",
+  "threshold": 0.05,
+  "num_images": 1201,
+  "model": {
+    "threshold": 0.05,
+    "shots": 11609,
+    "weed_hit_rate": 0.8521460210783565,
+    "shot_precision": 0.702386079765699,
+    "crop_shot_share": 0.01033680764923766,
+    "soil_shot_share": 0.28727711258506333,
+    "ci": {
+      "weed_hit_rate": [
+        0.8275855090238446,
+        0.874007873363666
+      ],
+      "crop_shot_share": [
+        0.00372292783582964,
+        0.020829818303154255
+      ]
+    },
+    "inference_ms": 42.34948376353039
+  },
+  "baseline": {
+    "threshold": 0.05,
+    "shots": 19794,
+    "weed_hit_rate": 0.6683977394226364,
+    "shot_precision": 0.44164898454076995,
+    "crop_shot_share": 0.23017075881580276,
+    "soil_shot_share": 0.3281802566434273,
+    "ci": {
+      "weed_hit_rate": [
+        0.5912513562717457,
+        0.7552345478713526
+      ],
+      "crop_shot_share": [
+        0.15816624575279253,
+        0.3136367883366583
+      ]
+    }
+  },
+  "num_gt_weeds": 6547,
+  "num_gt_crops": 3555
+}
