@@ -1,0 +1,54 @@
+name: yolo11s_seg_cropandweed_1280_aug
+description: YOLO11s-seg on CropAndWeed (CropOrWeed2) at imgsz 1280 with vertical
+  flips and rotations (top-down images); conf 0.15; laser target = one point per predicted
+  weed mask, vetoed near predicted crops.
+seed: 42
+output_root: experiments
+dataset:
+  name: cropandweed
+  region: non_indian
+  raw_dir: /tmp/cropandweed
+  prepared_dir: /tmp/cropandweed_seg
+  label_fixes: data/label_fixes/cropandweed.csv
+  split:
+    train: 0.65
+    val: 0.2
+    test: 0.15
+  split_seed: 42
+  split_group_pattern: ^[a-z]+-\d{4}
+  max_images: null
+  mask_source: semantic
+  sam_model: models/weights/sam2.1_b.pt
+model:
+  weights: models/weights/yolo11s-seg.pt
+train:
+  epochs: 80
+  imgsz: 1280
+  batch: 12
+  patience: 20
+  save_period: 10
+  workers: 4
+  device:
+  - 0
+  - 1
+  flipud: 0.5
+  degrees: 15
+eval:
+  split: test
+  imgsz: 1280
+  conf: 0.15
+  iou: 0.7
+  match_iou: 0.5
+  max_images: null
+  num_visualizations: 20
+targeting:
+  methods:
+  - center_weighted_dt
+  - distance_transform
+  - centroid
+  - skeleton
+  - box_center
+  crop_classes:
+  - Crop
+  crop_margin_px: 20
+config_file: configs/experiments/yolo11s_seg_cropandweed_1280_aug.yaml

@@ -1,9 +1,5 @@
 /*-- scss:defaults --*/
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap');
-
-$font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-$headings-font-family: "Source Serif 4", Georgia, serif;
-$headings-font-weight: 600;
+// Quarto's default (cosmo) fonts; only colours are customised: greys + green/red with meaning.
 $body-color: #1f2421;
 $body-bg: #ffffff;
 $link-color: #1f2421;
@@ -22,28 +18,44 @@ $border-color: #e3e6e4;
   --rule: #e3e6e4;
 }
 
-body { line-height: 1.65; }
-a { text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 2px; }
+a { text-decoration: underline; text-decoration-color: #b9bfbb; text-underline-offset: 2px; }
 a:hover { text-decoration-color: var(--ink); }
-main h1:not(.title) { margin-top: 3rem; padding-top: .75rem; border-top: 1px solid var(--rule); font-size: 1.9rem; }
-main h2 { font-size: 1.35rem; margin-top: 2rem; }
-figure h2, figure h3, .observablehq h2 { font-family: $font-family-sans-serif; font-size: .95rem; font-weight: 600; border: 0; margin: .5rem 0; padding: 0; }
-table.data { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
-table.data th, table.data td { padding: .35rem .5rem; border-bottom: 1px solid var(--rule); text-align: right; }
-table.data th:first-child, table.data td:first-child { text-align: left; }
-.lead-question { font-family: "Source Serif 4", Georgia, serif; font-size: 1.35rem; line-height: 1.45; margin: 1rem 0 1.5rem; }
+main h1:not(.title) { margin-top: 3rem; padding-top: .75rem; border-top: 1px solid var(--rule); }
+main h2 { margin-top: 2rem; }
+figure h2, figure h3 { font-size: 1rem; font-weight: 600; border: 0; margin: .5rem 0; padding: 0; }
+.lead-question { font-size: 1.3rem; line-height: 1.45; margin: 1rem 0 1.5rem; }
 .muted { color: var(--muted); }
 .hit { color: var(--hit); font-weight: 600; }
 .crop { color: var(--crop); font-weight: 600; }
+.soil { color: #6f7672; font-weight: 600; }
 
 /* headline numbers */
-.stats { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0 2rem; }
-.stat { border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .9rem; min-width: 9rem; }
-.stat b { display: block; font-size: 1.5rem; font-family: "Source Serif 4", Georgia, serif; }
+.stats { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0 1.5rem; }
+.stat { border: 1px solid var(--rule); border-radius: 6px; padding: .6rem .9rem; min-width: 10rem; flex: 1; }
+.stat b { display: block; font-size: 1.6rem; line-height: 1.2; }
 .stat span { color: var(--muted); font-size: .85rem; }
 
-table { font-size: .92rem; }
-figure figcaption, .figure-caption { color: var(--muted); font-size: .88rem; }
-.callout { border-left-width: 3px !important; }
+/* tables built from data */
+table.data { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: .92rem; }
+table.data th, table.data td { padding: .35rem .5rem; border-bottom: 1px solid var(--rule); text-align: right; vertical-align: top; }
+table.data th:first-child, table.data td:first-child { text-align: left; }
+table.data tr.selected td { font-weight: 600; }
 .table-scroll { overflow-x: auto; }
 main svg { max-width: 100%; height: auto; }
+
+/* interaction A: slider readout */
+.readout { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin: .5rem 0 1rem; font-size: 1.05rem; }
+.readout b { font-size: 1.35rem; }
+
+/* gallery */
+.thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: .5rem; margin: .75rem 0; }
+.thumbs button { padding: 0; border: 2px solid transparent; border-radius: 4px; background: none; cursor: pointer; line-height: 0; }
+.thumbs button img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
+.thumbs button[aria-pressed="true"] { border-color: var(--ink); }
+.thumbs button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.viewer { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .75rem; }
+.viewer figure { margin: 0; }
+.viewer img { width: 100%; border-radius: 4px; }
+.viewer figcaption { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
+@media (max-width: 700px) { .viewer { grid-template-columns: 1fr; } }
+.legend-inline { font-size: .9rem; color: var(--muted); }

@@ -82,23 +82,27 @@ def optimal_threshold(curve: list[dict], max_crop_share: float = 0.02) -> dict |
     return max(ok, key=lambda r: (r["weed_hit_rate"], r["threshold"])) if ok else None
 
 
+def session_counts(records: list[dict], threshold: float) -> tuple[list[str], np.ndarray]:
+    """Per recording session (image_id[:8]): [weeds hit, GT weeds, fired shots, shots on crops] at `threshold`."""
+    totals: dict[str, np.ndarray] = {}
+    for r in records:
+        shots = fired(r["shots"], threshold)
+        row = totals.setdefault(r["image_id"][:8], np.zeros(4))
+        row += (len({g for s in shots for g in _hit_weeds(s)}), len(r["gt_weeds"]), len(shots), sum(s["on_crop"] for s in shots))
+    names = sorted(totals)
+    return names, np.array([totals[k] for k in names]).reshape(-1, 4)
+
+
 def bootstrap_ci(records: list[dict], threshold: float, n: int = 2000, seed: int = 0, level: float = 0.95) -> dict:
     """Percentile intervals from resampling recording sessions (image_id[:8]) with replacement."""
-    sessions: dict[str, list[dict]] = {}
-    for r in records:
-        sessions.setdefault(r["image_id"][:8], []).append(r)
-    groups = list(sessions.values())
+    _, counts = session_counts(records, threshold)
     rng = np.random.default_rng(seed)
-    hit_rates, crop_shares = [], []
-    for _ in range(n):
-        sample = [r for k in rng.integers(0, len(groups), len(groups)) for r in groups[k]]
-        row = sweep(sample, [threshold])[0]
-        if row["weed_hit_rate"] is not None:
-            hit_rates.append(row["weed_hit_rate"])
-        if row["crop_shot_share"] is not None:
-            crop_shares.append(row["crop_shot_share"])
+    sums = counts[rng.integers(0, len(counts), (n, len(counts)))].sum(axis=1)   # (n, 4)
     q = [(1 - level) / 2 * 100, (1 + level) / 2 * 100]
-    return {"weed_hit_rate": _percentiles(hit_rates, q), "crop_shot_share": _percentiles(crop_shares, q)}
+    with np.errstate(invalid="ignore", divide="ignore"):
+        hit, crop = sums[:, 0] / sums[:, 1], sums[:, 3] / sums[:, 2]
+    return {"weed_hit_rate": _percentiles(list(hit[np.isfinite(hit)]), q),
+            "crop_shot_share": _percentiles(list(crop[np.isfinite(crop)]), q)}
 
 
 def _hit_weeds(shot: dict) -> list[int]:

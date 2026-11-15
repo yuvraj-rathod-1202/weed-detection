@@ -1,0 +1,745 @@
+{
+  "run": "yolo11s_seg_cropandweed",
+  "split": "val",
+  "conf_floor": 0.05,
+  "num_images": 1609,
+  "curve": [
+    {
+      "threshold": 0.05,
+      "shots": 23269,
+      "weed_hit_rate": 0.8216057919140974,
+      "shot_precision": 0.7002019854742361,
+      "crop_shot_share": 0.010572005672783531,
+      "soil_shot_share": 0.2892260088529804
+    },
+    {
+      "threshold": 0.06,
+      "shots": 21538,
+      "weed_hit_rate": 0.8145285935085008,
+      "shot_precision": 0.7122759773423716,
+      "crop_shot_share": 0.011003807224440524,
+      "soil_shot_share": 0.27672021543318787
+    },
+    {
+      "threshold": 0.07,
+      "shots": 20183,
+      "weed_hit_rate": 0.8088342959407793,
+      "shot_precision": 0.7207550909180994,
+      "crop_shot_share": 0.011445275727097063,
+      "soil_shot_share": 0.26779963335480356
+    },
+    {
+      "threshold": 0.08,
+      "shots": 19082,
+      "weed_hit_rate": 0.8030586512649476,
+      "shot_precision": 0.7300073367571533,
+      "crop_shot_share": 0.01184362226181742,
+      "soil_shot_share": 0.25814904098102925
+    },
+    {
+      "threshold": 0.09,
+      "shots": 18135,
+      "weed_hit_rate": 0.7969576181566745,
+      "shot_precision": 0.7391232423490488,
+      "crop_shot_share": 0.012296663909567136,
+      "soil_shot_share": 0.24858009374138407
+    },
+    {
+      "threshold": 0.1,
+      "shots": 17370,
+      "weed_hit_rate": 0.7920767916700562,
+      "shot_precision": 0.7460564191134139,
+      "crop_shot_share": 0.0127230857800806,
+      "soil_shot_share": 0.24122049510650548
+    },
+    {
+      "threshold": 0.11,
+      "shots": 16697,
+      "weed_hit_rate": 0.7868705767509965,
+      "shot_precision": 0.75294963167036,
+      "crop_shot_share": 0.013116128645864526,
+      "soil_shot_share": 0.23393423968377552
+    },
+    {
+      "threshold": 0.12,
+      "shots": 16126,
+      "weed_hit_rate": 0.7810949320751648,
+      "shot_precision": 0.758588614659556,
+      "crop_shot_share": 0.01339451816941585,
+      "soil_shot_share": 0.22801686717102815
+    },
+    {
+      "threshold": 0.13,
+      "shots": 15657,
+      "weed_hit_rate": 0.7762954526966567,
+      "shot_precision": 0.7628536756722233,
+      "crop_shot_share": 0.013795746311553938,
+      "soil_shot_share": 0.22335057801622277
+    },
+    {
+      "threshold": 0.14,
+      "shots": 15195,
+      "weed_hit_rate": 0.7716586675343692,
+      "shot_precision": 0.7678841724251398,
+      "crop_shot_share": 0.014083580125041132,
+      "soil_shot_share": 0.21803224744981903
+    },
+    {
+      "threshold": 0.15,
+      "shots": 14769,
+      "weed_hit_rate": 0.7673472708045229,
+      "shot_precision": 0.773782923691516,
+      "crop_shot_share": 0.014354390954025324,
+      "soil_shot_share": 0.21186268535445865
+    },
+    {
+      "threshold": 0.16,
+      "shots": 14398,
+      "weed_hit_rate": 0.7622224029935736,
+      "shot_precision": 0.7783025420197249,
+      "crop_shot_share": 0.014585359077649674,
+      "soil_shot_share": 0.20711209890262536
+    },
+    {
+      "threshold": 0.17,
+      "shots": 14015,
+      "weed_hit_rate": 0.7554705930204181,
+      "shot_precision": 0.7824473778094898,
+      "crop_shot_share": 0.014983945772386728,
+      "soil_shot_share": 0.20256867641812343
+    },
+    {
+      "threshold": 0.18,
+      "shots": 13689,
+      "weed_hit_rate": 0.7497762954526966,
+      "shot_precision": 0.7865439403900942,
+      "crop_shot_share": 0.015048579151143254,
+      "soil_shot_share": 0.1984074804587625
+    },
+    {
+      "threshold": 0.19,
+      "shots": 13384,
+      "weed_hit_rate": 0.7444073863174164,
+      "shot_precision": 0.7904213986849971,
+      "crop_shot_share": 0.01531679617453676,
+      "soil_shot_share": 0.19426180514046623
+    },
+    {
+      "threshold": 0.2,
+      "shots": 13090,
+      "weed_hit_rate": 0.7396892540470186,
+      "shot_precision": 0.7945760122230711,
+      "crop_shot_share": 0.015431627196333078,
+      "soil_shot_share": 0.18999236058059588
+    },
+    {
+      "threshold": 0.21,
+      "shots": 12819,
+      "weed_hit_rate": 0.7354592044252827,
+      "shot_precision": 0.7990482876979483,
+      "crop_shot_share": 0.015445822607067634,
+      "soil_shot_share": 0.18550588969498402
+    },
+    {
+      "threshold": 0.22,
+      "shots": 12580,
+      "weed_hit_rate": 0.730497030830554,
+      "shot_precision": 0.8023847376788553,
+      "crop_shot_share": 0.015580286168521463,
+      "soil_shot_share": 0.1820349761526232
+    },
+    {
+      "threshold": 0.23,
+      "shots": 12342,
+      "weed_hit_rate": 0.7250467745871634,
+      "shot_precision": 0.8053800032409658,
+      "crop_shot_share": 0.015718684167882028,
+      "soil_shot_share": 0.17890131259115216
+    },
+    {
+      "threshold": 0.24,
+      "shots": 12120,
+      "weed_hit_rate": 0.7208167249654275,
+      "shot_precision": 0.808910891089109,
+      "crop_shot_share": 0.01575907590759076,
+      "soil_shot_share": 0.17533003300330033
+    },
+    {
+      "threshold": 0.25,
+      "shots": 11897,
+      "weed_hit_rate": 0.7160172455869194,
+      "shot_precision": 0.8125577876775658,
+      "crop_shot_share": 0.01580230310162226,
+      "soil_shot_share": 0.17163990922081196
+    },
+    {
+      "threshold": 0.26,
+      "shots": 11689,
+      "weed_hit_rate": 0.7093467827218742,
+      "shot_precision": 0.8152964325434169,
+      "crop_shot_share": 0.015997946787578064,
+      "soil_shot_share": 0.16870562066900505
+    },
+    {
+      "threshold": 0.27,
+      "shots": 11496,
+      "weed_hit_rate": 0.703164402505491,
+      "shot_precision": 0.8176757132915797,
+      "crop_shot_share": 0.016005567153792623,
+      "soil_shot_share": 0.1663187195546277
+    },
+    {
+      "threshold": 0.28,
+      "shots": 11294,
+      "weed_hit_rate": 0.6964125925323355,
+      "shot_precision": 0.8200814591818665,
+      "crop_shot_share": 0.016380378962280857,
+      "soil_shot_share": 0.16353816185585265
+    },
+    {
+      "threshold": 0.29,
+      "shots": 11097,
+      "weed_hit_rate": 0.6898234767754007,
+      "shot_precision": 0.8225646571145354,
+      "crop_shot_share": 0.01640082905289718,
+      "soil_shot_share": 0.16103451383256737
+    },
+    {
+      "threshold": 0.3,
+      "shots": 10930,
+      "weed_hit_rate": 0.6850239973968926,
+      "shot_precision": 0.8242451967063129,
+      "crop_shot_share": 0.01655992680695334,
+      "soil_shot_share": 0.15919487648673375
+    },
+    {
+      "threshold": 0.31,
+      "shots": 10752,
+      "weed_hit_rate": 0.6785975758561783,
+      "shot_precision": 0.8265438988095238,
+      "crop_shot_share": 0.016648065476190476,
+      "soil_shot_share": 0.15680803571428573
+    },
+    {
+      "threshold": 0.32,
+      "shots": 10543,
+      "weed_hit_rate": 0.6714390303424713,
+      "shot_precision": 0.829080906762781,
+      "crop_shot_share": 0.016978089727781465,
+      "soil_shot_share": 0.15394100350943754
+    },
+    {
+      "threshold": 0.33,
+      "shots": 10339,
+      "weed_hit_rate": 0.6629789310989994,
+      "shot_precision": 0.8314150304671631,
+      "crop_shot_share": 0.016732759454492697,
+      "soil_shot_share": 0.15185221007834412
+    },
+    {
+      "threshold": 0.34,
+      "shots": 10165,
+      "weed_hit_rate": 0.6567152037745058,
+      "shot_precision": 0.835120511559272,
+      "crop_shot_share": 0.01701918347270044,
+      "soil_shot_share": 0.14786030496802754
+    },
+    {
+      "threshold": 0.35,
+      "shots": 9999,
+      "weed_hit_rate": 0.64988204669324,
+      "shot_precision": 0.8376837683768377,
+      "crop_shot_share": 0.017001700170017002,
+      "soil_shot_share": 0.14531453145314532
+    },
+    {
+      "threshold": 0.36,
+      "shots": 9844,
+      "weed_hit_rate": 0.642723501179533,
+      "shot_precision": 0.8386834620073141,
+      "crop_shot_share": 0.016964648516863065,
+      "soil_shot_share": 0.14435188947582284
+    },
+    {
+      "threshold": 0.37,
+      "shots": 9662,
+      "weed_hit_rate": 0.6345074432603921,
+      "shot_precision": 0.8411302007865866,
+      "crop_shot_share": 0.017284206168495134,
+      "soil_shot_share": 0.14158559304491825
+    },
+    {
+      "threshold": 0.38,
+      "shots": 9485,
+      "weed_hit_rate": 0.6273488977466851,
+      "shot_precision": 0.8447021613073273,
+      "crop_shot_share": 0.017817606747496047,
+      "soil_shot_share": 0.13748023194517658
+    },
+    {
+      "threshold": 0.39,
+      "shots": 9313,
+      "weed_hit_rate": 0.6197836166924265,
+      "shot_precision": 0.8472028347471277,
+      "crop_shot_share": 0.018039299903360895,
+      "soil_shot_share": 0.13475786534951142
+    },
+    {
+      "threshold": 0.4,
+      "shots": 9183,
+      "weed_hit_rate": 0.6131131538273814,
+      "shot_precision": 0.8485244473483611,
+      "crop_shot_share": 0.01873026244146793,
+      "soil_shot_share": 0.13274529021017098
+    },
+    {
+      "threshold": 0.41,
+      "shots": 9033,
+      "weed_hit_rate": 0.6065240380704466,
+      "shot_precision": 0.8511015166611314,
+      "crop_shot_share": 0.018487767076275877,
+      "soil_shot_share": 0.1304107162625927
+    },
+    {
+      "threshold": 0.42,
+      "shots": 8836,
+      "weed_hit_rate": 0.5969250793134304,
+      "shot_precision": 0.854232684472612,
+      "crop_shot_share": 0.018560434585785424,
+      "soil_shot_share": 0.12720688094160254
+    },
+    {
+      "threshold": 0.43,
+      "shots": 8655,
+      "weed_hit_rate": 0.5876515089888554,
+      "shot_precision": 0.8561525129982669,
+      "crop_shot_share": 0.01871750433275563,
+      "soil_shot_share": 0.12512998266897746
+    },
+    {
+      "threshold": 0.44,
+      "shots": 8490,
+      "weed_hit_rate": 0.5788660213129423,
+      "shot_precision": 0.8587750294464075,
+      "crop_shot_share": 0.018492343934040048,
+      "soil_shot_share": 0.12273262661955242
+    },
+    {
+      "threshold": 0.45,
+      "shots": 8303,
+      "weed_hit_rate": 0.5685349385829334,
+      "shot_precision": 0.8606527761050223,
+      "crop_shot_share": 0.01890882813440925,
+      "soil_shot_share": 0.12043839576056847
+    },
+    {
+      "threshold": 0.46,
+      "shots": 8138,
+      "weed_hit_rate": 0.5587732856096965,
+      "shot_precision": 0.8616367657901204,
+      "crop_shot_share": 0.01990661096092406,
+      "soil_shot_share": 0.11845662324895552
+    },
+    {
+      "threshold": 0.47,
+      "shots": 7990,
+      "weed_hit_rate": 0.550394533474335,
+      "shot_precision": 0.8635794743429287,
+      "crop_shot_share": 0.020275344180225283,
+      "soil_shot_share": 0.11614518147684606
+    },
+    {
+      "threshold": 0.48,
+      "shots": 7814,
+      "weed_hit_rate": 0.540063450744326,
+      "shot_precision": 0.8652418735602764,
+      "crop_shot_share": 0.02060404402354748,
+      "soil_shot_share": 0.1141540824161761
+    },
+    {
+      "threshold": 0.49,
+      "shots": 7637,
+      "weed_hit_rate": 0.5300577564467583,
+      "shot_precision": 0.8677491161450831,
+      "crop_shot_share": 0.020819693596962157,
+      "soil_shot_share": 0.1114311902579547
+    },
+    {
+      "threshold": 0.5,
+      "shots": 7457,
+      "weed_hit_rate": 0.5203774505816319,
+      "shot_precision": 0.8709936971972643,
+      "crop_shot_share": 0.02078583880917259,
+      "soil_shot_share": 0.1082204639935631
+    },
+    {
+      "threshold": 0.51,
+      "shots": 7298,
+      "weed_hit_rate": 0.5110225331489465,
+      "shot_precision": 0.872704850644012,
+      "crop_shot_share": 0.02096464784872568,
+      "soil_shot_share": 0.10633050150726227
+    },
+    {
+      "threshold": 0.52,
+      "shots": 7141,
+      "weed_hit_rate": 0.5020743512568128,
+      "shot_precision": 0.8755076319843159,
+      "crop_shot_share": 0.021285534238902115,
+      "soil_shot_share": 0.10320683377678197
+    },
+    {
+      "threshold": 0.53,
+      "shots": 6960,
+      "weed_hit_rate": 0.4910924916619214,
+      "shot_precision": 0.8774425287356322,
+      "crop_shot_share": 0.021551724137931036,
+      "soil_shot_share": 0.10100574712643678
+    },
+    {
+      "threshold": 0.54,
+      "shots": 6797,
+      "weed_hit_rate": 0.4816562271211258,
+      "shot_precision": 0.8799470354568192,
+      "crop_shot_share": 0.021332941003383846,
+      "soil_shot_share": 0.09872002353979697
+    },
+    {
+      "threshold": 0.55,
+      "shots": 6620,
+      "weed_hit_rate": 0.4706743675262344,
+      "shot_precision": 0.8812688821752266,
+      "crop_shot_share": 0.0216012084592145,
+      "soil_shot_share": 0.09712990936555892
+    },
+    {
+      "threshold": 0.56,
+      "shots": 6458,
+      "weed_hit_rate": 0.46075002033677703,
+      "shot_precision": 0.8834004335707649,
+      "crop_shot_share": 0.021833384948900587,
+      "soil_shot_share": 0.09476618148033447
+    },
+    {
+      "threshold": 0.57,
+      "shots": 6284,
+      "weed_hit_rate": 0.45082567314731964,
+      "shot_precision": 0.8876511775938892,
+      "crop_shot_share": 0.021801400381922343,
+      "soil_shot_share": 0.09054742202418842
+    },
+    {
+      "threshold": 0.58,
+      "shots": 6083,
+      "weed_hit_rate": 0.4382168713902221,
+      "shot_precision": 0.8910077264507644,
+      "crop_shot_share": 0.02186421173762946,
+      "soil_shot_share": 0.08712806181160612
+    },
+    {
+      "threshold": 0.59,
+      "shots": 5910,
+      "weed_hit_rate": 0.427316358903441,
+      "shot_precision": 0.8939086294416244,
+      "crop_shot_share": 0.02182741116751269,
+      "soil_shot_share": 0.08426395939086294
+    },
+    {
+      "threshold": 0.6,
+      "shots": 5718,
+      "weed_hit_rate": 0.41495159847067437,
+      "shot_precision": 0.8962924099335432,
+      "crop_shot_share": 0.02168590416229451,
+      "soil_shot_share": 0.0820216859041623
+    },
+    {
+      "threshold": 0.61,
+      "shots": 5548,
+      "weed_hit_rate": 0.4044578215244448,
+      "shot_precision": 0.8999639509733237,
+      "crop_shot_share": 0.021809661139149242,
+      "soil_shot_share": 0.07822638788752703
+    },
+    {
+      "threshold": 0.62,
+      "shots": 5383,
+      "weed_hit_rate": 0.3931505734971122,
+      "shot_precision": 0.9011703511053316,
+      "crop_shot_share": 0.02247817202303548,
+      "soil_shot_share": 0.07635147687163292
+    },
+    {
+      "threshold": 0.63,
+      "shots": 5206,
+      "weed_hit_rate": 0.38054177174001463,
+      "shot_precision": 0.901651940069151,
+      "crop_shot_share": 0.02266615443718786,
+      "soil_shot_share": 0.07568190549366116
+    },
+    {
+      "threshold": 0.64,
+      "shots": 5020,
+      "weed_hit_rate": 0.3680956641991377,
+      "shot_precision": 0.9043824701195219,
+      "crop_shot_share": 0.022310756972111555,
+      "soil_shot_share": 0.07330677290836653
+    },
+    {
+      "threshold": 0.65,
+      "shots": 4860,
+      "weed_hit_rate": 0.35752054014479784,
+      "shot_precision": 0.9076131687242799,
+      "crop_shot_share": 0.022016460905349793,
+      "soil_shot_share": 0.07037037037037037
+    },
+    {
+      "threshold": 0.66,
+      "shots": 4659,
+      "weed_hit_rate": 0.3435288375498251,
+      "shot_precision": 0.9089933462116334,
+      "crop_shot_share": 0.022107748443872074,
+      "soil_shot_share": 0.06889890534449453
+    },
+    {
+      "threshold": 0.67,
+      "shots": 4479,
+      "weed_hit_rate": 0.33189620109005125,
+      "shot_precision": 0.9124804643893726,
+      "crop_shot_share": 0.022103148024112524,
+      "soil_shot_share": 0.06541638758651484
+    },
+    {
+      "threshold": 0.68,
+      "shots": 4310,
+      "weed_hit_rate": 0.3196127877653949,
+      "shot_precision": 0.9129930394431555,
+      "crop_shot_share": 0.022273781902552203,
+      "soil_shot_share": 0.06473317865429234
+    },
+    {
+      "threshold": 0.69,
+      "shots": 4124,
+      "weed_hit_rate": 0.3059464736028634,
+      "shot_precision": 0.9136760426770126,
+      "crop_shot_share": 0.02279340446168768,
+      "soil_shot_share": 0.0635305528612997
+    },
+    {
+      "threshold": 0.7,
+      "shots": 3949,
+      "weed_hit_rate": 0.29325632473765556,
+      "shot_precision": 0.9149151683970626,
+      "crop_shot_share": 0.02355026589009876,
+      "soil_shot_share": 0.06153456571283869
+    },
+    {
+      "threshold": 0.71,
+      "shots": 3778,
+      "weed_hit_rate": 0.28113560562921985,
+      "shot_precision": 0.9168872419269455,
+      "crop_shot_share": 0.022498676548438328,
+      "soil_shot_share": 0.0606140815246162
+    },
+    {
+      "threshold": 0.72,
+      "shots": 3623,
+      "weed_hit_rate": 0.27023509314243876,
+      "shot_precision": 0.9185757659398289,
+      "crop_shot_share": 0.022909191277946453,
+      "soil_shot_share": 0.05851504278222468
+    },
+    {
+      "threshold": 0.73,
+      "shots": 3460,
+      "weed_hit_rate": 0.25892784511510614,
+      "shot_precision": 0.9208092485549133,
+      "crop_shot_share": 0.021098265895953757,
+      "soil_shot_share": 0.05809248554913295
+    },
+    {
+      "threshold": 0.74,
+      "shots": 3300,
+      "weed_hit_rate": 0.2471325144391117,
+      "shot_precision": 0.9212121212121213,
+      "crop_shot_share": 0.021515151515151515,
+      "soil_shot_share": 0.057272727272727274
+    },
+    {
+      "threshold": 0.75,
+      "shots": 3139,
+      "weed_hit_rate": 0.23566257219555845,
+      "shot_precision": 0.9235425294679834,
+      "crop_shot_share": 0.021981522777954763,
+      "soil_shot_share": 0.0544759477540618
+    },
+    {
+      "threshold": 0.76,
+      "shots": 2980,
+      "weed_hit_rate": 0.22386724151956397,
+      "shot_precision": 0.9238255033557047,
+      "crop_shot_share": 0.02214765100671141,
+      "soil_shot_share": 0.05402684563758389
+    },
+    {
+      "threshold": 0.77,
+      "shots": 2808,
+      "weed_hit_rate": 0.2119092166273489,
+      "shot_precision": 0.9273504273504274,
+      "crop_shot_share": 0.022435897435897436,
+      "soil_shot_share": 0.050213675213675216
+    },
+    {
+      "threshold": 0.78,
+      "shots": 2623,
+      "weed_hit_rate": 0.19816155535670707,
+      "shot_precision": 0.9279451010293557,
+      "crop_shot_share": 0.02134959969500572,
+      "soil_shot_share": 0.050705299275638584
+    },
+    {
+      "threshold": 0.79,
+      "shots": 2461,
+      "weed_hit_rate": 0.18612218335638167,
+      "shot_precision": 0.9292970337261276,
+      "crop_shot_share": 0.021129622104835433,
+      "soil_shot_share": 0.04957334416903698
+    },
+    {
+      "threshold": 0.8,
+      "shots": 2291,
+      "weed_hit_rate": 0.1731066460587326,
+      "shot_precision": 0.9284155390659101,
+      "crop_shot_share": 0.02138804015713662,
+      "soil_shot_share": 0.0501964207769533
+    },
+    {
+      "threshold": 0.81,
+      "shots": 2119,
+      "weed_hit_rate": 0.16049784430163508,
+      "shot_precision": 0.9301557338367155,
+      "crop_shot_share": 0.019348749410099102,
+      "soil_shot_share": 0.05049551675318546
+    },
+    {
+      "threshold": 0.82,
+      "shots": 1946,
+      "weed_hit_rate": 0.1474009598958757,
+      "shot_precision": 0.9301130524152107,
+      "crop_shot_share": 0.019527235354573486,
+      "soil_shot_share": 0.050359712230215826
+    },
+    {
+      "threshold": 0.83,
+      "shots": 1787,
+      "weed_hit_rate": 0.13576832343610185,
+      "shot_precision": 0.932288752098489,
+      "crop_shot_share": 0.019026301063234472,
+      "soil_shot_share": 0.04868494683827644
+    },
+    {
+      "threshold": 0.84,
+      "shots": 1617,
+      "weed_hit_rate": 0.12348491011144554,
+      "shot_precision": 0.9369202226345084,
+      "crop_shot_share": 0.017934446505875078,
+      "soil_shot_share": 0.04514533085961658
+    },
+    {
+      "threshold": 0.85,
+      "shots": 1450,
+      "weed_hit_rate": 0.11046937281379647,
+      "shot_precision": 0.9351724137931035,
+      "crop_shot_share": 0.017241379310344827,
+      "soil_shot_share": 0.04758620689655172
+    },
+    {
+      "threshold": 0.86,
+      "shots": 1299,
+      "weed_hit_rate": 0.09916212478646384,
+      "shot_precision": 0.9368745188606621,
+      "crop_shot_share": 0.014626635873749037,
+      "soil_shot_share": 0.04849884526558892
+    },
+    {
+      "threshold": 0.87,
+      "shots": 1159,
+      "weed_hit_rate": 0.08899373627267551,
+      "shot_precision": 0.9421915444348576,
+      "crop_shot_share": 0.012079378774805867,
+      "soil_shot_share": 0.0457290767903365
+    },
+    {
+      "threshold": 0.88,
+      "shots": 1031,
+      "weed_hit_rate": 0.07955747173187994,
+      "shot_precision": 0.9476236663433559,
+      "crop_shot_share": 0.009699321047526674,
+      "soil_shot_share": 0.04267701260911736
+    },
+    {
+      "threshold": 0.89,
+      "shots": 911,
+      "weed_hit_rate": 0.07044659562352558,
+      "shot_precision": 0.9495060373216246,
+      "crop_shot_share": 0.008781558726673985,
+      "soil_shot_share": 0.04171240395170143
+    },
+    {
+      "threshold": 0.9,
+      "shots": 783,
+      "weed_hit_rate": 0.06052224843406817,
+      "shot_precision": 0.9489144316730523,
+      "crop_shot_share": 0.008939974457215836,
+      "soil_shot_share": 0.0421455938697318
+    },
+    {
+      "threshold": 0.91,
+      "shots": 666,
+      "weed_hit_rate": 0.05181810786626535,
+      "shot_precision": 0.954954954954955,
+      "crop_shot_share": 0.0045045045045045045,
+      "soil_shot_share": 0.04054054054054054
+    },
+    {
+      "threshold": 0.92,
+      "shots": 519,
+      "weed_hit_rate": 0.04075490116326365,
+      "shot_precision": 0.9633911368015414,
+      "crop_shot_share": 0.0038535645472061657,
+      "soil_shot_share": 0.03275529865125241
+    },
+    {
+      "threshold": 0.93,
+      "shots": 358,
+      "weed_hit_rate": 0.028308793622386724,
+      "shot_precision": 0.9720670391061452,
+      "crop_shot_share": 0.002793296089385475,
+      "soil_shot_share": 0.025139664804469275
+    },
+    {
+      "threshold": 0.94,
+      "shots": 194,
+      "weed_hit_rate": 0.015211909216627349,
+      "shot_precision": 0.9639175257731959,
+      "crop_shot_share": 0.0,
+      "soil_shot_share": 0.03608247422680412
+    },
+    {
+      "threshold": 0.95,
+      "shots": 71,
+      "weed_hit_rate": 0.005775644675831774,
+      "shot_precision": 1.0,
+      "crop_shot_share": 0.0,
+      "soil_shot_share": 0.0
+    }
+  ],
+  "optimal": {
+    "threshold": 0.05,
+    "shots": 23269,
+    "weed_hit_rate": 0.8216057919140974,
+    "shot_precision": 0.7002019854742361,
+    "crop_shot_share": 0.010572005672783531,
+    "soil_shot_share": 0.2892260088529804
+  },
+  "inference_ms_per_image": 33.98629583592293
+}

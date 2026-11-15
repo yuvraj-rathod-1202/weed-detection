@@ -32,6 +32,11 @@ models/weights/*
 experiments/*
 !experiments/.gitkeep
 results/*
+!results/runs/
+!results/final_selection.json
+!results/comparison.csv
+!results/comparison.json
+!results/plots/
 !results/.gitkeep
 
 # --- Secrets / local config ---
