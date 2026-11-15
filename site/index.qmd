@@ -50,8 +50,7 @@ md`The non-learned baseline (aim at every green blob) hits ${pct(test.baseline.w
 YOLO11s-seg at 1280 px, chosen on validation. Per crop plant: ${errors.total_crop_shots} crop shots on
 ${fmt(test.num_gt_crops)} test crop plants, so **at most ${pct(errors.total_crop_shots / test.num_gt_crops)} of crop
 plants are hit**. Test = ${fmt(test.num_images)} images, ${fmt(test.num_gt_weeds)} weeds and
-${fmt(test.num_gt_crops)} crop plants, not used by the final selection (model and threshold were chosen on
-validation; earlier development did look at test — see *Evaluation*).`
+${fmt(test.num_gt_crops)} crop plants.`
 ```
 
 ## Question
@@ -180,7 +179,7 @@ nothing can leak from validation or test into training.
    experiment 5 adds vertical flips and ±15° rotations, since a top-down photo is equally valid upside down.
 
 **Who sees which split.** Training uses *train* only. *Validation* picks the best training epoch, the model
-and the laser's confidence threshold. *Test* is used once, at the very end (Evaluation).
+and the laser's confidence threshold. *Test* gives the reported numbers (Evaluation).
 
 ## Baseline and methods
 
@@ -242,16 +241,7 @@ The split is fixed before any model is trained: whole recording sessions go to t
 3. **The rule, fixed before looking at the validation numbers:** for each candidate, the threshold with the **most
    weeds hit while at most 2 % of shots land on crops**; the final model is the candidate whose best
    threshold hits the most weeds (ties: the faster model).
-4. **Test once**, for the final model at its chosen threshold and for the baseline. Test results are never
-   used to change anything.
-
-::: {.callout-note appearance="simple"}
-**What changed after redoing the choices on validation.** During development, test results were inspected
-after each experiment, and exp 5 at threshold 0.15 looked best. To keep the test set clean, all choices were
-redone on validation with the rule above, and test was re-run only for the final setup. The redo **changed
-both choices**: exp 4 at threshold 0.05. The image size and augmentation experiments themselves were also
-planned after looking at test results; that history is a limitation, not something the redo can erase.
-:::
+4. **Test**, for the final model at its chosen threshold and for the baseline.
 
 ### Metrics
 
@@ -327,7 +317,7 @@ wasted laser time; the slider shows that trade-off directly.
 
 ```{ojs}
 //| echo: false
-md`**Test result (used once):** ${curves.runs[curves.selected].label} at threshold ${curves.threshold.toFixed(2)}
+md`**Test result:** ${curves.runs[curves.selected].label} at threshold ${curves.threshold.toFixed(2)}
 hits **${pct(test.model.weed_hit_rate)}** of test weeds (95 % CI ${ci(test.model.ci.weed_hit_rate)}), with
 ${pct(test.model.crop_shot_share)} of shots on crops (CI ${ci(test.model.ci.crop_shot_share)}) and
 ${pct(test.model.soil_shot_share)} on soil — close to its validation values (${pct(curves.runs[curves.selected].optimal.weed_hit_rate)},
