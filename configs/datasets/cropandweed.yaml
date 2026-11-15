@@ -1,0 +1,19 @@
+# CropAndWeed (Steininger et al., WACV 2023; non-Indian): crop AND weed labelled, top-down, 1920x1088.
+# Converted to 2 classes (official CropOrWeed2 variant: Crop, Weed) by scripts/convert_cropandweed.py,
+# which also writes ignore regions (unlabelled / excluded plants), semantic masks and stem points.
+# Licence: non-commercial, no redistribution -> every machine downloads it from the official source.
+
+name: cropandweed
+region: non_indian
+
+raw_dir: data/raw/cropandweed                      # output of scripts/convert_cropandweed.py
+prepared_dir: data/processed/cropandweed_seg
+label_fixes: data/label_fixes/cropandweed.csv      # missing file = none
+
+split: {train: 0.65, val: 0.20, test: 0.15}
+split_seed: 42
+split_group_pattern: '^[a-z]+-\d{4}'  # <set>-<session>: one recording session = one split (no near-duplicates across splits)
+max_images: null
+
+mask_source: semantic                   # GT masks from the human-labelled semantic masks; SAM only for overlapping boxes
+sam_model: models/weights/sam2.1_b.pt
