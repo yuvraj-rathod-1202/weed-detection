@@ -5,7 +5,7 @@ Visual language (only greys + the two meaning colours):
     filled light white  = crop (predicted, or ground truth)
     crosshair green     = shot hit a weed       red = shot hit a crop
     crosshair grey      = shot on soil          hollow grey circle = shot vetoed by the crop gate
-Only datasets whose licence allows sharing images go in the gallery (Sugar Beets 2016, CottonWeedDet12) —
+Only datasets whose licence allows sharing images go in the gallery (Sugar Beets 2016, CottonWeedDet12) -
 never CropAndWeed.
 """
 from __future__ import annotations

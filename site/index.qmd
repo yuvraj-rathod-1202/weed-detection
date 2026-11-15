@@ -31,7 +31,7 @@ Given one top-down RGB photo of a crop field, can a model place **one laser poin
 most weeds are hit and almost no crop plants are?
 :::
 
-**Short answer — on the held-out test fields, yes, with a cost.**
+**Short answer - on the held-out test fields, yes, with a cost.**
 
 ```{ojs}
 //| echo: false
@@ -46,7 +46,7 @@ html`<div class="stats">
 ```{ojs}
 //| echo: false
 md`The non-learned baseline (aim at every green blob) hits ${pct(test.baseline.weed_hit_rate)} of weeds but puts
-**${pct(test.baseline.crop_shot_share)} of its shots on crops** — the trained model's value is crop safety. Model:
+**${pct(test.baseline.crop_shot_share)} of its shots on crops** - the trained model's value is crop safety. Model:
 YOLO11s-seg at 1280 px, chosen on validation. Per crop plant: ${errors.total_crop_shots} crop shots on
 ${fmt(test.num_gt_crops)} test crop plants, so **at most ${pct(errors.total_crop_shots / test.num_gt_crops)} of crop
 plants are hit**. Test = ${fmt(test.num_images)} images, ${fmt(test.num_gt_weeds)} weeds and
@@ -56,12 +56,12 @@ ${fmt(test.num_gt_crops)} crop plants.`
 ## Question
 
 **Why it matters.** A laser weeder destroys weeds without herbicide by heating the plant's growing point.
-It needs a single aim point per weed — a bounding box is not enough, because the centre of a box around an
+It needs a single aim point per weed - a bounding box is not enough, because the centre of a box around an
 irregular weed can fall on bare soil or on the crop next to it. Every shot that lands on a crop damages
 the harvest, so avoiding crops matters more than hitting every last weed.
 
 **What is predicted, and when.** The prediction is made on the machine, frame by frame, as the camera passes
-over the field. At that moment the only information is the **RGB image itself** — no species list, no stem
+over the field. At that moment the only information is the **RGB image itself** - no species list, no stem
 positions, no earlier frames.
 
 | | |
@@ -124,7 +124,7 @@ html`<div class="table-scroll"><table class="data">
    needs one point per plant. *Preprocessing* explains how the plants are separated.
 3. **Many plants are tiny.** Weeds outnumber crops about ${(total("weed") / total("crop")).toFixed(1)} to 1, and
    ${pct((dataset.sizes.Weed["0–16"] + dataset.sizes.Weed["16–24"]) / Object.values(dataset.sizes.Weed).reduce((a, b) => a + b))}
-   of weeds are at most 24 px across (about 1 cm) — a few pixels once the image is shrunk for the network.
+   of weeds are at most 24 px across (about 1 cm) - a few pixels once the image is shrunk for the network.
 4. **Near-duplicate frames.** Consecutive photos in a session overlap heavily, so a random split would put
    almost the same image in training and test.
 5. **Imbalanced crops.** A few crop species dominate (chart below); rare ones are harder to learn.
@@ -154,8 +154,8 @@ Plot.plot({
 ```
 
 **Earlier dataset: CottonWeedDet12** [@lu2023cottonweeddet12; @dang2023yoloweeds]. Photos from US cotton
-fields with boxes for 12 weed species (5,648 in the full release; a 2,391-image subset — 1,554 / 478 / 359 for
-train / validation / test — was used). The first experiments used it, but it labels **no crops**, so
+fields with boxes for 12 weed species (5,648 in the full release; a 2,391-image subset - 1,554 / 478 / 359 for
+train / validation / test - was used). The first experiments used it, but it labels **no crops**, so
 it can show weed finding but not crop safety. That gap is why the project moved to CropAndWeed; five of its
 photos still appear in the gallery.
 
@@ -167,7 +167,7 @@ nothing can leak from validation or test into training.
 1. **Labels → two classes.** Each species id is mapped to Crop or Weed with the official CropOrWeed2 table;
    unmapped species and "Vegetation" become ignore regions.
 2. **Per-plant masks.** For each plant box, the mask is the class's pixels inside that box. Where that is
-   ambiguous — two overlapping boxes of the same class, or a box with no class pixels — the image is passed to
+   ambiguous - two overlapping boxes of the same class, or a box with no class pixels - the image is passed to
    SAM 2.1 [@ravi2024sam2] with the box as a prompt, and SAM's mask is cut back to the class's pixels, so
    SAM can only split plants, never invent leaves. Each mask is stored as its largest outline (polygon).
 3. **Split by recording session, before any model is trained.** Whole sessions go to train / validation /
@@ -218,12 +218,12 @@ fine-tuned on CropAndWeed.
 
 The aim point is the mask pixel that maximises *(distance to the mask's edge) × (a Gaussian around the mask's
 centre, width = half the plant's radius)*: it always lies inside the plant, near its centre, and not on a
-thin leaf tip. Simpler rules fail in predictable ways — the centre of mass can fall between the leaves of a
+thin leaf tip. Simpler rules fail in predictable ways - the centre of mass can fall between the leaves of a
 star-shaped weed, and the box centre can fall on soil.
 
 ### Crop safety gate
 
-A shot is vetoed when its point lies within **20 px (about 8 mm)** of a plant the model predicts as a crop —
+A shot is vetoed when its point lies within **20 px (about 8 mm)** of a plant the model predicts as a crop -
 roughly the laser spot radius plus aiming error. The gate can only protect crops the model actually
 recognises; the Errors section shows what that means in practice.
 
@@ -248,7 +248,7 @@ The split is fixed before any model is trained: whole recording sessions go to t
 | Metric | Definition | Why it matters for a laser weeder |
 |---|---|---|
 | **Weeds hit** | share of real weeds with at least one fired shot inside their mask | weeds left alive keep competing with the crop |
-| **Shots on crops** | share of fired shots that land inside a crop plant | each one damages the harvest — the costly error |
+| **Shots on crops** | share of fired shots that land inside a crop plant | each one damages the harvest - the costly error |
 | **Shots on soil** | share of fired shots that land on neither a weed nor a crop | wasted laser time; harmless to the crop |
 | **Shot precision** | share of fired shots that land inside a weed | 1 − crops − soil |
 | Mask mAP50-95 | standard instance-segmentation accuracy on validation | secondary: how good the masks are, independent of the laser |
@@ -266,7 +266,7 @@ what happens on the **validation** images; switch the model to compare candidate
 ```{ojs}
 //| echo: false
 viewof run = Inputs.select(Object.keys(curves.runs), {value: curves.selected, label: "Model",
-  format: k => curves.runs[k].label + (k === curves.selected ? " — selected" : "")})
+  format: k => curves.runs[k].label + (k === curves.selected ? " - selected" : "")})
 viewof thr = Inputs.range([0.05, 0.95], {step: 0.01, value: curves.threshold, label: "Confidence ≥"})
 ```
 
@@ -320,7 +320,7 @@ wasted laser time; the slider shows that trade-off directly.
 md`**Test result:** ${curves.runs[curves.selected].label} at threshold ${curves.threshold.toFixed(2)}
 hits **${pct(test.model.weed_hit_rate)}** of test weeds (95 % CI ${ci(test.model.ci.weed_hit_rate)}), with
 ${pct(test.model.crop_shot_share)} of shots on crops (CI ${ci(test.model.ci.crop_shot_share)}) and
-${pct(test.model.soil_shot_share)} on soil — close to its validation values (${pct(curves.runs[curves.selected].optimal.weed_hit_rate)},
+${pct(test.model.soil_shot_share)} on soil - close to its validation values (${pct(curves.runs[curves.selected].optimal.weed_hit_rate)},
 ${pct(curves.runs[curves.selected].optimal.crop_shot_share)}, ${pct(curves.runs[curves.selected].optimal.soil_shot_share)}), so there is no sign that the
 selection on validation was optimistic. Note that the upper end of the crop-shot interval
 (${pct(test.model.ci.crop_shot_share[1])}) is just above the 2 % limit: on new fields one cannot be confident the limit holds.`
@@ -343,7 +343,7 @@ html`<div class="table-scroll"><table class="data">
 ```
 
 The model hits more weeds than the baseline **and** puts about 20 times fewer shots on crops. The baseline
-is not useless — most weeds are green blobs — but it cannot tell a crop from a weed, so roughly one shot in
+is not useless - most weeds are green blobs - but it cannot tell a crop from a weed, so roughly one shot in
 four lands on the crop.
 
 ### Interaction: compare the candidates (validation)
@@ -415,10 +415,10 @@ Validation loss stops improving around epoch 50 while training loss keeps fallin
 accuracy plateaus; the kept weights are from epoch ${training.best_epoch} of ${training.epochs}. A development-time
 check (not reproduced in the repository; it used local test images) scored exp 5 the same way on 297 training
 and 297 test images: large weeds were found far more often on training images than on new ones (95 % vs 82 %:
-overfitting), while weeds under 24 px were missed even on training images (71 % vs 66 %) — pointing to a
+overfitting), while weeds under 24 px were missed even on training images (71 % vs 66 %) - pointing to a
 resolution limit rather than a lack of data. That is why the 1920 px run was attempted.
 
-### Gallery: photos the site is allowed to show
+### Ineractive Gallery
 
 CropAndWeed photos cannot be published, so the gallery uses two openly licensed datasets, five photos each.
 The photos are **hand-picked**: frames with clearly visible weeds where the final model works well. They show
@@ -431,7 +431,7 @@ crop**, grey = soil, hollow grey circle = shot vetoed by the crop gate.
 //| echo: false
 viewof galleryModel = Inputs.select(gallery.models.map(m => m.key), {value: gallery.default, label: "Model",
   width: Math.min(460, width - 140),
-  format: k => modelOf(k).label + (k === gallery.default ? " — selected" : "")})
+  format: k => modelOf(k).label + (k === gallery.default ? " - selected" : "")})
 viewof pick = {
   const wrap = html`<div class="thumbs" role="group" aria-label="Gallery photos">${gallery.items.map((g, i) =>
     html`<button type="button" title="${g.dataset}"><img src="${g.raw}" alt="${g.dataset}, photo ${i + 1}" loading="lazy"></button>`)}</div>`
@@ -504,7 +504,7 @@ new training data.`
 Both use SAM masks made from the dataset's boxes, threshold 0.25, measured on CottonWeedDet12's own test
 split during development. That test split's labels were partly corrected by reviewing the first model's own
 test predictions (52 weeds added, 35 marked unsure, 2 removed), which flatters these numbers. They show that weed finding works on a simpler dataset with large, isolated
-weeds, but say nothing about crops — which is why the project moved to CropAndWeed. Full outputs are in the
+weeds, but say nothing about crops - which is why the project moved to CropAndWeed. Full outputs are in the
 repository ([`experiments/`](https://github.com/yuvraj-rathod-1202/weed-detection/tree/main/experiments/), `results/comparison.csv`).
 
 ## Errors
@@ -544,14 +544,14 @@ At 1280 px input a 16 px plant shrinks to about 11 px.
 2. **Real fields are harder than test plots:** ${pct(set["Real fields (ave)"].rate)} of weeds hit on real fields
 vs ${pct(set["Test plots (vwg)"].rate)} on test plots.
 3. **Crop shots come from crops the model does not recognise.** By construction, a fired shot that lands on a
-crop means no crop prediction (at the threshold) was within 20 px — the gate cannot protect a crop the model
+crop means no crop prediction (at the threshold) was within 20 px - the gate cannot protect a crop the model
 thinks is a weed or does not see. Crop shots per 100 test plants of each species:
 ${sp.map(([k, v]) => `${k} ${v.per_100_plants.toFixed(1)}`).join(" · ")}. **Sunflower** seedlings, broad-leaved
 like many weeds, are shot most often.
 4. **Crop shots are concentrated:** the top recording session alone (${top[0].session}; in a development-time look
 at the annotations, very small soybean seedlings, median box ≈ 29 px vs ≈ 63 px for training soybeans) causes ${top[0].crop_shots} of ${errors.total_crop_shots}
 crop shots, the top three ${top.slice(0, 3).reduce((s, d) => s + d.crop_shots, 0)}. A single unusual field can
-dominate the safety metric — one reason the confidence interval for crop shots is wide.
+dominate the safety metric - one reason the confidence interval for crop shots is wide.
 5. **Soil shots (${pct(test.model.soil_shot_share, 0)}).** Mostly false detections at low confidence; some may be
 real but unlabelled seedlings, which the data cannot tell apart.`
 }
@@ -572,12 +572,12 @@ real but unlabelled seedlings, which the data cannot tell apart.`
   the mask" is assumed to kill the weed.
 - **The 1920 px run did not finish** (out of GPU memory, then out of time), so the resolution question is open.
 - **Prediction, not causation.** The analysis shows *where* the model fails (small plants, sunflower, one
-  soybean field); it does not prove *why* — size, appearance and field conditions are entangled.
+  soybean field); it does not prove *why* - size, appearance and field conditions are entangled.
 
 ## Conclusion
 
 On held-out CropAndWeed test fields, an instance-segmentation model with a crop safety gate hits about
-**85 %** of weeds while putting about **1 %** of its shots on crops — far safer than aiming at every green
+**85 %** of weeds while putting about **1 %** of its shots on crops - far safer than aiming at every green
 blob, which hits fewer weeds and puts almost a quarter of its shots on crops. The price is waste: at the
 chosen threshold more than a quarter of shots land on bare soil, and the threshold choice depends on how one
 values wasted shots against missed weeds. The remaining failures are tiny weeds and crops the model does not

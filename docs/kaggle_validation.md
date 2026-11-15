@@ -5,8 +5,8 @@ One Kaggle session (~3–4 GPU-hours) that produces every number the website rep
 1. Each candidate model (exp 3, 4, 5, from `models/released/`) and the ExG–ExR baseline are evaluated
    on the **validation** split. Every predicted weed down to confidence 0.05 is saved, so any threshold
    can be swept offline (`src/targeting/sweep.py`).
-2. `select_model.py` applies the rule fixed in advance — the threshold with the most weeds hit while at
-   most 2 % of shots land on crops — to every candidate, and picks the model whose optimum hits the most
+2. `select_model.py` applies the rule fixed in advance - the threshold with the most weeds hit while at
+   most 2 % of shots land on crops - to every candidate, and picks the model whose optimum hits the most
    weeds.
 3. **Only the selected model and the baseline** are evaluated on the **test** split.
 

@@ -13,7 +13,7 @@ def get_logger(
 ) -> logging.Logger:
     """Return a logger that writes to stdout and, optionally, a log file.
 
-    Safe to call repeatedly with the same `name` (e.g. once per module) —
+    Safe to call repeatedly with the same `name` (e.g. once per module) -
     handlers are only attached once per logger instance.
     """
     logger = logging.getLogger(name)
