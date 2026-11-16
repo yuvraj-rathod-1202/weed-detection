@@ -153,8 +153,9 @@ Differences between models use a paired session bootstrap.
 | `site/data/*.json` | the exact numbers shown on the website |
 
 Metric definitions are in the website's *Evaluation* section; the code is in
-[src/targeting/sweep.py](src/targeting/sweep.py). A 1920 px run (exp 6) ran out of GPU memory and time and is
-not part of the comparison. Older notes: [docs/experiments.md](docs/experiments.md),
+[src/targeting/sweep.py](src/targeting/sweep.py). A 1920 px run (exp 6) could not be completed with the
+available GPU memory and time (30 of 80 epochs in about 6.5 h); its training log is in
+`results/runs/yolo11s_seg_cropandweed_1920_aug/`, and it is not part of the comparison. Older notes: [docs/experiments.md](docs/experiments.md),
 [docs/label_fixes.md](docs/label_fixes.md).
 
 ## AI-use disclosure

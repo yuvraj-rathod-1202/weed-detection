@@ -210,7 +210,12 @@ fine-tuned on CropAndWeed.
 - **Assumptions:** a top-down view at a fixed height, plants visible (not hidden under leaves), labels that are
   right on average, and test fields that look like training fields. The gallery tests the last one.
 - **Three trained candidates:** exp 3 at 1024 px input, exp 4 at 1280 px (small weeds get more pixels),
-  exp 5 at 1280 px with vertical flips and rotations. A fourth run at full 1920 px did not finish in time.
+  exp 5 at 1280 px with vertical flips and rotations. A fourth run (exp 6) at the full 1920 px could not be
+  completed with the available compute (Kaggle, 2 × Tesla T4 with 16 GB each). GPU memory allowed only one
+  image per GPU (two per GPU ran out of memory in epoch 4), so each epoch took about 10 minutes instead of 4,
+  and the run ended after about 6.5 hours with 30 of 80 epochs done. Its best mask mAP50-95 by then was 0.402,
+  against 0.441 for exp 4 after the same number of epochs, so it is not part of the comparison
+  ([training log](https://github.com/yuvraj-rathod-1202/weed-detection/tree/main/results/runs/yolo11s_seg_cropandweed_1920_aug)).
 
 ### From mask to laser point
 
@@ -568,7 +573,8 @@ real but unlabelled seedlings, which the data cannot tell apart.`
   classes and ignored; per-plant masks for touching plants come partly from SAM.
 - **Offline image metrics only.** No field trial, no laser physics, no motion blur or timing. A shot "inside
   the mask" is assumed to kill the weed.
-- **The 1920 px run did not finish** (out of GPU memory, then out of time), so the resolution question is open.
+- **Limited compute.** The 1920 px run (exp 6) ended after 30 of 80 epochs because of GPU memory and time
+  limits, so whether more resolution helps remains open.
 - **Prediction, not causation.** The analysis shows *where* the model fails (small plants, sunflower, one
   soybean field); it does not prove *why* - size, appearance and field conditions are entangled.
 

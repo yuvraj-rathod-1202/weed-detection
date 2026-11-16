@@ -24,9 +24,10 @@ from src.site_data import public_record
 from src.utils.io import read_jsonl
 
 RUNS = ["baseline_yolo11n_seg", "yolo11s_seg", "yolo11s_seg_cropandweed", "yolo11s_seg_cropandweed_1280",
-        "yolo11s_seg_cropandweed_1280_aug", "baseline_exg"]
+        "yolo11s_seg_cropandweed_1280_aug", "yolo11s_seg_cropandweed_1920_aug", "baseline_exg"]
 FILES = {"config.yaml": "config.yaml", "train/results.csv": "train_results.csv", "train_summary.json": "train_summary.json",
-         "results.json": "results.json", "eval/segmentation_metrics.json": "segmentation_metrics.json"}
+         "results.json": "results.json", "eval/segmentation_metrics.json": "segmentation_metrics.json",
+         "train/args.yaml": "train_args.yaml", "environment.json": "environment.json"}
 
 
 def main() -> None:
